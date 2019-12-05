@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import styled, { ThemeProvider, injectGlobal } from "styled-components";
 import Meta from "../Meta";
 import Header from "../Header";
+import Footer from "../Footer"
 
 const theme = {
-  red: "#FF0000",
+  red: "#FF5964",
+  whiteGray:"#f2f2f2",
   black: "#393939",
   grey: "#3A3A3A",
-  blue: "#659DBD",
+  blue: "#2F5DA8",
   lightgrey: "#E1E1E1",
   offWhite: "#EDEDED",
   maxWidth: "1000px",
@@ -19,11 +21,6 @@ const StyledPage = styled.div`
   color: ${props => props.theme.black};
 `;
 
-const Inner = styled.div`
-  max-width: ${props => props.theme.maxWidth};
-  margin: 0 auto;
-  padding: 2rem;
-`;
 
 injectGlobal`
   @font-face {
@@ -46,6 +43,9 @@ injectGlobal`
     line-height: 2;
     font-family: 'radnika_next';
   }
+  p {
+    margin: 0;
+  }
   a {
     text-decoration: none;
     color: ${theme.black};
@@ -62,10 +62,11 @@ class Page extends Component {
       return (
         <ThemeProvider theme={theme}>
           <StyledPage>
-              <Meta />
-              <Header />
-              <Inner>{this.props.children}</Inner>
-            </StyledPage>
+            <Meta />
+            <Header />
+            {this.props.children}
+            <Footer />
+          </StyledPage>
         </ThemeProvider>
     );
   }

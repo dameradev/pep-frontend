@@ -1,7 +1,204 @@
+import styled from "styled-components";
+import Icons from "../utils/icons"
+
+const Hero = styled.div`
+  width: 100%;
+  height: 500px;
+  background: linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8) ), url("https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWptHL?ver=3e39&q=90&m=2&h=768&w=1024&b=%23FFFFFFFF&aim=true");
+  
+  .hero-inner {
+    width: ${props => props.theme.maxWidth};
+    margin: 0 auto;
+    padding-top: 100px;
+    display: flex;
+    justify-content: space-between;
+    div {
+      width: 45%;
+    }
+    .buttons-container {
+      padding-top: 5rem;
+      display: flex;
+      flex-direction:column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+`;
+
+const ButtonStyled = styled.button`
+  margin-top: 2rem;
+  width: 90%;
+  padding: 2rem;
+  background: transparent;
+  border: 3px solid ${props => props.theme.red};
+  color: ${props => props.theme.whiteGray};
+  border-radius: 5px;
+  font-size: 2rem;
+  text-transform: uppercase;  
+  
+
+  &:hover {
+    background: ${props => props.theme.red};
+  }
+`;
+
+const BubblesStyled = styled.div`
+  /* height: 250px; */
+  background: white;
+
+  .bubbles-list {
+    width: ${props => props.theme.maxWidth};
+    
+    padding: 5rem 0 10rem 0;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    li {
+      /* margin: 2rem 0; */
+      width: 200px;
+      display: flex;
+      flex-direction: column;
+      /* justify-content: space-between; */
+      text-align: center;
+      align-items: center;
+      div {
+        width: 80%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .bubbles-icon {
+          align-self: center;
+          svg {
+            width: 80%;
+            padding: 20px;
+          }
+          /* padding: 20%; */
+        }
+      }
+      p {
+        /* width: 150px; */
+        /* height: 50px; */
+        color: ${props => props.theme.blue};
+      }
+    }
+  }
+`;
+
+const FactsStyled = styled.div`
+  height: 300px;
+  background:  ${props => props.theme.blue};
+  color: white;
+  .facts-inner {
+    width: ${props => props.theme.maxWidth};
+    margin: 0 auto;
+    padding-top: 5rem;
+    text-align: center;
+  }
+`;
+
+const Testamonials = styled.div`
+  .testamonials-inner {
+    width: ${props => props.theme.maxWidth};
+    margin: 0 auto;
+    padding: 5rem 0; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    div {
+      width: 45%;
+      padding: auto;
+      i {
+        font-size: 20rem;
+        width: 200px;
+      }
+      p {
+        text-align:justify;
+        font-size: 1.3rem;
+        font-style: italic;
+        font-weight: 100;
+      }
+    }
+    .image-container {
+      text-align: right;
+    }
+  }
+`;
+
+const Inner = styled.div`
+  max-width: ${props => props.theme.maxWidth};
+  margin: 0 auto;
+  padding: 2rem;
+`;
+
+
 const Home = props => {
   return (
     <div>
-      <p>Home Pages</p>
+      <Hero>
+        {/* <div className="backdrop"></div> */}
+        <div className="hero-inner">
+          <div> search box</div>
+          <div className="buttons-container">
+            <ButtonStyled>
+              Sign up as an Organization
+            </ButtonStyled>
+            <ButtonStyled style={{border:"3px solid #2F5DA8"}}>
+              Sign up as a Participant
+            </ButtonStyled>
+          </div>
+        </div>
+        
+      </Hero>
+      {/* <Inner> */}
+        <BubblesStyled>
+          <ul className="bubbles-list">
+            <li>
+              <div>
+                <span className="bubbles-icon">{Icons.whatAbout}</span>
+              </div>
+              <p>What is Youth Network about?</p>
+            </li>
+            <li>
+              <div>
+                <span className="bubbles-icon">{Icons.howItWorks}</span>
+              </div>
+              <p>How it works</p>
+            </li>
+            <li>
+              <div>
+                <span className="bubbles-icon">{Icons.questionMark}</span>
+              </div>
+              <p>Frequently Asked Questions</p>
+            </li>
+          </ul>
+        </BubblesStyled>
+        <FactsStyled>
+          <div className="facts-inner">
+            <h1>Did you know?</h1>
+            <p>Erasmus+, now already in its second year, has started
+              delivering promising results, including a higher
+              recognition rate for ECTS credits earned abroad by
+              students, a higher quality of mobility with better
+              linguistic preparation and better accessibility. By
+              removing barriers to mobility, </p>
+          </div>
+        </FactsStyled>
+        <Testamonials>
+          <div className="testamonials-inner">
+            <div>
+              <h1>Social Impact Association</h1>
+              <p>With the art of mosaic, we aim to raise the social entrepreneurship skills of young people and increase their cultural awareness.
+              We will examine examples of mosaic art belonging to different civilizations in different countries. We will conduct a survey in the mosaic museums in our region. Our young people will prepare their own works with mosaic art.</p>
+            </div>
+            <div className="image-container">
+              <img src="https://seeklogo.com/images/O/organization-logo-5FDB60F08E-seeklogo.com.png" />
+            </div>
+          </div>
+        </Testamonials>
+      {/* </Inner> */}
     </div>
   );
 };

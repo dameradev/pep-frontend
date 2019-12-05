@@ -9,6 +9,7 @@ const Navigation = styled.nav`
   a {
     padding-left: 2rem;
     font-size: 1.2rem;
+    color: white;
   }
 `;
 
@@ -21,6 +22,9 @@ class Nav extends Component {
         </Link>
         <Link href="/projects">
           <a>Projects</a>
+        </Link>
+        <Link href="/organization">
+          <a>Create a project</a>
         </Link>
       </Navigation>
     );

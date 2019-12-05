@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 
 const LogoStyles = styled.div`
-  width: 60px;
+  /* width: 60px; */
 
   .logo {
     color: ${props => props.theme.blue};
@@ -19,7 +19,7 @@ export default class Logo extends Component {
   render() {
     return (
       <LogoStyles>
-        <h1 className="logo">Projectu</h1>
+        <h1 className="logo">Youth Network</h1>
         {/* <img src="../../static/logo.png" /> */}
       </LogoStyles>
     )
