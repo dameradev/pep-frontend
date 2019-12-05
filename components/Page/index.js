@@ -3,6 +3,7 @@ import styled, { ThemeProvider, injectGlobal } from "styled-components";
 import Meta from "../Meta";
 import Header from "../Header";
 import Footer from "../Footer"
+import {withRouter} from "next/router"
 
 const theme = {
   red: "#FF5964",
@@ -19,6 +20,7 @@ const theme = {
 const StyledPage = styled.div`
   background: white;
   color: ${props => props.theme.black};
+  padding-top: ${props => props.router.route !== "/" && "100px"};
 `;
 
 
@@ -59,9 +61,10 @@ injectGlobal`
 
 class Page extends Component {
   render() {
+    
       return (
         <ThemeProvider theme={theme}>
-          <StyledPage>
+          <StyledPage router={this.props.router}>
             <Meta />
             <Header />
             {this.props.children}
@@ -71,4 +74,4 @@ class Page extends Component {
     );
   }
 }
-export default Page;
+export default withRouter(Page);

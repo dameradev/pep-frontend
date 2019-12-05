@@ -18,27 +18,26 @@ const Hero = styled.div`
     .buttons-container {
       padding-top: 5rem;
       display: flex;
-      flex-direction:column;
-      justify-content: center;
-      align-items: center;
+      flex-direction:column; 
+      align-items: flex-end;
     }
   }
 `;
 
 const ButtonStyled = styled.button`
   margin-top: 2rem;
-  width: 90%;
+  width: 70%;
   padding: 2rem;
   background: transparent;
-  border: 3px solid ${props => props.theme.red};
+  border: 3px solid ${props => props.btnColor};
   color: ${props => props.theme.whiteGray};
   border-radius: 5px;
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-transform: uppercase;  
   
 
   &:hover {
-    background: ${props => props.theme.red};
+    background: ${props => props.btnColor};
   }
 `;
 
@@ -142,10 +141,10 @@ const Home = props => {
         <div className="hero-inner">
           <div> search box</div>
           <div className="buttons-container">
-            <ButtonStyled>
+            <ButtonStyled btnColor={props=> props.theme.blue}>
               Sign up as an Organization
             </ButtonStyled>
-            <ButtonStyled style={{border:"3px solid #2F5DA8"}}>
+            <ButtonStyled  btnColor={props => props.theme.red}>
               Sign up as a Participant
             </ButtonStyled>
           </div>
