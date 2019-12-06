@@ -4,6 +4,11 @@ import gql from "graphql-tag";
 import { Form, Formik, Field } from "formik";
 import Select from "react-select";
 import Router from "next/router";
+import dynamic from "next/dynamic";
+
+const LocationPicker = dynamic(() => import("react-location-picker"), {
+  ssr: false
+});
 
 import Geosuggest from "react-geosuggest";
 // import Form from "../../styles/Form";
@@ -11,6 +16,17 @@ import styled from "styled-components";
 import Error from "../../ErrorMessage";
 
 import { ButtonStyled } from "../../../pages/index";
+
+const numberOfParticipants = [
+  { value: 0, label: "0 Spots left" },
+  { value: 1, label: "1 Spots left" },
+  { value: 2, label: "2 Spots left" },
+  { value: 3, label: "3 Spots left" },
+  { value: 4, label: "4 Spots left" },
+  { value: 5, label: "5 Spots left" },
+  { value: 6, label: "6 Spots left" },
+  { value: 7, label: "7 Spots left" }
+];
 
 const FormWrapper = styled.div`
   width: ${props => props.theme.maxWidth};
@@ -25,6 +41,7 @@ const FormWrapper = styled.div`
       margin: 5px 0;
       outline: none;
       border: 1px solid #ccc;
+      border-radius: 5px;
       font-size: 1.5rem;
     }
 
@@ -44,6 +61,78 @@ const FormWrapper = styled.div`
       justify-content: space-between;
       div {
         width: 30%;
+      }
+    }
+
+    .project-window {
+      &__location {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 20px;
+
+        &-selected {
+          .geosuggest {
+            &__suggests-wrapper {
+              ul {
+                display: none;
+              }
+            }
+          }
+        }
+
+        &-search-wrapper {
+          width: 35%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          text-align: left;
+          div {
+            height: 20%;
+          }
+        }
+
+        &-search {
+          width: 100%;
+          position: relative;
+          padding-top: 15px;
+
+          &-input {
+            width: 100%;
+            font-size: 16px;
+            padding: 5px;
+            color: inherit;
+          }
+
+          .geosuggest {
+            &__suggests-wrapper {
+              ul {
+                list-style-type: none;
+                box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
+                position: relative;
+                top: 30px;
+
+                li {
+                  border-bottom: 1px solid grey;
+                  padding: 5px;
+
+                  mark {
+                    text-decoration: underline;
+                    background: none;
+                    font-weight: 600;
+                  }
+                }
+              }
+            }
+
+            &__item {
+              background: white;
+            }
+
+            &__item--active {
+              background: rgba(0, 0, 0, 0.2);
+            }
+          }
+        }
       }
     }
   }
@@ -102,7 +191,7 @@ const CREATE_PROJECT_MUTATION = gql`
     $date: Date
     $location: String!
     $costs: String!
-    $countries: [String!]!
+    $countries: [ParticipatingCountry!]!
   ) {
     createProject(
       title: $title
@@ -150,11 +239,17 @@ class CreateProject extends Component {
   };
 
   handleLocationChange({ position, address, places }) {
-    this.setState({ position, address });
+    this.setState({ location: { position, address } });
   }
 
   render() {
-    const { countriesSelected } = this.state;
+    const {
+      countriesSelected,
+      locationSelected,
+      location: { address } = {},
+      location
+    } = this.state;
+
     return (
       <Mutation mutation={CREATE_PROJECT_MUTATION}>
         {(createProject, { loading }) => (
@@ -163,11 +258,18 @@ class CreateProject extends Component {
               title: "",
               description: "",
               projectType: "ESC",
-              countries: []
+              countries: [],
+              location: location
             }}
             onSubmit={async (values, actions) => {
-              const { title, description, projectType, countries } = values;
-              console.log(countries);
+              const {
+                title,
+                description,
+                projectType,
+                countries,
+                costs
+              } = values;
+
               let newCountries = countries.map(country => country.label);
 
               createProject({
@@ -182,7 +284,8 @@ class CreateProject extends Component {
               // You can access values.name, values.email, values.password
               // You can access actions, e.g. actions.setSubmitting(false) once you've finished the mutation
             }}
-            render={({ handleChange, handleSubmit, handleBlur, values }) => (
+          >
+            {({ handleChange, handleSubmit, handleBlur, values }) => (
               <FormWrapper onSubmit={handleSubmit}>
                 <Form>
                   <h1>
@@ -211,6 +314,18 @@ class CreateProject extends Component {
                       value={values.description}
                       name="description"
                       placeholder="Type in details of the project"
+                    />
+                  </div>
+
+                  <div className="form-input__group">
+                    <label>Briefly describe what is covered by Erasmus</label>
+                    <textarea
+                      type="text"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.costs}
+                      name="costs"
+                      placeholder="Covered costs by erasmus"
                     />
                   </div>
 
@@ -251,6 +366,7 @@ class CreateProject extends Component {
                   <Query query={GET_ALL_COUNTRIES_QUERY}>
                     {({ data }) => {
                       const options = [];
+
                       data.getCountries.forEach(country => {
                         options.push({
                           label: country.name,
@@ -279,8 +395,19 @@ class CreateProject extends Component {
                                     <p className="label">{country.label}</p>
                                     <div>
                                       <p>Number of participants spots left</p>
-                                      <select>
-                                        <option value="0" label="0" />
+                                      <select
+                                        name="activity"
+                                        value={values.projectType}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        style={{ display: "block" }}
+                                      >
+                                        {numberOfParticipants.map(num => (
+                                          <option
+                                            value={num.value}
+                                            label={num.label}
+                                          />
+                                        ))}
                                       </select>
                                     </div>
                                   </div>
@@ -289,24 +416,48 @@ class CreateProject extends Component {
                           </div>
                         </CountriesStyled>
                       );
-
-                      // return <Select options={options} isMulti isSearchable onChange={option=> {values.countries.push(option[option.length - 1])}} value={values.countries} />
-
-                      // return (
-                      //   <select
-                      //   name="countries"
-                      //   value={values.countries}
-                      //   onChange={handleChange}
-                      //   onBlur={handleBlur}
-                      //   style={{ display: 'block' }}
-                      // >
-                      //   {options.map(option => (
-                      //     <option value={option.value} label={option.label} />
-                      //   ))}
-                      // </select>
-                      // )
                     }}
                   </Query>
+                  <div className="project-window__form-item project-window__location">
+                    <div className="project-window__location-search-wrapper">
+                      <div>
+                        <label>Location of the project</label>
+                        <Geosuggest
+                          onChange={() =>
+                            this.setState({ locationSelected: false })
+                          }
+                          className={
+                            locationSelected
+                              ? "project-window__location-selected project-window__location-search"
+                              : "project-window__location-search"
+                          }
+                          inputClassName="project-window__location-search-input"
+                          placeholder="Search for location of the project"
+                          onSuggestSelect={location => {
+                            values.location.position =
+                              location && location.location;
+                            values.location.address =
+                              location && location.gmaps.formatted_address;
+
+                            this.onLocationSelect(location);
+                          }}
+                        />
+                      </div>
+                      <p className="project-window__location-address">
+                        {address}
+                      </p>
+                    </div>
+
+                    <LocationPicker
+                      containerElement={
+                        <div style={{ height: "100%", width: "60%" }} />
+                      }
+                      mapElement={
+                        <div style={{ height: "400px", width: "auto" }} />
+                      }
+                      defaultPosition={this.state.location.position}
+                    />
+                  </div>
 
                   <ButtonStyled
                     type="submit"
@@ -319,7 +470,7 @@ class CreateProject extends Component {
                 </Form>
               </FormWrapper>
             )}
-          />
+          </Formik>
         )}
       </Mutation>
     );

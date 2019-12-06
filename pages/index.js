@@ -1,5 +1,7 @@
+import Link from "next/link"
 import styled from "styled-components";
 import Icons from "../utils/icons"
+
 
 const Hero = styled.div`
   width: 100%;
@@ -8,6 +10,7 @@ const Hero = styled.div`
   
   .hero-inner {
     width: ${props => props.theme.maxWidth};
+    height: 100%;
     margin: 0 auto;
     padding-top: 100px;
     display: flex;
@@ -17,14 +20,37 @@ const Hero = styled.div`
     }
     .buttons-container {
       padding-top: 5rem;
-      display: flex;
-      flex-direction:column; 
-      align-items: flex-end;
+        a {
+        display: flex;
+        flex-direction:column; 
+        align-items: flex-end;
+      }
+    }
+    
+    .searchbox-container {
+      height: 100%;
+      padding: 20px;
+      color: white;
+      background: rgba(47, 93, 168, 0.5);
+      text-align: center;
+      select {
+        display:block;
+        width:100%;
+        height: 4rem;
+        margin-bottom:1rem;
+        font-size:1.5rem;
+      }
+      button {
+        width: 50%;
+        margin: 1rem auto;
+        background: ${props => props.theme.red};
+        border:3px solid ${props => props.theme.red}
+      }
     }
   }
 `;
 
-const ButtonStyled = styled.button`
+export const ButtonStyled = styled.button`
   margin-top: 2rem;
   width: 70%;
   padding: 2rem;
@@ -137,16 +163,38 @@ const Home = props => {
   return (
     <div>
       <Hero>
-        {/* <div className="backdrop"></div> */}
         <div className="hero-inner">
-          <div> search box</div>
+          <div className="searchbox-container">
+            <h2>Find the perfect project</h2>
+            <select>
+              <option label="Type of project"/>
+            </select>
+            <select>
+              <option label="Activity"/>
+            </select>
+            <select>
+              <option label="Location"/>
+            </select>
+            <select>
+              <option label="Your Nationality"/>
+            </select>
+            <ButtonStyled>Search</ButtonStyled>
+          </div>
           <div className="buttons-container">
-            <ButtonStyled btnColor={props=> props.theme.blue}>
-              Sign up as an Organization
-            </ButtonStyled>
-            <ButtonStyled  btnColor={props => props.theme.red}>
-              Sign up as a Participant
-            </ButtonStyled>
+            <Link href="/organization">
+              <a>
+                <ButtonStyled className="button" btnColor={props=> props.theme.blue}>
+                  Sign up as an Organization
+                </ButtonStyled>
+              </a>
+            </Link>
+            <Link href="/projects">
+              <a>
+                <ButtonStyled className="button" btnColor={props => props.theme.red}>
+                  Sign up as a Participant
+                </ButtonStyled>
+              </a>
+            </Link>
           </div>
         </div>
         
