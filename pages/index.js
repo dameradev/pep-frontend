@@ -7,7 +7,7 @@ const Hero = styled.div`
   width: 100%;
   height: 500px;
   background: linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8) ), url("https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWptHL?ver=3e39&q=90&m=2&h=768&w=1024&b=%23FFFFFFFF&aim=true");
-  
+  background-size:cover;
   .hero-inner {
     width: ${props => props.theme.maxWidth};
     height: 100%;
