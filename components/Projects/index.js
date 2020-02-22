@@ -10,13 +10,18 @@ const ALL_PROJECTS_QUERY = gql`
     projects {
       id
       title
-      description,
       projectType,
       costs,
-      location,
-      objectives,
-      date,
-      countries
+      activity
+      nations {
+        name
+        numberOfParticipants
+      },
+      location {
+        address
+        lat
+        lng
+      }
     }
   }
 `;
@@ -45,7 +50,7 @@ export default class Projects extends Component {
               <>
               <h1 className="projects-title">Below is a list of all the currently avaialable projects</h1>
               <ProjectList>
-                {data.projects.map(project => (
+                {data && data.projects.map(project => (
                    <SingleProject key={project.id} project={project} />
                 ))}
               </ProjectList>
