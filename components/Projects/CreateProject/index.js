@@ -332,14 +332,13 @@ class CreateProject extends Component {
                             }
                             inputClassName="project-window__location-search-input"
                             placeholder="Search for location of the project"
-                            onSuggestSelect={location => {
+                            onSuggestSelect={({location, gmaps}) => {
                               values.location.lng =
                                 location && location.lng;
                                 values.location.lat =
                                 location && location.lat;
                               values.location.address =
-                                location && location.gmaps.formatted_address;
-                              console.log(values.location)
+                                location && gmaps.formatted_address;
                               this.onLocationSelect(location);
                             }}
                           />
@@ -356,7 +355,7 @@ class CreateProject extends Component {
                         mapElement={
                           <div style={{ height: "400px", width: "auto" }} />
                         }
-                        defaultPosition={this.state.location.position}
+                        defaultPosition={this.state.location}
                       />
                     </div>
 
