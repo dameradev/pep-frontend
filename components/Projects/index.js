@@ -1,22 +1,21 @@
-import React, { Component } from "react";
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
-import styled from "styled-components";
-import SingleProject from "./SingleProject";
-
+import React, { Component } from 'react';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import styled from 'styled-components';
+import SingleProject from './SingleProject';
 
 const ALL_PROJECTS_QUERY = gql`
-  query ALL_PROJECTS_QUERY{
+  query ALL_PROJECTS_QUERY {
     projects {
       id
       title
-      projectType,
-      costs,
+      projectType
+      costs
       activity
       nations {
         name
         numberOfParticipants
-      },
+      }
       location {
         address
         lat
@@ -27,14 +26,14 @@ const ALL_PROJECTS_QUERY = gql`
 `;
 
 const Center = styled.div`
-  text-align: center;
   .projects-title {
     font-style: italic;
+    font-weight: 200;
   }
 `;
 
 const ProjectList = styled.div`
-  font-size:1.2rem;
+  font-size: 1.2rem;
 `;
 
 export default class Projects extends Component {
@@ -45,15 +44,16 @@ export default class Projects extends Component {
           {({ data, error, loading }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
-            console.log(data.projects)
+            console.log(data.projects);
             return (
               <>
-              <h1 className="projects-title">Below is a list of all the currently avaialable projects</h1>
-              <ProjectList>
-                {data && data.projects.map(project => (
-                   <SingleProject key={project.id} project={project} />
-                ))}
-              </ProjectList>
+                <h1 className="projects-title">Find the perfect erasmus project!</h1>
+                <ProjectList>
+                  {data &&
+                    data.projects.map(project => (
+                      <SingleProject key={project.id} project={project} />
+                    ))}
+                </ProjectList>
               </>
             );
           }}
