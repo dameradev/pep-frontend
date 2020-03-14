@@ -7,10 +7,11 @@ import ButtonStyled from '../styles/ButtonStyled';
 import Center from '../styles/Center';
 
 import ErrorMessage from '../ErrorMessage';
+import { CURRENT_USER_QUERY } from '../User';
 
-const SIGNUP_MUTATION = gql`
-  mutation SIGNUP_MUTATION($email: String!, $name: String!, $age: Int!, $password: String!) {
-    signup(email: $email, name: $name, age: $age, password: $password) {
+const SIGNIN_MUTATION = gql`
+  mutation SIGNIN_MUTATION($email: String!, $password: String!) {
+    signin(email: $email, password: $password) {
       id
       name
       age
@@ -19,32 +20,32 @@ const SIGNUP_MUTATION = gql`
   }
 `;
 
-class Signup extends Component {
-  state = { email: '', name: '', age: '', password: '' };
+class Signin extends Component {
+  state = { email: '', password: '' };
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleDateChange = date => {
-    this.setState({ age: date });
-  };
-
   render() {
-    const { email, password, name, age } = this.state;
+    const { email, password } = this.state;
     return (
-      <Mutation mutation={SIGNUP_MUTATION} variables={this.state}>
-        {(signup, { error, loading }) => (
+      <Mutation
+        mutation={SIGNIN_MUTATION}
+        variables={this.state}
+        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+      >
+        {(signin, { error, loading }) => (
           <Center>
             <Form
               method="post"
               onSubmit={async e => {
                 e.preventDefault();
-                await signup();
-                this.setState({ email: '', name: '', password: '', age: '' });
+                await signin();
+                this.setState({ email: '', password: '' });
               }}
             >
-              <h2>Register for an account</h2>
+              <h2>Login to an exising account</h2>
               <fieldset disabled={loading} aria-busy={loading}>
                 <ErrorMessage error={error} />
 
@@ -58,16 +59,7 @@ class Signup extends Component {
                     onChange={this.handleChange}
                   />
                 </label>
-                <label htmlFor="name">
-                  <input
-                    name="name"
-                    type="name"
-                    id="name"
-                    value={name}
-                    placeholder="Please enter your name"
-                    onChange={this.handleChange}
-                  />
-                </label>
+
                 <label htmlFor="password">
                   <input
                     name="password"
@@ -78,18 +70,7 @@ class Signup extends Component {
                     onChange={this.handleChange}
                   />
                 </label>
-                <label htmlFor="age">
-                  {/* <DatePickerInput name="age" value={age} onChange={this.handleDateChange} /> */}
 
-                  <input
-                    name="age"
-                    type="number"
-                    id="age"
-                    value={age}
-                    placeholder="Please enter your age"
-                    onChange={this.handleChange}
-                  ></input>
-                </label>
                 <ButtonStyled type="submit">Sign Up</ButtonStyled>
               </fieldset>
             </Form>
@@ -100,4 +81,4 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+export default Signin;
