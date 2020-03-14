@@ -1,13 +1,15 @@
-import Link from "next/link"
-import styled from "styled-components";
-import Icons from "../utils/icons"
+import Link from 'next/link';
+import styled from 'styled-components';
+import Icons from '../utils/icons';
 
+import SearchBox, { ButtonStyled } from '../components/SearchBox';
 
 const Hero = styled.div`
   width: 100%;
   height: 500px;
-  background: linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8) ), url("https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWptHL?ver=3e39&q=90&m=2&h=768&w=1024&b=%23FFFFFFFF&aim=true");
-  background-size:cover;
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+    url('https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWptHL?ver=3e39&q=90&m=2&h=768&w=1024&b=%23FFFFFFFF&aim=true');
+  background-size: cover;
   .hero-inner {
     width: ${props => props.theme.maxWidth};
     height: 100%;
@@ -20,13 +22,13 @@ const Hero = styled.div`
     }
     .buttons-container {
       padding-top: 5rem;
-        a {
+      a {
         display: flex;
-        flex-direction:column; 
+        flex-direction: column;
         align-items: flex-end;
       }
     }
-    
+
     .searchbox-container {
       height: 100%;
       padding: 20px;
@@ -34,36 +36,19 @@ const Hero = styled.div`
       background: rgba(47, 93, 168, 0.5);
       text-align: center;
       select {
-        display:block;
-        width:100%;
+        display: block;
+        width: 100%;
         height: 4rem;
-        margin-bottom:1rem;
-        font-size:1.5rem;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
       }
       button {
         width: 50%;
         margin: 1rem auto;
         background: ${props => props.theme.red};
-        border:3px solid ${props => props.theme.red}
+        border: 3px solid ${props => props.theme.red};
       }
     }
-  }
-`;
-
-export const ButtonStyled = styled.button`
-  margin-top: 2rem;
-  width: 70%;
-  padding: 2rem;
-  background: transparent;
-  border: 3px solid ${props => props.btnColor};
-  color: ${props => props.theme.whiteGray};
-  border-radius: 5px;
-  font-size: 1.5rem;
-  text-transform: uppercase;  
-  
-
-  &:hover {
-    background: ${props => props.btnColor};
   }
 `;
 
@@ -73,13 +58,13 @@ const BubblesStyled = styled.div`
 
   .bubbles-list {
     width: ${props => props.theme.maxWidth};
-    
+
     padding: 5rem 0 10rem 0;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+
     li {
       /* margin: 2rem 0; */
       width: 200px;
@@ -114,7 +99,7 @@ const BubblesStyled = styled.div`
 
 const FactsStyled = styled.div`
   height: 300px;
-  background:  ${props => props.theme.blue};
+  background: ${props => props.theme.blue};
   color: white;
   .facts-inner {
     width: ${props => props.theme.maxWidth};
@@ -128,7 +113,7 @@ const Testamonials = styled.div`
   .testamonials-inner {
     width: ${props => props.theme.maxWidth};
     margin: 0 auto;
-    padding: 5rem 0; 
+    padding: 5rem 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -140,7 +125,7 @@ const Testamonials = styled.div`
         width: 200px;
       }
       p {
-        text-align:justify;
+        text-align: justify;
         font-size: 1.3rem;
         font-style: italic;
         font-weight: 100;
@@ -158,32 +143,16 @@ const Inner = styled.div`
   padding: 2rem;
 `;
 
-
 const Home = props => {
   return (
     <div>
       <Hero>
         <div className="hero-inner">
-          <div className="searchbox-container">
-            <h2>Find the perfect project</h2>
-            <select>
-              <option label="Type of project"/>
-            </select>
-            <select>
-              <option label="Activity"/>
-            </select>
-            <select>
-              <option label="Location"/>
-            </select>
-            <select>
-              <option label="Your Nationality"/>
-            </select>
-            <ButtonStyled>Search</ButtonStyled>
-          </div>
+          <SearchBox />
           <div className="buttons-container">
             <Link href="/organization">
               <a>
-                <ButtonStyled className="button" btnColor={props=> props.theme.blue}>
+                <ButtonStyled className="button" btnColor={props => props.theme.blue}>
                   Sign up as an Organization
                 </ButtonStyled>
               </a>
@@ -197,54 +166,58 @@ const Home = props => {
             </Link>
           </div>
         </div>
-        
       </Hero>
       {/* <Inner> */}
-        <BubblesStyled>
-          <ul className="bubbles-list">
-            <li>
-              <div>
-                <span className="bubbles-icon">{Icons.whatAbout}</span>
-              </div>
-              <p>What is Youth Network about?</p>
-            </li>
-            <li>
-              <div>
-                <span className="bubbles-icon">{Icons.howItWorks}</span>
-              </div>
-              <p>How it works</p>
-            </li>
-            <li>
-              <div>
-                <span className="bubbles-icon">{Icons.questionMark}</span>
-              </div>
-              <p>Frequently Asked Questions</p>
-            </li>
-          </ul>
-        </BubblesStyled>
-        <FactsStyled>
-          <div className="facts-inner">
-            <h1>Did you know?</h1>
-            <p>Erasmus+, now already in its second year, has started
-              delivering promising results, including a higher
-              recognition rate for ECTS credits earned abroad by
-              students, a higher quality of mobility with better
-              linguistic preparation and better accessibility. By
-              removing barriers to mobility, </p>
-          </div>
-        </FactsStyled>
-        <Testamonials>
-          <div className="testamonials-inner">
+      <BubblesStyled>
+        <ul className="bubbles-list">
+          <li>
             <div>
-              <h1>Social Impact Association</h1>
-              <p>With the art of mosaic, we aim to raise the social entrepreneurship skills of young people and increase their cultural awareness.
-              We will examine examples of mosaic art belonging to different civilizations in different countries. We will conduct a survey in the mosaic museums in our region. Our young people will prepare their own works with mosaic art.</p>
+              <span className="bubbles-icon">{Icons.whatAbout}</span>
             </div>
-            <div className="image-container">
-              <img src="https://seeklogo.com/images/O/organization-logo-5FDB60F08E-seeklogo.com.png" />
+            <p>What is Youth Network about?</p>
+          </li>
+          <li>
+            <div>
+              <span className="bubbles-icon">{Icons.howItWorks}</span>
             </div>
+            <p>How it works</p>
+          </li>
+          <li>
+            <div>
+              <span className="bubbles-icon">{Icons.questionMark}</span>
+            </div>
+            <p>Frequently Asked Questions</p>
+          </li>
+        </ul>
+      </BubblesStyled>
+      <FactsStyled>
+        <div className="facts-inner">
+          <h1>Did you know?</h1>
+          <p>
+            Erasmus+, now already in its second year, has started delivering promising results,
+            including a higher recognition rate for ECTS credits earned abroad by students, a higher
+            quality of mobility with better linguistic preparation and better accessibility. By
+            removing barriers to mobility,{' '}
+          </p>
+        </div>
+      </FactsStyled>
+      <Testamonials>
+        <div className="testamonials-inner">
+          <div>
+            <h1>Social Impact Association</h1>
+            <p>
+              With the art of mosaic, we aim to raise the social entrepreneurship skills of young
+              people and increase their cultural awareness. We will examine examples of mosaic art
+              belonging to different civilizations in different countries. We will conduct a survey
+              in the mosaic museums in our region. Our young people will prepare their own works
+              with mosaic art.
+            </p>
           </div>
-        </Testamonials>
+          <div className="image-container">
+            <img src="https://seeklogo.com/images/O/organization-logo-5FDB60F08E-seeklogo.com.png" />
+          </div>
+        </div>
+      </Testamonials>
       {/* </Inner> */}
     </div>
   );
