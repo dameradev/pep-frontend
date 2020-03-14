@@ -17,7 +17,7 @@ import Geosuggest from 'react-geosuggest';
 import styled from 'styled-components';
 import Error from '../../ErrorMessage';
 
-import { ButtonStyled } from '../../SearchBox';
+import { ButtonStyled } from '../../styles/ButtonStyled';
 
 const numberOfParticipants = [
   { value: 0, label: '0 Spots left' },
@@ -53,9 +53,8 @@ const CREATE_PROJECT_MUTATION = gql`
     $projectType: ProjectType!
     $activity: specificActivity!
     $location: LocationCreateInput
-    $nations: [NationCreateWithoutProjectInput!]! # $objectives: [String!]!
-  ) # $date: Date
-  {
+    $nations: [NationCreateWithoutProjectInput!]! # $objectives: [String!]! # $date: Date
+  ) {
     createProject(
       title: $title
       description: $description
