@@ -1,39 +1,39 @@
-import React, { Component } from "react";
-import { Mutation, Query } from "react-apollo";
-import gql from "graphql-tag";
-import { Form, Formik, Field } from "formik";
-import Select from "react-select";
-import Router from "next/router";
-import dynamic from "next/dynamic";
+import React, { Component } from 'react';
+import { Mutation, Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import { Form, Formik, Field } from 'formik';
+import Select from 'react-select';
+import Router from 'next/router';
+import dynamic from 'next/dynamic';
 
-import { FormWrapper, CountriesStyled } from "./styles"
+import { FormWrapper, CountriesStyled } from './styles';
 
-const LocationPicker = dynamic(() => import("react-location-picker"), {
+const LocationPicker = dynamic(() => import('react-location-picker'), {
   ssr: false
 });
 
-import Geosuggest from "react-geosuggest";
+import Geosuggest from 'react-geosuggest';
 // import Form from "../../styles/Form";
-import styled from "styled-components";
-import Error from "../../ErrorMessage";
+import styled from 'styled-components';
+import Error from '../../ErrorMessage';
 
-import { ButtonStyled } from "../../../pages/index";
+import { ButtonStyled } from '../../SearchBox';
 
 const numberOfParticipants = [
-  { value: 0, label: "0 Spots left" },
-  { value: 1, label: "1 Spots left" },
-  { value: 2, label: "2 Spots left" },
-  { value: 3, label: "3 Spots left" },
-  { value: 4, label: "4 Spots left" },
-  { value: 5, label: "5 Spots left" },
-  { value: 6, label: "6 Spots left" },
-  { value: 7, label: "7 Spots left" }
+  { value: 0, label: '0 Spots left' },
+  { value: 1, label: '1 Spots left' },
+  { value: 2, label: '2 Spots left' },
+  { value: 3, label: '3 Spots left' },
+  { value: 4, label: '4 Spots left' },
+  { value: 5, label: '5 Spots left' },
+  { value: 6, label: '6 Spots left' },
+  { value: 7, label: '7 Spots left' }
 ];
 
 const options = [
-  { value: "ESC", label: "ESC" },
-  { value: "Training_Course", label: "Training_Course" },
-  { value: "Youth_Exchange", label: "Youth_Exchange" }
+  { value: 'ESC', label: 'ESC' },
+  { value: 'Training_Course', label: 'Training_Course' },
+  { value: 'Youth_Exchange', label: 'Youth_Exchange' }
 ];
 
 const GET_ALL_COUNTRIES_QUERY = gql`
@@ -53,22 +53,19 @@ const CREATE_PROJECT_MUTATION = gql`
     $projectType: ProjectType!
     $activity: specificActivity!
     $location: LocationCreateInput
-    
-    $nations: [NationCreateWithoutProjectInput!]!
-    # $objectives: [String!]!
-    # $date: Date
-  ) {
+    $nations: [NationCreateWithoutProjectInput!]! # $objectives: [String!]!
+  ) # $date: Date
+  {
     createProject(
       title: $title
       description: $description
       costs: $costs
       totalNumberOfParticipants: $totalNumberOfParticipants
       projectType: $projectType
-      activity: $activity 
+      activity: $activity
       # objectives: $objectives
       # date: $date
-      
-      
+
       nations: $nations
       location: $location
     ) {
@@ -81,10 +78,9 @@ class CreateProject extends Component {
   state = {
     countriesSelected: [],
     location: {
-      address: "Rue de la Loi 41, 1000 Bruxelles, Belgium",
+      address: 'Rue de la Loi 41, 1000 Bruxelles, Belgium',
       lat: 50.8,
       lng: 3.9
-      
     },
     locationSelected: false
   };
@@ -123,12 +119,12 @@ class CreateProject extends Component {
         {(createProject, { loading }) => (
           <Formik
             initialValues={{
-              title: "title",
-              description: "descr",
-              costs: "cost",
-              totalNumberOfParticipants: "10",
-              projectType: "ESC",
-              activity: "ESC",
+              title: 'title',
+              description: 'descr',
+              costs: 'cost',
+              totalNumberOfParticipants: '10',
+              projectType: 'ESC',
+              activity: 'ESC',
               nations: [],
               location: location
             }}
@@ -142,15 +138,18 @@ class CreateProject extends Component {
                 activity,
                 nations,
                 location
-                
               } = values;
 
-
               let newCountries = [];
-              this.state.countriesSelected.forEach(country => newCountries.push({ name: country.country, numberOfParticipants: country.numberOfParticipants }));
+              this.state.countriesSelected.forEach(country =>
+                newCountries.push({
+                  name: country.country,
+                  numberOfParticipants: country.numberOfParticipants
+                })
+              );
 
-              console.log(newCountries)
-              console.log(location, "DAMJAN")
+              console.log(newCountries);
+              console.log(location, 'DAMJAN');
               createProject({
                 variables: {
                   title,
@@ -170,12 +169,9 @@ class CreateProject extends Component {
           >
             {({ handleChange, handleSubmit, handleBlur, values }) => {
               return (
-                < FormWrapper onSubmit={handleSubmit}>
+                <FormWrapper onSubmit={handleSubmit}>
                   <Form>
-                    <h1>
-                      Please fill in the required information to publish your
-                      project!
-                  </h1>
+                    <h1>Please fill in the required information to publish your project!</h1>
 
                     <div className="form-input__group">
                       <label>Title of the project</label>
@@ -216,13 +212,13 @@ class CreateProject extends Component {
                     <div className="form-input__group type-participants">
                       <div>
                         <label>Total number of pariticipants</label>
-                        <input 
+                        <input
                           name="totalNumberOfParticipants"
-                          placeholder="Number of paricipants" 
-                          value={values.totalNumberOfParticipants} 
+                          placeholder="Number of paricipants"
+                          value={values.totalNumberOfParticipants}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          />
+                        />
                       </div>
                       <div>
                         <label>Type of project</label>
@@ -231,7 +227,7 @@ class CreateProject extends Component {
                           value={values.projectType}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          style={{ display: "block" }}
+                          style={{ display: 'block' }}
                         >
                           {options.map(option => (
                             <option value={option.value} label={option.label} />
@@ -245,7 +241,7 @@ class CreateProject extends Component {
                           value={values.activity}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          style={{ display: "block" }}
+                          style={{ display: 'block' }}
                         >
                           {options.map(option => (
                             <option value={option.value} label={option.label} />
@@ -256,7 +252,6 @@ class CreateProject extends Component {
                     <Query query={GET_ALL_COUNTRIES_QUERY}>
                       {({ data }) => {
                         const options = [];
-
                         data.getCountries.forEach(country => {
                           options.push({
                             label: country.name,
@@ -273,12 +268,16 @@ class CreateProject extends Component {
                                 options={options && options}
                                 isMulti
                                 isSearchable
-                                onChange={(options,option) =>{
-                                  const countriesSelected = [...this.state.countriesSelected];
-                                  console.log(countriesSelected)
-                                  countriesSelected.push({country: option.option.value, numberOfParticipants: 0});
-                                  this.setState({ countriesSelected })
-                                }
+                                onChange={
+                                  (options, option) => {
+                                    const countriesSelected = [...this.state.countriesSelected];
+                                    console.log(countriesSelected);
+                                    countriesSelected.push({
+                                      country: option.option.value,
+                                      numberOfParticipants: 0
+                                    });
+                                    this.setState({ countriesSelected });
+                                  }
                                   // this.setState({ countriesSelected: {country: option.option.value , numberOfParticipants: 0} })
                                 }
                                 placeholder="0 countries selected"
@@ -293,15 +292,19 @@ class CreateProject extends Component {
                                         <Select
                                           name="numberOfParticipants"
                                           options={numberOfParticipants}
-                                          onChange={(num)=> {
-                                            const countriesSelected = [...this.state.countriesSelected];
-                                            countriesSelected.find(c => c.country === country.country).numberOfParticipants = num.value;
-                                            this.setState({countriesSelected})
+                                          onChange={num => {
+                                            const countriesSelected = [
+                                              ...this.state.countriesSelected
+                                            ];
+                                            countriesSelected.find(
+                                              c => c.country === country.country
+                                            ).numberOfParticipants = num.value;
+                                            this.setState({ countriesSelected });
                                           }}
                                           onBlur={handleBlur}
-                                          style={{ display: "block" }}
+                                          style={{ display: 'block' }}
                                         />
-                                          {/* {numberOfParticipants.map(num => (
+                                        {/* {numberOfParticipants.map(num => (
                                             <option
                                               value={num.value}
                                               label={num.label}
@@ -322,39 +325,28 @@ class CreateProject extends Component {
                         <div>
                           <label>Location of the project</label>
                           <Geosuggest
-                            onChange={() =>
-                              this.setState({ locationSelected: false })
-                            }
+                            onChange={() => this.setState({ locationSelected: false })}
                             className={
                               locationSelected
-                                ? "project-window__location-selected project-window__location-search"
-                                : "project-window__location-search"
+                                ? 'project-window__location-selected project-window__location-search'
+                                : 'project-window__location-search'
                             }
                             inputClassName="project-window__location-search-input"
                             placeholder="Search for location of the project"
-                            onSuggestSelect={({location, gmaps}) => {
-                              values.location.lng =
-                                location && location.lng;
-                                values.location.lat =
-                                location && location.lat;
-                              values.location.address =
-                                location && gmaps.formatted_address;
+                            onSuggestSelect={({ location, gmaps }) => {
+                              values.location.lng = location && location.lng;
+                              values.location.lat = location && location.lat;
+                              values.location.address = location && gmaps.formatted_address;
                               this.onLocationSelect(location);
                             }}
                           />
                         </div>
-                        <p className="project-window__location-address">
-                          {address}
-                        </p>
+                        <p className="project-window__location-address">{address}</p>
                       </div>
 
                       <LocationPicker
-                        containerElement={
-                          <div style={{ height: "100%", width: "60%" }} />
-                        }
-                        mapElement={
-                          <div style={{ height: "400px", width: "auto" }} />
-                        }
+                        containerElement={<div style={{ height: '100%', width: '60%' }} />}
+                        mapElement={<div style={{ height: '400px', width: 'auto' }} />}
                         defaultPosition={this.state.location}
                       />
                     </div>
@@ -364,18 +356,15 @@ class CreateProject extends Component {
                       disabled={loading}
                       btnColor={props => props.theme.blue}
                     >
-                      {" "}
-                      Publish Project{" "}
+                      {' '}
+                      Publish Project{' '}
                     </ButtonStyled>
                   </Form>
                 </FormWrapper>
-
-              )
-            }
-            }
+              );
+            }}
           </Formik>
-        )
-        }
+        )}
       </Mutation>
     );
   }
