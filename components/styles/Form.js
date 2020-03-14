@@ -20,17 +20,22 @@ const Form = styled.form`
   font-size: 1.5rem;
   line-height: 1.5;
   font-weight: 600;
+  border-radius: 5px;
   label {
     display: block;
     margin-bottom: 1rem;
+    &:first-of-type {
+      padding-top: 10px;
+    }
   }
   input,
   textarea,
   select {
     width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
+    padding: 0.8rem;
+    font-size: 1.2rem;
     border: 1px solid black;
+
     &:focus {
       outline: 0;
       border-color: ${props => props.theme.red};
