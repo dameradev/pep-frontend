@@ -9,7 +9,7 @@ const Navigation = styled.nav`
   align-items: center;
   a {
     padding-left: 2rem;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: white;
   }
 `;
@@ -36,8 +36,8 @@ class Nav extends Component {
                 </>
               )}
               {!me && (
-                <Link href="/registration">
-                  <a>Registration</a>
+                <Link href={{ pathname: '/auth', query: { path: 'login' } }}>
+                  <a>Sign in</a>
                 </Link>
               )}
             </Navigation>

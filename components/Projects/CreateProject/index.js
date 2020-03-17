@@ -17,7 +17,7 @@ import Geosuggest from 'react-geosuggest';
 import styled from 'styled-components';
 import Error from '../../ErrorMessage';
 
-import { ButtonStyled } from '../../styles/ButtonStyled';
+import ButtonStyled from '../../styles/ButtonStyled';
 
 const numberOfParticipants = [
   { value: 0, label: '0 Spots left' },
@@ -115,7 +115,7 @@ class CreateProject extends Component {
     // console.log(this.state.countriesSelected)
     return (
       <Mutation mutation={CREATE_PROJECT_MUTATION}>
-        {(createProject, { loading }) => (
+        {(createProject, { loading, error }) => (
           <Formik
             initialValues={{
               title: 'title',
@@ -147,8 +147,6 @@ class CreateProject extends Component {
                 })
               );
 
-              console.log(newCountries);
-              console.log(location, 'DAMJAN');
               createProject({
                 variables: {
                   title,
@@ -170,6 +168,7 @@ class CreateProject extends Component {
               return (
                 <FormWrapper onSubmit={handleSubmit}>
                   <Form>
+                    <Error error={error} />
                     <h1>Please fill in the required information to publish your project!</h1>
 
                     <div className="form-input__group">

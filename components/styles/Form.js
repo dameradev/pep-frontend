@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components';
+import { respondTo } from '../../utils/respondTo';
 
 const loading = keyframes`
   from {
@@ -13,6 +14,8 @@ const loading = keyframes`
 `;
 
 const Form = styled.form`
+  width: 800px;
+  margin: 0 auto;
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.05);
   background: rgba(0, 0, 0, 0.02);
   border: 5px solid white;
@@ -21,12 +24,35 @@ const Form = styled.form`
   line-height: 1.5;
   font-weight: 600;
   border-radius: 5px;
+
+  ${respondTo.mobilePortrait`
+    width: 400px;
+    
+  `}
+  ${respondTo.tablet`
+    width: 800px;
+    
+  `}
+
   label {
     display: block;
     margin-bottom: 1rem;
     &:first-of-type {
       padding-top: 10px;
     }
+  }
+  .links-container {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.3rem;
+    a {
+      padding-bottom: 0.5rem;
+      color: ${props => props.theme.blue};
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    padding-bottom: 1rem;
   }
   input,
   textarea,

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Link from 'next/link';
+import Router from 'next/router';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -42,6 +44,7 @@ class Signin extends Component {
               onSubmit={async e => {
                 e.preventDefault();
                 await signin();
+                Router.push('/');
                 this.setState({ email: '', password: '' });
               }}
             >
@@ -70,8 +73,17 @@ class Signin extends Component {
                     onChange={this.handleChange}
                   />
                 </label>
+                <div className="links-container">
+                  <Link href={{ pathname: '/auth', query: { path: 'register' } }}>
+                    <a>Don't have an account?</a>
+                  </Link>
 
-                <ButtonStyled type="submit">Sign Up</ButtonStyled>
+                  <Link href={{ pathname: '/auth', query: { path: 'reset' } }}>
+                    <a>Forgot password?</a>
+                  </Link>
+                </div>
+
+                <button type="submit">Sign Up</button>
               </fieldset>
             </Form>
           </Center>

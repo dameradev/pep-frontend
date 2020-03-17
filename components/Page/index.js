@@ -20,6 +20,8 @@ const theme = {
 
 const StyledPage = styled.div`
   background: white;
+  position: relative;
+  min-height: 100vh;
   color: ${props => props.theme.black};
   padding-top: ${props => props.router.route !== '/' && '100px'};
 `;
@@ -49,7 +51,7 @@ injectGlobal`
     margin: 0;
     font-size: 1.5rem;
     line-height: 2;
-    font-family: 'Montseraat';
+    font-family: 'radnika_next';
   }
   h1,
   h2,
