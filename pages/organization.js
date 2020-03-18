@@ -1,10 +1,8 @@
-import CreateProject from "../components/Projects/CreateProject"
+import React from 'react';
+import Organization from '../components/Organization';
 
-const Organization = (props) => {
-  return (
-    <div>
-      <CreateProject />  
-    </div>
-  )
-}
-export default Organization;
+const OrganizationPage = props => {
+  return <Organization id={props.query.id} />;
+};
+
+export default OrganizationPage;

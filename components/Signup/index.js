@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Mutation } from 'react-apollo';
+import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import Form from '../styles/Form';
@@ -10,6 +10,14 @@ import Center from '../styles/Center';
 
 import ErrorMessage from '../ErrorMessage';
 
+const GET_ALL_COUNTRIES_QUERY = gql`
+  query GET_ALL_COUNTRIES_QUERY {
+    getCountries {
+      name
+    }
+  }
+`;
+
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
     $email: String!
@@ -17,8 +25,16 @@ const SIGNUP_MUTATION = gql`
     $age: Int
     $password: String!
     $type: String!
+    $nationality: String!
   ) {
-    signup(email: $email, name: $name, age: $age, password: $password, type: $type) {
+    signup(
+      email: $email
+      name: $name
+      age: $age
+      password: $password
+      type: $type
+      nationality: $nationality
+    ) {
       id
       name
       age
@@ -34,7 +50,7 @@ const typeOfUser = [
 ];
 
 class Signup extends Component {
-  state = { email: '', name: '', age: 0, password: '', type: 'participant' };
+  state = { email: '', name: '', age: 0, password: '', type: 'participant', nationality: '' };
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -45,8 +61,8 @@ class Signup extends Component {
   };
 
   render() {
-    const { email, password, name, age, type } = this.state;
-    console.log(this.state);
+    const { email, password, name, age, type, nationality } = this.state;
+
     return (
       <Mutation mutation={SIGNUP_MUTATION} variables={this.state}>
         {(signup, { error, loading }) => (
@@ -124,6 +140,24 @@ class Signup extends Component {
                     ></input>
                   </label>
                 )}
+
+                <label htmlFor="nationality">
+                  <select
+                    name="nationality"
+                    id="nationality"
+                    value={nationality}
+                    placeholder="Please select your nationality"
+                    onChange={this.handleChange}
+                  >
+                    <Query query={GET_ALL_COUNTRIES_QUERY}>
+                      {({ data: { getCountries }, error, loading }) =>
+                        getCountries.map(country => (
+                          <option value={country.name} label={country.name} />
+                        ))
+                      }
+                    </Query>
+                  </select>
+                </label>
                 <div className="links-container">
                   <Link href={{ pathname: '/auth', query: { path: 'login' } }}>
                     <a>Already have an account?</a>

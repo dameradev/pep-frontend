@@ -2,7 +2,9 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import Icons from '../utils/icons';
 
-import SearchBox, { ButtonStyled } from '../components/SearchBox';
+import SearchBox from '../components/SearchBox';
+
+import ButtonStyled from '../components/styles/ButtonStyled';
 
 const Hero = styled.div`
   width: 100%;

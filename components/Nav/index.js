@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import User from '../User';
 import Singout from '../Signout';
+import { DropDown, DropDownItem } from '../styles/DropDown';
 
 const Navigation = styled.nav`
   display: flex;
@@ -29,9 +30,21 @@ class Nav extends Component {
               </Link>
               {me && (
                 <>
-                  <Link href="/organization">
+                  <Link href="/create-project">
                     <a>Create a project</a>
                   </Link>
+
+                  <Link
+                    href={{
+                      pathname: `${
+                        me.permissions.includes('ORGANIZATION') ? '/organization' : 'participant'
+                      }`,
+                      query: { id: me.id }
+                    }}
+                  >
+                    <a>Profile</a>
+                  </Link>
+
                   <Singout />
                 </>
               )}
