@@ -36,7 +36,7 @@ const options = [
   { value: 'Youth_Exchange', label: 'Youth_Exchange' }
 ];
 
-const GET_ALL_COUNTRIES_QUERY = gql`
+export const GET_ALL_COUNTRIES_QUERY = gql`
   query GET_ALL_COUNTRIES_QUERY {
     getCountries {
       name

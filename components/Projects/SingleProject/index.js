@@ -121,7 +121,7 @@ const SingleProject = props => {
   console.log(props.project);
   return (
     <Project>
-      <Link href={{ pathname: '/item', query: { id } }}>
+      <Link href={{ pathname: '/project', query: { id } }}>
         <a className="project__details">
           <h2 className="project__title">{title}</h2>
           <div className="project__details-wrapper">
