@@ -10,8 +10,10 @@ const Navigation = styled.nav`
   align-items: center;
   a {
     padding-left: 2rem;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+    font-weight: 600;
     color: white;
+    text-transform: uppercase;
   }
 `;
 
@@ -39,7 +41,7 @@ class Nav extends Component {
                       pathname: `${
                         me.permissions.includes('ORGANIZATION') ? '/organization' : 'participant'
                       }`,
-                      query: { id: me.id }
+                      query: { id: me.id },
                     }}
                   >
                     <a>Profile</a>
