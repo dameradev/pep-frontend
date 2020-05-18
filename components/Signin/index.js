@@ -25,7 +25,7 @@ const SIGNIN_MUTATION = gql`
 class Signin extends Component {
   state = { email: '', password: '' };
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -41,7 +41,7 @@ class Signin extends Component {
           <Center>
             <Form
               method="post"
-              onSubmit={async e => {
+              onSubmit={async (e) => {
                 e.preventDefault();
                 await signin();
                 Router.push('/');
@@ -49,42 +49,41 @@ class Signin extends Component {
               }}
             >
               <h2>Login to an exising account</h2>
-              <fieldset disabled={loading} aria-busy={loading}>
-                <ErrorMessage error={error} />
+              <fieldset disabled={loading} aria-busy={loading}></fieldset>
+              <ErrorMessage error={error} />
 
-                <label htmlFor="email">
-                  <input
-                    name="email"
-                    type="email"
-                    id="email"
-                    value={email}
-                    placeholder="Please enter your email"
-                    onChange={this.handleChange}
-                  />
-                </label>
+              <label htmlFor="email">
+                <input
+                  name="email"
+                  type="email"
+                  id="email"
+                  value={email}
+                  placeholder="Please enter your email"
+                  onChange={this.handleChange}
+                />
+              </label>
 
-                <label htmlFor="password">
-                  <input
-                    name="password"
-                    type="password"
-                    id="password"
-                    value={password}
-                    placeholder="Please enter your password"
-                    onChange={this.handleChange}
-                  />
-                </label>
-                <div className="links-container">
-                  <Link href={{ pathname: '/auth', query: { path: 'register' } }}>
-                    <a>Don't have an account?</a>
-                  </Link>
+              <label htmlFor="password">
+                <input
+                  name="password"
+                  type="password"
+                  id="password"
+                  value={password}
+                  placeholder="Please enter your password"
+                  onChange={this.handleChange}
+                />
+              </label>
+              <div className="links-container">
+                <Link href={{ pathname: '/auth', query: { path: 'register' } }}>
+                  <a>Don't have an account?</a>
+                </Link>
 
-                  <Link href={{ pathname: '/auth', query: { path: 'reset' } }}>
-                    <a>Forgot password?</a>
-                  </Link>
-                </div>
+                <Link href={{ pathname: '/auth', query: { path: 'reset' } }}>
+                  <a>Forgot password?</a>
+                </Link>
+              </div>
 
-                <button type="submit">Sign Up</button>
-              </fieldset>
+              <button type="submit">Sign Up</button>
             </Form>
           </Center>
         )}
