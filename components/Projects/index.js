@@ -47,10 +47,10 @@ export default class Projects extends Component {
             console.log(data.projects);
             return (
               <>
-                <h1 className="projects-title">Find the perfect erasmus project!</h1>
+                {/* <h1 className="projects-title">Find the perfect erasmus project!</h1> */}
                 <ProjectList>
                   {data &&
-                    data.projects.map(project => (
+                    data.projects.map((project) => (
                       <SingleProject key={project.id} project={project} />
                     ))}
                 </ProjectList>
