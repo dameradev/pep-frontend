@@ -1,24 +1,22 @@
-import ProjectsList from "../components/Projects";
+import ProjectsList from '../components/Projects';
 
-import ContentContainer from "../components/ContentContainer";
-import LeftPanel from "../components/LeftPanel";
-import RightPanel from "../components/RightPanel";
-import SearchPanel from "../components/SearchPanel"
+import SearchPanel from '../components/SearchPanel';
+import styled from 'styled-components';
 
+const ProjectsPage = styled.div`
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: max-content 1fr;
+  grid-column-gap: 3rem;
+  padding: 0 15rem;
+`;
 
-const Projects = props => {
+const Projects = (props) => {
   return (
-    
-<ContentContainer>
-      <LeftPanel>
-        <ProjectsList />
-      </LeftPanel>
-      <RightPanel>
-        <SearchPanel />
-      </RightPanel>
-      </ContentContainer>
-      
-    
+    <ProjectsPage>
+      <SearchPanel />
+      <ProjectsList />
+    </ProjectsPage>
   );
 };
 
