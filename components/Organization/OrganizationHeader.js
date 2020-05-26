@@ -1,25 +1,32 @@
 import React from 'react';
+import Link from 'next/link';
+
 import styled from 'styled-components';
+import icons from '../../utils/icons';
+import { withRouter } from 'next/dist/lib/router';
 
 const HeaderStyled = styled.div`
-  margin: 10rem auto;
-  max-width: 120rem;
+  /* margin: 10rem 0; */
+  /* max-width: 120rem; */
 
+  grid-column: full-start / full-end;
   display: grid;
-  grid-template-columns: minmax(25rem, 1fr) minmax(25rem, 1fr);
+  grid-template-columns: minmax(25rem, 1fr) minmax(25rem, 1fr) minmax(25rem, 1fr);
   grid-template-rows: 1fr min-content;
+  background: #fff;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1);
 
-  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.1);
-
-  color: #606060;
   .organization {
     &__cover {
       grid-row: 1 / 2;
-      grid-column: 1/ 3;
+      grid-column: 1/ 4;
       min-height: 20rem;
-      background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2704&q=80');
+      background-image: url('https://images.unsplash.com/photo-1510936111840-65e151ad71bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1367&q=80');
       background-size: cover;
-      background-position: 0;
+
+      /* filter: blur(0.1rem) contrast(-1rem); */
+      transform: scaleX(-1);
+      background-position: 0 28rem;
     }
 
     &__profile-picture {
@@ -38,6 +45,15 @@ const HeaderStyled = styled.div`
     &__profile {
       padding: 8rem 0 3rem 2.5rem;
       z-index: 10;
+      grid-column: 1 / 3;
+      h3 {
+        font-size: 3rem;
+      }
+      h4 {
+        font-size: 1.6rem;
+        color: #606060;
+        font-weight: 200;
+      }
     }
 
     &__contact {
@@ -60,11 +76,59 @@ const HeaderStyled = styled.div`
         color: #fff;
       }
     }
+
+    &__nav {
+      display: grid;
+      grid-auto-flow: column;
+      /* grid-gap: 1rem; */
+      align-self: end;
+      align-content: center;
+      justify-content: start;
+      align-items: center;
+      grid-column: 1 / 3;
+      /* justify-self: center; */
+      margin: 0;
+      li {
+        padding: 1rem 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+        cursor: pointer;
+        span {
+          margin-left: 2rem;
+        }
+
+        &:hover {
+          color: #fff;
+          background-color: #96c0d6;
+        }
+        &:active {
+          transform: translateY(3px);
+        }
+      }
+    }
+
+    &__stats {
+      grid-row: 3 /4;
+      grid-column: 3 / 4;
+      justify-self: end;
+      padding: 2rem 2.5rem;
+      font-size: 1.6rem;
+      p {
+        /* padding: 0.5rem 1rem;
+        color: white;
+        border-radius: 20px;
+        background: #549bf0;
+        margin-bottom: 0.5rem; */
+      }
+    }
   }
 `;
 
 const OrganizationHeader = (props) => {
-  const { name, email } = props;
+  const { name, email, router } = props;
+  console.log(props);
   return (
     <HeaderStyled>
       <div className="organization__cover">&nbsp;</div>
@@ -74,16 +138,76 @@ const OrganizationHeader = (props) => {
       />
       <div className="organization__profile">
         <h3>{name}</h3>
+        <h4>Training and Networking Transnational Youth Initiatives Strategic Partnerships</h4>
       </div>
+
       <div className="organization__contact">
         <p>{email}</p>
         <button>View Website</button>
+      </div>
+      <ul className="organization__nav">
+        <li>
+          <Link
+            href={{
+              pathname: router.pathname,
+              query: { id: router.query.id, path: 'about' },
+            }}
+          >
+            <a>
+              {icons.aboutOrganization}
+              <span>About us</span>
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link
+            href={{
+              pathname: router.pathname,
+              query: { id: router.query.id, path: 'projects' },
+            }}
+          >
+            <a>
+              {icons.projectsOrganization}
+              <span>Projects</span>
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link
+            href={{
+              pathname: router.pathname,
+              query: { id: router.query.id, path: 'history' },
+            }}
+          >
+            <a>
+              {icons.historyOrganization}
+              <span>History</span>
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link
+            href={{
+              pathname: router.pathname,
+              query: { id: router.query.id, path: 'partner' },
+            }}
+          >
+            <a>
+              {icons.partnerOrganization}
+              <span>Become a Partner</span>
+            </a>
+          </Link>
+        </li>
+      </ul>
+      <div className="organization__stats">
+        <p>2345 projects</p>
+        <p>10+ upcoming projects</p>
       </div>
     </HeaderStyled>
   );
 };
 
-export default OrganizationHeader;
+export default withRouter(OrganizationHeader);
 
 {
   /* <div className="organization-description">

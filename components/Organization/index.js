@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import Icons from '../../utils/icons';
 
 import OrganizationHeader from './OrganizationHeader';
+import OrganizationSidebar from './OrganizationSidebar';
+import SimilarOrganizations from './SimilarOrganizations';
 
 const SINGLE_ORGANIZATION_QUERY = gql`
   query SINGLE_ORGANIZATION_QUERY($id: ID) {
@@ -70,6 +72,22 @@ const CHANGE_APPLICANT_STATUS_MUTATION = gql`
 const applicantStatus = ['PENDING', 'ACCEPTED', 'REJECTED'];
 
 const OrganizationStyles = styled.div`
+  display: grid;
+
+  grid-template-columns:
+    [full-start]
+    minmax(6rem, 1fr) [center-start]repeat(8, [col-start] minmax(min-content, 18rem) [col-end])
+    [center-end] minmax(6rem, 1fr) [full-end];
+
+  grid-gap: 3rem;
+  .organization {
+    &__sidebar {
+      grid-row: 2 / 3;
+    }
+
+    &__similar {
+    }
+  }
   .organization-details {
     display: flex;
     flex-direction: column;
@@ -258,6 +276,27 @@ const countriesList = (data) => {
   );
 };
 
+const SectionStyled = styled.section`
+  grid-column: col-start 3 / col-end 6;
+  /* box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1); */
+  height: fit-content;
+  border: 1px solid #ccc;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 5px;
+  h3 {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+
+    font-weight: 100;
+    font-size: 2rem;
+  }
+  p {
+    color: #606060;
+  }
+`;
+
 class Organization extends Component {
   state = {
     displayApplicants: false,
@@ -286,7 +325,7 @@ class Organization extends Component {
   // andleClick = () => this.setState(({isOpened}) => ({ isOpened: !isOpened }));
 
   render() {
-    const { id } = this.props;
+    const { id, path } = this.props;
     const { displayParticipants, displayApplicants, activeProject } = this.state;
 
     return (
@@ -296,7 +335,24 @@ class Organization extends Component {
           const { name, email, projectsCreated } = organization;
           return (
             <OrganizationStyles>
-              <OrganizationHeader name={name} email={email} />
+              <OrganizationHeader name={name} email={email} className="organization__header" />
+              <OrganizationSidebar className="organization__sidebar" />
+
+              {path === 'about' && (
+                <SectionStyled>
+                  <h3>Summary</h3>
+                  <p>
+                    The Comunità Montana Sirentina (Sirentina Mountain Community - CMS) implements
+                    initiatives and exchanges good practices at international level with the aim of
+                    fostering youth engagement through the promotion of the local natural and
+                    cultural heritage.
+                  </p>
+                </SectionStyled>
+              )}
+              {path === 'projects' && <h1>Projects</h1>}
+              {path === 'history' && <h1>history of ORG</h1>}
+              {path === 'partner' && <h1>Become a partner</h1>}
+              <SimilarOrganizations className="organization__similar" />
               {/* <div>
                 <h2 className="projects-title">Your currently active projects!</h2>
                 <ul>
@@ -397,7 +453,6 @@ class Applicant extends Component {
   render() {
     const { status } = this.state;
     const { user, projectId } = this.props;
-    console.log(user);
     return (
       <Mutation
         mutation={CHANGE_APPLICANT_STATUS_MUTATION}
