@@ -41,7 +41,7 @@ class Nav extends Component {
                       pathname: `${
                         me.permissions.includes('ORGANIZATION') ? '/organization' : 'participant'
                       }`,
-                      query: { id: me.id },
+                      query: { id: me.id, path: 'about' },
                     }}
                   >
                     <a>Profile</a>
