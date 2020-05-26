@@ -3,12 +3,13 @@ import styled from 'styled-components';
 
 const FooterStyled = styled.div`
   height: 200px;
-  display:none;
-  background: ${props => props.theme.blue};
+  margin-top: 10rem;
+  /* display:none; */
+  background: ${(props) => props.theme.blue};
   border-top: 1px solid #e7e7e7;
   text-align: center;
   padding: 20px;
-  position: absolute;
+  /* position: absolute; */
   /* left: 0; */
   bottom: 0;
   width: 100%;

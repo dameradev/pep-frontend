@@ -15,15 +15,15 @@ const theme = {
   offWhite: '#EDEDED',
   maxWidth: '1000px',
   bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',
-  containerMaxHeight: 'calc(100vh - 84px)'
+  containerMaxHeight: 'calc(100vh - 84px)',
 };
 
 const StyledPage = styled.div`
-  background: white;
+  background: #f5f5f5;
   position: relative;
   min-height: 100vh;
-  color: ${props => props.theme.black};
-  padding-top: ${props => props.router.route !== '/' && '100px'};
+  color: ${(props) => props.theme.black};
+  padding-top: ${(props) => props.router.route !== '/' && '100px'};
 `;
 
 injectGlobal`
@@ -34,9 +34,12 @@ injectGlobal`
     font-style: normal;
   }
   @font-face {
-    font-family: 'Montserrat';
+    /* font-family: 'Raleway' sans-serif; */
     
-    @import url('https://fonts.googleapis.com/css?family=Montserrat:200,200i,300,300i,400,600,600i&display=swap');
+    /* @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,600;1,100;1,200&display=swap'); */
+    font-family: 'Nunito', sans-serif;
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,600;1,100;1,200;1,300;1,400&display=swap');
+
   }
   
   html {
@@ -49,9 +52,10 @@ injectGlobal`
   body {
     padding: 0;
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     line-height: 2;
-    font-family: 'radnika_next';
+    font-family: 'Nunito';
+    color: #505050;
   }
   h1,
   h2,
