@@ -1,24 +1,24 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const FormWrapper = styled.div`
-  width: ${props => props.theme.maxWidth};
+  width: ${(props) => props.theme.maxWidth};
   margin: 0 auto;
   text-align: center;
   form {
     input,
     textarea,
     select {
-      width: 100%;
+      /* width: 100%;
       padding: 10px;
       margin: 5px 0;
-      outline: none;
-      border: 1px solid #ccc;
+      outline: none; */
+      /* border: 1px solid #ccc;
       border-radius: 5px;
-      font-size: 1.5rem;
+      font-size: 1.5rem; */
     }
 
     button {
-      color: ${props => props.theme.black};
+      color: ${(props) => props.theme.black};
       &:hover {
         color: white;
       }
@@ -139,4 +139,3 @@ export const CountriesStyled = styled.div`
     }
   }
 `;
-
