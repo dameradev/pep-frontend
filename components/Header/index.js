@@ -7,21 +7,21 @@ import Nav from '../Nav';
 import Logo from '../Logo';
 
 const LoginNav = styled.header`
-  background: ${props => props.theme.blue};
+  background: ${(props) => props.theme.blue};
   width: 100%;
   height: 20px;
   font-size: 1rem;
   color: white;
 
   nav {
-    width: ${props => props.theme.maxWidth};
+    width: ${(props) => props.theme.maxWidth};
     text-align: right;
   }
 `;
 
 const HeaderStyles = styled.header`
-  height: 100px;
-  background: ${props =>
+  height: 70px;
+  background: ${(props) =>
     props.router.route === '/'
       ? props.headerBgnColor
         ? props.theme.blue
@@ -42,17 +42,17 @@ const HeaderStyles = styled.header`
     align-items: center;
 
     .logo {
-      color: ${props => props.headerBgnColor && 'white'};
+      color: ${(props) => props.headerBgnColor && 'white'};
     }
   }
 `;
 
 class Header extends Component {
   state = {
-    windowScroll: false
+    windowScroll: false,
   };
 
-  listenScrollEvent = e => {
+  listenScrollEvent = (e) => {
     window.pageYOffset > 70
       ? this.setState({ windowScroll: true })
       : this.setState({ windowScroll: false });
