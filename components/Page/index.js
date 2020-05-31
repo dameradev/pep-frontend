@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import styled, { ThemeProvider, injectGlobal, css } from 'styled-components';
+import styled, { ThemeProvider, createGlobalStyle, css } from 'styled-components';
+import { ThemeProvider as MuiThemeProvider, createMuiTheme } from '@material-ui/core';
 import Meta from '../Meta';
 import Header from '../Header';
 import Footer from '../Footer';
 import { withRouter } from 'next/router';
+
+const MuiTheme = createMuiTheme({
+  typography: {
+    htmlFontSize: 10,
+  },
+});
 
 const theme = {
   red: '#FF5964',
@@ -23,11 +30,11 @@ const StyledPage = styled.div`
   position: relative;
   min-height: 100vh;
   color: ${(props) => props.theme.black};
-  padding-top: ${(props) => props.router.route !== '/' && '100px'};
+  padding-top: ${(props) => props.router.route !== '/' && '70px'};
 `;
 
-injectGlobal`
-  @font-face {
+const GlobalStyle = createGlobalStyle`
+    @font-face {
     font-family: 'radnika_next';
     src: url('/static/radnikanext-medium-webfont.woff2') format('woff2');
     font-weight: normal;
@@ -35,16 +42,19 @@ injectGlobal`
   }
   @font-face {
     /* font-family: 'Raleway' sans-serif; */
-    
+
     /* @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,600;1,100;1,200&display=swap'); */
-    font-family: 'Nunito', sans-serif;
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,600;1,100;1,200;1,300;1,400&display=swap');
+    font-family: 'Roboto', sans-serif;
+    
+    /* @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap'); */
+
 
   }
-  
+
   html {
     box-sizing: border-box;
-    font-size: 10px;
+    font-size: 62.5%;
+    font-family: 'Roboto';
   }
   *, *:before, *:after {
     box-sizing: inherit;
@@ -54,7 +64,7 @@ injectGlobal`
     margin: 0;
     font-size: 1.6rem;
     line-height: 2;
-    font-family: 'Nunito';
+    font-family: 'Roboto';
     color: #505050;
   }
   h1,
@@ -72,23 +82,30 @@ injectGlobal`
     text-decoration: none;
     color: ${theme.black};
   }
-  button {  font-family: 'radnika_next'; }
+  /* button {  font-family: 'radnika_next'; } */
   ul {
     list-style: none;
     padding: 0;
   }
+
 `;
+
+// injectGlobal`
+//   `;
 
 class Page extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <StyledPage router={this.props.router}>
-          <Meta />
-          <Header />
-          {this.props.children}
-          <Footer />
-        </StyledPage>
+        <MuiThemeProvider theme={MuiTheme}>
+          <StyledPage router={this.props.router}>
+            <GlobalStyle />
+            <Meta />
+            <Header />
+            {this.props.children}
+            <Footer />
+          </StyledPage>
+        </MuiThemeProvider>
       </ThemeProvider>
     );
   }
