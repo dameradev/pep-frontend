@@ -149,6 +149,10 @@ const ProjectFormWrapper = styled.div`
       }
     }
 
+    &__description,
+    &__costs {
+      width: 100%;
+    }
     width: 80%;
     &__input-group {
       grid-column: col-start 4 / full-end;
@@ -321,7 +325,7 @@ class CreateProject extends Component {
                 console.log(values);
                 return (
                   <FormWrapper onSubmit={handleSubmit} className="form">
-                    <h1>Please fill in the required information to publish your project!</h1>
+                    {/* <h1>Please fill in the required information to publish your project!</h1> */}
                     <div className="guidelines">
                       <h2>Guidelines</h2>
                     </div>
@@ -434,26 +438,28 @@ class CreateProject extends Component {
                       </div>
 
                       <div className="form__input-group">
-                        <label>Detailed description</label>
-                        <textarea
-                          type="text"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.description}
+                        <TextField
+                          className="form__description"
+                          id="outlined-multiline-flexible"
+                          label="Detailed description of project"
+                          multiline
                           name="description"
-                          placeholder="Type in details of the project"
+                          rows={8}
+                          value={values.description}
+                          onChange={handleChange}
                         />
                       </div>
 
                       <div className="form__input-group">
-                        <label>Briefly describe what is covered by Erasmus</label>
-                        <textarea
-                          type="text"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.costs}
+                        <TextField
+                          className="form__costs"
+                          id="outlined-multiline-flexible"
+                          label="Costs covered by erasmus+"
+                          multiline
                           name="costs"
-                          placeholder="Covered costs by erasmus"
+                          rows={8}
+                          value={values.costs}
+                          onChange={handleChange}
                         />
                       </div>
 
@@ -471,18 +477,21 @@ class CreateProject extends Component {
 
                           return (
                             <CountriesStyled className="form__input-group">
-                              <div>
-                                <label>Total number of pariticipants</label>
-                                <input
+                              <div className="total-participants">
+                                <label>Total number of participants</label>
+                                <TextField
+                                  className="total-participants__input"
+                                  id="outlined-multiline-flexible"
+                                  // label=""
                                   name="totalNumberOfParticipants"
-                                  placeholder="Number of paricipants"
                                   value={values.totalNumberOfParticipants}
                                   onChange={handleChange}
-                                  onBlur={handleBlur}
+                                  variant="outlined"
                                 />
                               </div>
-                              <label>Participating Countries</label>
+
                               <div className="wrapper">
+                                <label>Participating Countries</label>
                                 <Select
                                   className="select-box"
                                   options={options && options}
@@ -502,42 +511,42 @@ class CreateProject extends Component {
                                   }
                                   placeholder="0 countries selected"
                                 />
-                                <div className="countries-block">
-                                  {countriesSelected.length > 0 &&
-                                    countriesSelected.map((country) => (
-                                      <div className="country-block">
-                                        <p className="label">{country.label}</p>
-                                        <div>
-                                          <p>Number of participants spots left</p>
-                                          <Select
-                                            name="numberOfParticipants"
-                                            options={numberOfParticipants}
-                                            onChange={(num) => {
-                                              const countriesSelected = [
-                                                ...this.state.countriesSelected,
-                                              ];
-                                              countriesSelected.find(
-                                                (c) => c.country === country.country
-                                              ).numberOfParticipants = num.value;
-                                              this.setState({ countriesSelected });
-                                            }}
-                                            onBlur={handleBlur}
-                                            style={{ display: 'block' }}
-                                          />
+                              </div>
 
-                                          <TextField id="standard-basic" label="Standard" />
-                                          {/* {numberOfParticipants.map(num => (
+                              {countriesSelected.length > 0 &&
+                                countriesSelected.map((country) => (
+                                  <div className="country-block">
+                                    {/* <Select
+                                        name="numberOfParticipants"
+                                        options={numberOfParticipants}
+                                        onChange={(num) => {
+                                          const countriesSelected = [
+                                            ...this.state.countriesSelected,
+                                          ];
+                                          countriesSelected.find(
+                                            (c) => c.country === country.country
+                                          ).numberOfParticipants = num.value;
+                                          this.setState({ countriesSelected });
+                                        }}
+                                        onBlur={handleBlur}
+                                        style={{ display: 'block' }}
+                                      /> */}
+                                    <label>{country.country}</label>
+                                    <TextField
+                                      className="country"
+                                      id="standard-basic"
+                                      // label={country.country}
+                                      variant="outlined"
+                                    />
+                                    {/* {numberOfParticipants.map(num => (
                                             <option
                                               value={num.value}
                                               label={num.label}
                                             />
                                           ))}
                                         </select> */}
-                                        </div>
-                                      </div>
-                                    ))}
-                                </div>
-                              </div>
+                                  </div>
+                                ))}
                             </CountriesStyled>
                           );
                         }}

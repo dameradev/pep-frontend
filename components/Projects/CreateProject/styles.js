@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { respondTo } from '../../../utils/respondTo';
 
 export const FormWrapper = styled.div`
   width: ${(props) => props.theme.maxWidth};
@@ -110,10 +111,80 @@ export const FormWrapper = styled.div`
   }
 `;
 export const CountriesStyled = styled.div`
-  margin: 1rem 0;
+  display: grid;
 
-  text-align: left;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  grid-gap: 3rem;
+  align-items: end;
+  /* justify-items: center; */
+  font-size: 1.4rem;
   .wrapper {
+    /* grid-column: 2 / 5; */
+    
+    width: 100%;
+    ${respondTo.laptopSmall` 
+      grid-column: 2 / 4;
+    `}
+    
+    ${respondTo.laptop` 
+      grid-column: 2 / 4;
+    `}
+
+    ${respondTo.desktopSmall` 
+      grid-column: 2 / 4;
+    `}
+
+    ${respondTo.desktopLarge` 
+      grid-column: 2 / 5;
+    `}
+  }
+  .total-participants {
+    grid-column: 1 / 2;
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+
+    &__input {
+      max-width: 3rem;
+      min-width: 3rem;
+      input {
+        padding: 0.5rem;
+      }
+    }
+
+    & > * {
+      width: 100%;
+    }
+  }
+
+  .country-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-self: stretch;
+    label {
+      font-size: 1.4rem;
+      margin-right: 1rem;
+    }
+  }
+
+  .country {
+    width: 3rem;
+    label {
+    }
+    input {
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  /* margin: 1rem 0; */
+
+  /* text-align: left; */
+  /* .wrapper {
     margin-top: 1rem;
     display: flex;
     justify-content: space-between;
@@ -137,5 +208,5 @@ export const CountriesStyled = styled.div`
         width: 40%;
       }
     }
-  }
+  } */
 `;
