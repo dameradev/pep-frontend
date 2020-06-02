@@ -21,7 +21,7 @@ class Nav extends Component {
   render() {
     return (
       <User>
-        {({ data: { me } }) => {
+        {({ data: { me } = {} }) => {
           return (
             <Navigation>
               <Link href="/">
@@ -41,7 +41,7 @@ class Nav extends Component {
                       pathname: `${
                         me.permissions.includes('ORGANIZATION') ? '/organization' : 'participant'
                       }`,
-                      query: { id: me.id, path: 'about' },
+                      query: { id: me.id },
                     }}
                   >
                     <a>Profile</a>
