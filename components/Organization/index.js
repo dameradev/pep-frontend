@@ -5,6 +5,10 @@ import styled from 'styled-components';
 
 import Icons from '../../utils/icons';
 
+import { Box, Typography } from '@material-ui/core';
+
+import { OrganizationStyles } from './styles';
+
 import OrganizationHeader from './OrganizationHeader';
 import OrganizationSidebar from './OrganizationSidebar';
 import SimilarOrganizations from './SimilarOrganizations';
@@ -71,130 +75,6 @@ const CHANGE_APPLICANT_STATUS_MUTATION = gql`
 
 const applicantStatus = ['PENDING', 'ACCEPTED', 'REJECTED'];
 
-const OrganizationStyles = styled.div`
-  display: grid;
-
-  grid-template-columns:
-    [full-start]
-    minmax(6rem, 1fr) [center-start]repeat(8, [col-start] minmax(min-content, 18rem) [col-end])
-    [center-end] minmax(6rem, 1fr) [full-end];
-
-  grid-gap: 3rem;
-  .organization {
-    &__sidebar {
-      grid-row: 2 / 3;
-    }
-
-    &__similar {
-    }
-  }
-  .organization-details {
-    display: flex;
-    flex-direction: column;
-
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 3rem;
-    margin-bottom: 3rem;
-
-    .organization-header {
-      width: 80%;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .name-details {
-        display: flex;
-        align-items: center;
-      }
-      img {
-        margin-right: 1.5rem;
-      }
-    }
-
-    .organization-description {
-      width: 80%;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      text-align: justify;
-      div {
-        width: 45%;
-      }
-    }
-  }
-
-  .projects-title {
-    text-align: center;
-  }
-
-  .project-details {
-    .project-header {
-      padding-bottom: 2rem;
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: space-between;
-
-      border-bottom: 1px solid #ccc;
-    }
-    .description {
-      width: 60%;
-      h5 {
-        font-size: 1.5rem;
-      }
-      p {
-        text-align: justify;
-        font-size: 1.3rem;
-      }
-    }
-
-    &__container {
-      display: flex;
-      justify-content: space-between;
-      .location-date {
-        p {
-          font-style: italic;
-          text-align: right;
-          font-size: 1.2rem;
-        }
-      }
-    }
-  }
-
-  .project-rightpanel {
-    /* min-height: 80vh; */
-
-    border: 1px solid #ccc;
-    &__header {
-      button {
-        width: 50%;
-        outline: none;
-        padding: 2rem;
-        border: none;
-        border-bottom: 1px solid #ccc;
-        color: white;
-        background: ${(props) => props.theme.red};
-        font-size: 1.3rem;
-        font-weight: 200;
-        &:first-of-type {
-          border-right: 1px solid #ccc;
-          background: ${(props) => props.theme.blue};
-        }
-      }
-    }
-  }
-
-  .rightpanel-title {
-    padding-top: 1rem;
-    text-align: center;
-  }
-
-  /* width: 80%;
-  margin: 0 auto; */
-  ul {
-    /* padding: 20px; */
-  }
-`;
-
 const ApplicantStyles = styled.li`
   /* border: 1px solid gray; */
   padding: 1rem;
@@ -254,7 +134,7 @@ const ParticipatingCountires = styled.ul`
         margin-top: 5px;
 
         svg {
-          border: 0.3px solid #ccc;
+          border: 0.3px solid ${(props) => props.theme.borderColorPrimary};
           width: 40px;
         }
       }
@@ -277,15 +157,14 @@ const countriesList = (data) => {
 };
 
 const SectionStyled = styled.section`
-  grid-column: col-start 3 / col-end 6;
   /* box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1); */
   height: fit-content;
-  border: 1px solid #ccc;
+  border: 1px solid ${(props) => props.theme.borderColorPrimary};
   background: #fff;
   padding: 2rem;
   border-radius: 5px;
   h3 {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid ${(props) => props.theme.borderColorPrimary};
     padding-bottom: 1rem;
     margin-bottom: 2rem;
 
@@ -293,15 +172,36 @@ const SectionStyled = styled.section`
     font-size: 2rem;
   }
   p {
-    color: #606060;
+    color: ${(props) => props.theme.darkGrey1};
   }
 `;
+
+const TabPanel = (props) => {
+  const { children, value, index, ...other } = props;
+  console.log(index, 'dame');
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+};
 
 class Organization extends Component {
   state = {
     displayApplicants: false,
     displayParticipants: false,
     activeProject: null,
+    value: 0,
   };
 
   // handleDisplayPanel = panelToDisplay => {
@@ -322,23 +222,42 @@ class Organization extends Component {
       activeProject: project,
     }));
 
+  handleTabChange = (event, value) => {
+    console.log(value);
+    this.setState({
+      value,
+    });
+  };
+
   // andleClick = () => this.setState(({isOpened}) => ({ isOpened: !isOpened }));
 
   render() {
     const { id, path } = this.props;
-    const { displayParticipants, displayApplicants, activeProject } = this.state;
-
+    const { displayParticipants, displayApplicants, activeProject, value } = this.state;
+    console.log(this.state);
     return (
       <Query query={SINGLE_ORGANIZATION_QUERY} variables={{ id }}>
-        {({ data: { organization }, error, loading }) => {
+        {({ data: { organization } = {}, error, loading }) => {
           console.log(organization);
-          const { name, email, projectsCreated } = organization;
+          // const { name, email, projectsCreated } = organization && organization;
           return (
             <OrganizationStyles>
-              <OrganizationHeader name={name} email={email} className="organization__header" />
+              <OrganizationHeader
+                name={organization && organization.name}
+                email={organization && organization.email}
+                className="organization__header"
+                handleChange={this.handleTabChange}
+                value={value}
+              />
               <OrganizationSidebar className="organization__sidebar" />
+              {/* <SwipeableViews
+                axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                index={value}
+                onChangeIndex={handleChangeIndex}
+              > */}
+              {/* </SwipeableViews> */}
 
-              {path === 'about' && (
+              <TabPanel className="tab" value={value} index={0}>
                 <SectionStyled>
                   <h3>Summary</h3>
                   <p>
@@ -348,10 +267,14 @@ class Organization extends Component {
                     cultural heritage.
                   </p>
                 </SectionStyled>
-              )}
-              {path === 'projects' && <h1>Projects</h1>}
-              {path === 'history' && <h1>history of ORG</h1>}
-              {path === 'partner' && <h1>Become a partner</h1>}
+              </TabPanel>
+              <TabPanel className="tab" value={value} index={1}>
+                Item Two
+              </TabPanel>
+              <TabPanel className="tab" value={value} index={2}>
+                Item Three
+              </TabPanel>
+
               <SimilarOrganizations className="organization__similar" />
               {/* <div>
                 <h2 className="projects-title">Your currently active projects!</h2>

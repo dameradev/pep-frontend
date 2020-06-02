@@ -1,53 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SideBarStyled = styled.aside`
-  h1 {
-    font-weight: 100;
-    font-size: 2rem;
-    width: 100%;
-    white-space: nowrap;
-    text-transform: uppercase;
-  }
-  .similar_organizations {
-    display: grid;
-
-    grid-gap: 2rem;
-    &__item {
-      display: grid;
-      grid-template-columns: max-content max-content;
-      grid-row-gap: 1rem;
-      grid-column-gap: 2rem;
-      align-items: end;
-      justify-content: start;
-
-      img {
-        border-radius: 50%;
-        width: 8rem;
-        height: 8rem;
-        grid-row: 1/3;
-        box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
-      }
-
-      h3 {
-        line-height: 1.8rem;
-        font-size: 2rem;
-        font-weight: 100;
-        align-self: end;
-      }
-      p {
-        align-self: start;
-        line-height: 1.8rem;
-        font-size: 1.6rem;
-        color: #a0a0a0;
-      }
-    }
-  }
-`;
-
+import { SimilarOrganizationStyled } from './styles';
 const SimilarOrganization = () => {
   return (
-    <SideBarStyled>
+    <SimilarOrganizationStyled>
       <h1>Similar Organizations</h1>
       <ul className="similar_organizations">
         <li className="similar_organizations__item">
@@ -71,7 +28,7 @@ const SimilarOrganization = () => {
           <p>We are nature</p>
         </li> */}
       </ul>
-    </SideBarStyled>
+    </SimilarOrganizationStyled>
   );
 };
 

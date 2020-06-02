@@ -1,130 +1,17 @@
 import React from 'react';
 import Link from 'next/link';
 
-import styled from 'styled-components';
-import icons from '../../utils/icons';
-import { withRouter } from 'next/dist/lib/router';
+import { HeaderStyled } from './styles';
+import { Tabs, Tab, Paper, AppBar } from '@material-ui/core';
 
-const HeaderStyled = styled.div`
-  /* margin: 10rem 0; */
-  /* max-width: 120rem; */
+// import icons from '../../utils/icons';
 
-  grid-column: full-start / full-end;
-  display: grid;
-  grid-template-columns: minmax(25rem, 1fr) minmax(25rem, 1fr) minmax(25rem, 1fr);
-  grid-template-rows: 1fr min-content;
-  background: #fff;
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1);
-
-  .organization {
-    &__cover {
-      grid-row: 1 / 2;
-      grid-column: 1/ 4;
-      min-height: 20rem;
-      background-image: url('https://images.unsplash.com/photo-1510936111840-65e151ad71bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1367&q=80');
-      background-size: cover;
-
-      /* filter: blur(0.1rem) contrast(-1rem); */
-      transform: scaleX(-1);
-      background-position: 0 28rem;
-    }
-
-    &__profile-picture {
-      grid-row: 1/2;
-      grid-column: 1/ 2;
-      align-self: end;
-      width: 12rem;
-      height: 12rem;
-      object-fit: contain;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #fff;
-      transform: translateY(50%) translateX(2.5rem);
-      /* transform: translateY(-5rem); */
-    }
-    &__profile {
-      padding: 8rem 0 3rem 2.5rem;
-      z-index: 10;
-      grid-column: 1 / 3;
-      h3 {
-        font-size: 3rem;
-      }
-      h4 {
-        font-size: 1.6rem;
-        color: #606060;
-        font-weight: 200;
-      }
-    }
-
-    &__contact {
-      justify-self: end;
-      padding: 3rem;
-      font-size: 1.6rem;
-      font-weight: 700;
-      display: flex;
-      flex-direction: column;
-
-      button {
-        margin-top: 1rem;
-        border: none;
-        border-radius: 5px;
-        grid-column: 5 / 6;
-        align-self: stretch;
-        font-size: 1.2rem;
-        padding: 1rem;
-        background-color: #549bf0;
-        color: #fff;
-      }
-    }
-
-    &__nav {
-      display: grid;
-      grid-auto-flow: column;
-      /* grid-gap: 1rem; */
-      align-self: end;
-      align-content: center;
-      justify-content: start;
-      align-items: center;
-      grid-column: 1 / 3;
-      /* justify-self: center; */
-      margin: 0;
-      li {
-        padding: 1rem 4rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s;
-        cursor: pointer;
-        span {
-          margin-left: 2rem;
-        }
-
-        &:hover {
-          color: #fff;
-          background-color: #96c0d6;
-        }
-        &:active {
-          transform: translateY(3px);
-        }
-      }
-    }
-
-    &__stats {
-      grid-row: 3 /4;
-      grid-column: 3 / 4;
-      justify-self: end;
-      padding: 2rem 2.5rem;
-      font-size: 1.6rem;
-      p {
-        /* padding: 0.5rem 1rem;
-        color: white;
-        border-radius: 20px;
-        background: #549bf0;
-        margin-bottom: 0.5rem; */
-      }
-    }
-  }
-`;
+// const a11yProps = (index) => {
+//   return {
+//     id: `simple-tab-${index}`,
+//     'aria-controls': `simple-tabpanel-${index}`,
+//   };
+// };
 
 const OrganizationHeader = (props) => {
   const { name, email, router } = props;
@@ -145,9 +32,25 @@ const OrganizationHeader = (props) => {
         <p>{email}</p>
         <button>View Website</button>
       </div>
-      <ul className="organization__nav">
+
+      {/* <AppBar position="static" color="primary"> */}
+      <Tabs
+        className="organization__nav"
+        value={props.value}
+        onChange={props.handleChange}
+        indicatorColor="primary"
+        textColor="primary"
+        variant="fullWidth"
+        // aria-label="full width tabs example"
+      >
+        <Tab className="active" label="About us" />
+        <Tab label="Our projects" />
+        <Tab label="History" />
+      </Tabs>
+      {/* </AppBar>/ */}
+      <ul>
         <li>
-          <Link
+          {/* <Link
             href={{
               pathname: router.pathname,
               query: { id: router.query.id, path: 'about' },
@@ -196,7 +99,7 @@ const OrganizationHeader = (props) => {
               {icons.partnerOrganization}
               <span>Become a Partner</span>
             </a>
-          </Link>
+          </Link> */}
         </li>
       </ul>
       <div className="organization__stats">
@@ -207,7 +110,7 @@ const OrganizationHeader = (props) => {
   );
 };
 
-export default withRouter(OrganizationHeader);
+export default OrganizationHeader;
 
 {
   /* <div className="organization-description">
