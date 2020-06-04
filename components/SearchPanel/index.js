@@ -12,7 +12,7 @@ const Panel = styled.div`
   /* padding: 20px; */
 
   .Header {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid ${(props) => props.theme.borderColorPrimary};
     padding: 2rem;
 
     h3 {

@@ -34,7 +34,7 @@ const HeaderStyles = styled.header`
   width: 100%;
 
   .header {
-    width: 80%;
+    width: 90%;
     height: inherit;
     margin: 0 auto;
     display: flex;

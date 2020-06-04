@@ -69,7 +69,7 @@ const Project = styled.div`
             width: 2.5rem;
             box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.1);
             path {
-              border: 1px solid #ccc;
+              border: 1px solid ${(props) => props.theme.borderColorPrimary};
             }
           }
         }
@@ -92,13 +92,14 @@ const Project = styled.div`
     }
 
     &__btn {
+      outline: none;
       border: none;
       border-radius: none;
       grid-column: 5 / 6;
       align-self: stretch;
 
       font-size: 2rem;
-      background-color: #549bf0;
+      background-color: ${(props) => props.theme.red};
       color: #fff;
       /* background-image: linear-gradient(rgba(#549bf0, 93%)); */
 
@@ -167,7 +168,7 @@ const ParticipatingCountires = styled.ul`
         margin-top: 5px;
 
         svg {
-          border: 0.3px solid #ccc;
+          border: 0.3px solid ${(props) => props.theme.borderColorPrimary};
           width: 40px;
         }
       }

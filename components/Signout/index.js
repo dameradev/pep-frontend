@@ -12,12 +12,16 @@ const SIGNOUT_MUTATION = gql`
 `;
 
 const SignoutButton = styled.button`
+  outline: none;
   margin-left: 2rem;
   border: none;
   border-radius: 20px;
   color: #fff;
   padding: 1rem 1.5rem;
-  background-color: #303030;
+  font-weight: 700;
+  background-color: ${(props) => props.theme.red};
+
+  transform: translateY(-3px);
   cursor: pointer;
 `;
 

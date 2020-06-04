@@ -8,19 +8,19 @@ import ButtonStyled from '../components/styles/ButtonStyled';
 
 const Hero = styled.div`
   width: 100%;
-  height: 500px;
+  height: 60rem;
   background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
     url('https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWptHL?ver=3e39&q=90&m=2&h=768&w=1024&b=%23FFFFFFFF&aim=true');
   background-size: cover;
   .hero-inner {
-    width: ${props => props.theme.maxWidth};
+    width: ${(props) => props.theme.maxWidth};
     height: 100%;
     margin: 0 auto;
     padding-top: 100px;
     display: flex;
     justify-content: space-between;
     div {
-      width: 45%;
+      width: 40%;
     }
     .buttons-container {
       padding-top: 5rem;
@@ -47,8 +47,8 @@ const Hero = styled.div`
       button {
         width: 50%;
         margin: 1rem auto;
-        background: ${props => props.theme.red};
-        border: 3px solid ${props => props.theme.red};
+        background: ${(props) => props.theme.red};
+        border: 3px solid ${(props) => props.theme.red};
       }
     }
   }
@@ -59,7 +59,7 @@ const BubblesStyled = styled.div`
   background: white;
 
   .bubbles-list {
-    width: ${props => props.theme.maxWidth};
+    width: ${(props) => props.theme.maxWidth};
 
     padding: 5rem 0 10rem 0;
     margin: 0 auto;
@@ -93,7 +93,7 @@ const BubblesStyled = styled.div`
       p {
         /* width: 150px; */
         /* height: 50px; */
-        color: ${props => props.theme.blue};
+        color: ${(props) => props.theme.blue};
       }
     }
   }
@@ -101,10 +101,10 @@ const BubblesStyled = styled.div`
 
 const FactsStyled = styled.div`
   height: 300px;
-  background: ${props => props.theme.blue};
+  background: ${(props) => props.theme.blue};
   color: white;
   .facts-inner {
-    width: ${props => props.theme.maxWidth};
+    width: ${(props) => props.theme.maxWidth};
     margin: 0 auto;
     padding-top: 5rem;
     text-align: center;
@@ -113,7 +113,7 @@ const FactsStyled = styled.div`
 
 const Testamonials = styled.div`
   .testamonials-inner {
-    width: ${props => props.theme.maxWidth};
+    width: ${(props) => props.theme.maxWidth};
     margin: 0 auto;
     padding: 5rem 0;
     display: flex;
@@ -140,12 +140,12 @@ const Testamonials = styled.div`
 `;
 
 const Inner = styled.div`
-  max-width: ${props => props.theme.maxWidth};
+  max-width: ${(props) => props.theme.maxWidth};
   margin: 0 auto;
   padding: 2rem;
 `;
 
-const Home = props => {
+const Home = (props) => {
   return (
     <div>
       <Hero>
@@ -154,14 +154,22 @@ const Home = props => {
           <div className="buttons-container">
             <Link href="/organization">
               <a>
-                <ButtonStyled className="button" btnColor={props => props.theme.blue}>
+                <ButtonStyled
+                  className="button"
+                  btnColor={(props) => props.theme.blue}
+                  hover={(props) => props.theme.hoverBlue}
+                >
                   Sign up as an Organization
                 </ButtonStyled>
               </a>
             </Link>
             <Link href="/projects">
               <a>
-                <ButtonStyled className="button" btnColor={props => props.theme.red}>
+                <ButtonStyled
+                  className="button"
+                  btnColor={(props) => props.theme.red}
+                  hover={(props) => props.theme.hoverRed}
+                >
                   Sign up as a Participant
                 </ButtonStyled>
               </a>

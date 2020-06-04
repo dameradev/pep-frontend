@@ -3,7 +3,7 @@ import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 
-import Error from "../ErrorMessage"
+import Error from '../ErrorMessage';
 
 const ALL_ORGANIZATIONS_QUERY = gql`
   query {
@@ -31,7 +31,7 @@ const UPDATE_PERMISSIONS_MUTATION = gql`
 const OrganizationList = styled.ul`
   div {
     display: flex;
-    border: 1px solid #ccc;
+    border: 1px solid ${(props) => props.theme.borderColorPrimary};
     padding: 15px;
     flex-direction: column;
     margin: 2rem;
@@ -63,10 +63,9 @@ const Dashboard = () => {
   return (
     <Query query={ALL_ORGANIZATIONS_QUERY}>
       {({ data: { organizations }, loading, error }) => {
-        
         return (
           <OrganizationList>
-            {organizations.map(organization => (
+            {organizations.map((organization) => (
               <UserPermission user={organization} key={organization.id} />
             ))}
           </OrganizationList>
@@ -78,7 +77,7 @@ const Dashboard = () => {
 
 class UserPermission extends Component {
   state = {
-    permissions: this.props.user.permissions
+    permissions: this.props.user.permissions,
   };
 
   handleUpdatePermission = (e, updatePermissions) => {
@@ -89,7 +88,7 @@ class UserPermission extends Component {
     if (checkbox.checked) {
       updatedPermissions.push(checkbox.value);
     } else {
-      updatedPermissions = updatedPermissions.filter(permission => permission != checkbox.value);
+      updatedPermissions = updatedPermissions.filter((permission) => permission != checkbox.value);
     }
     this.setState({ permissions: updatedPermissions }, () => updatePermissions());
   };
@@ -107,7 +106,7 @@ class UserPermission extends Component {
             <li>Email: {user.email}</li>
             <li>
               <ul>
-                {permissionsList.map(permission => (
+                {permissionsList.map((permission) => (
                   <li>
                     <label>
                       <p>{permission}</p>
@@ -115,7 +114,7 @@ class UserPermission extends Component {
                         type="checkbox"
                         checked={permissions.includes(permission)}
                         value={permission}
-                        onChange={e => this.handleUpdatePermission(e, updatedPermissions)}
+                        onChange={(e) => this.handleUpdatePermission(e, updatedPermissions)}
                       />
                     </label>
                   </li>

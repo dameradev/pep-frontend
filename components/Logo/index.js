@@ -8,8 +8,9 @@ const LogoStyles = styled.div`
   .logo {
     color: ${(props) => (props.router.route !== '/' ? 'white' : props.theme.blue)};
     /* font-style: italic; */
+    font-family: inherit;
     text-transform: uppercase;
-    font-weight: 200;
+    font-weight: 100;
     background: ${(props) => props.pathname};
   }
   img {

@@ -72,12 +72,15 @@ const Form = styled.form`
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 25px;
     appearance: none;
+    border: 1px solid transparent;
+    transition: all 0.3s;
 
     &:focus {
       outline: none;
       box-shadow: 0 1rem 2rem rgba($color-black, 0.1);
-      border-bottom: 3px solid $color-primary;
-      &:invalid {
+      border: 1px solid #2f5db7;
+
+      borde &:invalid {
         border-bottom: 3px solid $color-secondary-dark;
       }
     }
@@ -103,10 +106,7 @@ const Form = styled.form`
     width: 400px;
     
   `}
-  ${respondTo.tablet`
-    width: 800px;
-    
-  `} */
+  
 /* 
   label {
     display: block;
