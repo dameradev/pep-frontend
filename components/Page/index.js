@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled, { ThemeProvider, createGlobalStyle, css } from 'styled-components';
-import { ThemeProvider as MuiThemeProvider, createMuiTheme } from '@material-ui/core';
+import { ThemeProvider as MuiThemeProvider, createMuiTheme, colors } from '@material-ui/core';
 import Meta from '../Meta';
 import Header from '../Header';
 import Footer from '../Footer';
@@ -10,19 +10,33 @@ const MuiTheme = createMuiTheme({
   typography: {
     htmlFontSize: 10,
   },
+  palette: {
+    primary: {
+      main: colors.blue[800],
+    },
+    // secondary: green,
+  },
 });
 
 const theme = {
-  red: '#FF5964',
   whiteGray: '#f2f2f2',
   black: '#393939',
   grey: '#3A3A3A',
-  blue: '#2F5DA8',
-  lightgrey: '#E1E1E1',
+  blue: '#1565c0',
+  red: '#FF5964',
+  borderColorPrimary: '#ccc',
+  lightGrey1: '#a0a0a0',
   offWhite: '#EDEDED',
-  maxWidth: '1000px',
-  bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',
-  containerMaxHeight: 'calc(100vh - 84px)',
+  darkGrey1: '#606060',
+
+  hoverBlue: '#11529c',
+  hoverRed: '#b83d44',
+
+  transitionAll: 'all 0.3s',
+
+  maxWidth: '70%',
+  bs: '0 1rem 3rem rgba(0, 0, 0, 0.1);',
+  containerMaxHeight: 'calc(100vh - 70px)',
 };
 
 const StyledPage = styled.div`
@@ -41,9 +55,7 @@ const GlobalStyle = createGlobalStyle`
     font-style: normal;
   }
   @font-face {
-    /* font-family: 'Raleway' sans-serif; */
-
-    /* @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,600;1,100;1,200&display=swap'); */
+    
     font-family: 'Roboto', sans-serif;
     
     /* @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap'); */
