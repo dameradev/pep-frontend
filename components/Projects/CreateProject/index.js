@@ -84,6 +84,7 @@ const ProjectFormWrapper = styled.div`
     background: #eee;
     text-align: start;
     color: #505050;
+    /* width: 100%; */
     /* height: 100vh; */
     form {
       /* grid-column: full-start/ full-end; */
@@ -101,7 +102,7 @@ const ProjectFormWrapper = styled.div`
 
     label {
       text-transform: uppercase;
-      color: #005b94;
+      color: ${(props) => props.theme.blue};
       font-weight: 600;
     }
 
@@ -153,7 +154,7 @@ const ProjectFormWrapper = styled.div`
     &__costs {
       width: 100%;
     }
-    width: 80%;
+
     &__input-group {
       grid-column: col-start 4 / full-end;
       padding: 2rem;
@@ -212,7 +213,7 @@ const ProjectFormWrapper = styled.div`
     font-size: 2rem;
     width: 100%;
     border: none;
-    background-color: #005b94;
+    background-color: ${(props) => props.theme.blue};
     color: #fff;
     outline: none;
     grid-column: full-start / full-end;

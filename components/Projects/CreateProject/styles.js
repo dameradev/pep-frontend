@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { respondTo } from '../../../utils/respondTo';
 
 export const FormWrapper = styled.div`
-  width: ${(props) => props.theme.maxWidth};
+  width: 90%;
   margin: 0 auto;
   text-align: center;
   form {
@@ -119,23 +119,12 @@ export const CountriesStyled = styled.div`
   /* justify-items: center; */
   font-size: 1.4rem;
   .wrapper {
-    /* grid-column: 2 / 5; */
-    
+    grid-column: 2 / -1;
+
     width: 100%;
-    ${respondTo.laptopSmall` 
-      grid-column: 2 / 4;
-    `}
-    
-    ${respondTo.laptop` 
-      grid-column: 2 / 4;
-    `}
 
-    ${respondTo.desktopSmall` 
-      grid-column: 2 / 4;
-    `}
-
-    ${respondTo.desktopLarge` 
-      grid-column: 2 / 5;
+    ${respondTo.tabletMini` 
+      grid-column: unset;
     `}
   }
   .total-participants {
