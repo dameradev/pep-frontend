@@ -150,10 +150,12 @@ class Signup extends Component {
                   onChange={this.handleChange}
                 >
                   <Query query={GET_ALL_COUNTRIES_QUERY}>
-                    {({ data: { getCountries }, error, loading }) =>
-                      getCountries.map((country) => (
-                        <option value={country.name} label={country.name} />
-                      ))
+                    {({ data: { getCountries } = {}, error, loading }) =>
+                      getCountries
+                        ? getCountries.map((country) => (
+                            <option value={country.name} label={country.name} />
+                          ))
+                        : 'Loading'
                     }
                   </Query>
                 </select>
