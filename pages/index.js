@@ -1,5 +1,10 @@
+import { useState } from 'react';
+
 import Link from 'next/link';
 import styled from 'styled-components';
+
+import { Dialog, DialogTitle, DialogContent, Typography } from '@material-ui/core';
+
 import Icons from '../utils/icons';
 
 import SearchBox from '../components/SearchBox';
@@ -57,6 +62,10 @@ const Hero = styled.div`
 const BubblesStyled = styled.div`
   /* height: 250px; */
   background: white;
+
+  .MuiPaper-root {
+    padding: 3rem;
+  }
 
   .bubbles-list {
     width: ${(props) => props.theme.maxWidth};
@@ -146,6 +155,28 @@ const Inner = styled.div`
 `;
 
 const Home = (props) => {
+  const [what, setWhat] = React.useState(false);
+  const [how, setHow] = React.useState(false);
+  const [faq, setFaq] = React.useState(false);
+
+  const handleClickOpen = (dialog) => {
+    switch (dialog) {
+      case 'what':
+        setWhat(true);
+        break;
+      case 'how':
+        setHow(true);
+        break;
+      case 'faq':
+        setFaq(true);
+        break;
+    }
+  };
+  const handleClose = () => {
+    setWhat(false);
+    setHow(false);
+    setFaq(false);
+  };
   return (
     <div>
       <Hero>
@@ -180,25 +211,68 @@ const Home = (props) => {
       {/* <Inner> */}
       <BubblesStyled>
         <ul className="bubbles-list">
-          <li>
+          <li onClick={() => handleClickOpen('what')}>
             <div>
               <span className="bubbles-icon">{Icons.whatAbout}</span>
             </div>
             <p>What is Youth Network about?</p>
           </li>
-          <li>
+          <li onClick={() => handleClickOpen('how')}>
             <div>
               <span className="bubbles-icon">{Icons.howItWorks}</span>
             </div>
             <p>How it works</p>
           </li>
-          <li>
+          <li onClick={() => handleClickOpen('faq')}>
             <div>
               <span className="bubbles-icon">{Icons.questionMark}</span>
             </div>
             <p>Frequently Asked Questions</p>
           </li>
         </ul>
+        <Dialog
+          classes="dialog"
+          className="dialog"
+          onClose={handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={what}
+        >
+          <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+            What we're about
+          </DialogTitle>
+          <DialogContent dividers>
+            <Typography gutterBottom>
+              Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac
+              facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum
+              at eros.
+            </Typography>
+            <Typography gutterBottom>
+              Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
+              lacus vel augue laoreet rutrum faucibus dolor auctor.
+            </Typography>
+            <Typography gutterBottom>
+              Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
+              scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
+              auctor fringilla.
+            </Typography>
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          className="dialog"
+          onClose={handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={how}
+        >
+          How It works
+        </Dialog>
+        <Dialog
+          className="dialog"
+          onClose={handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={faq}
+        >
+          Faq
+        </Dialog>
       </BubblesStyled>
       <FactsStyled>
         <div className="facts-inner">
