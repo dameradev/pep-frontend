@@ -12,7 +12,7 @@ import ErrorMessage from '../ErrorMessage';
 
 const GET_ALL_COUNTRIES_QUERY = gql`
   query GET_ALL_COUNTRIES_QUERY {
-    getCountries {
+    countries {
       name
     }
   }
@@ -150,13 +150,14 @@ class Signup extends Component {
                   onChange={this.handleChange}
                 >
                   <Query query={GET_ALL_COUNTRIES_QUERY}>
-                    {({ data: { getCountries } = {}, error, loading }) =>
-                      getCountries
-                        ? getCountries.map((country) => (
+                    {({ data: { countries } = {}, data, error, loading }) => {
+                      console.log(data);
+                      return countries
+                        ? countries.map((country) => (
                             <option value={country.name} label={country.name} />
                           ))
-                        : 'Loading'
-                    }
+                        : 'Loading';
+                    }}
                   </Query>
                 </select>
               </label>

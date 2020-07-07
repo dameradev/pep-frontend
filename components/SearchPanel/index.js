@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
 
 import styled from 'styled-components';
+
+import { TextField, MenuItem, Button } from '@material-ui/core';
 
 const Panel = styled.div`
   margin-top: 2rem;
@@ -31,18 +33,52 @@ const Panel = styled.div`
   }
 `;
 
-export default class SearchPanel extends Component {
-  render() {
-    return (
-      <Panel>
-        <div className="Header">
-          <h3> Search filters </h3>
-        </div>
-        <div className="filters">
-          <Select className="filters__location" placeholder="Location" />
-          <Select className="filters__type" placeholder="Type of project" />
-        </div>
-      </Panel>
-    );
-  }
-}
+const SearchPanel = (props) => {
+  return (
+    <Panel>
+      <div className="Header">
+        <h3> Search filters </h3>
+      </div>
+      <div className="filters">
+        {/* <Select className="filters__location" placeholder="Location" />
+        <Select className="filters__type" placeholder="Type of project" /> */}
+
+        <TextField
+          // id="standard-select-currency"
+          select
+          label="Select"
+          value={props.projectType}
+          onChange={(e) => props.setProjectType(e.target.value)}
+          helperText="Select type of project"
+        >
+          {props.projectTypes.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+
+        <TextField
+          // id="standard-select-currency"
+          select
+          label="Select"
+          value={props.nation}
+          onChange={(e) => props.setNation(e.target.value)}
+          helperText="Select type of project"
+        >
+          {props.nations?.map((option) => (
+            <MenuItem key={option.name} value={option.name}>
+              {option.name}
+            </MenuItem>
+          ))}
+        </TextField>
+
+        <Button variant="outlined" color="primary" onClick={() => props.submit()} type="submit">
+          Search
+        </Button>
+      </div>
+    </Panel>
+  );
+};
+
+export default SearchPanel;

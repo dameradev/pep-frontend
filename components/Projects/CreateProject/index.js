@@ -12,6 +12,8 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import { FormWrapper, CountriesStyled } from './styles';
 
+import { GET_ALL_COUNTRIES_QUERY } from '../../../utils/queries';
+
 const LocationPicker = dynamic(() => import('react-location-picker'), {
   ssr: false,
 });
@@ -40,24 +42,18 @@ const options = [
   { value: 'Youth_Exchange', label: 'Youth_Exchange' },
 ];
 
-export const GET_ALL_COUNTRIES_QUERY = gql`
-  query GET_ALL_COUNTRIES_QUERY {
-    getCountries {
-      name
-    }
-  }
-`;
-
 const CREATE_PROJECT_MUTATION = gql`
   mutation CREATE_PROJECT_MUTATION(
-    $title: String!
-    $description: String!
-    $costs: String!
-    $totalNumberOfParticipants: Float!
-    $projectType: ProjectType!
-    $activity: specificActivity!
+    $title: String
+    $description: String
+    $costs: String
+    $totalNumberOfParticipants: Float
+    $projectType: ProjectType
+    $activity: specificActivity
     $location: LocationCreateInput
     $nations: [NationCreateWithoutProjectInput!]! # $objectives: [String!]! # $date: Date
+    $startDate: DateTime
+    $endDate: DateTime
   ) {
     createProject(
       title: $title
@@ -71,6 +67,8 @@ const CREATE_PROJECT_MUTATION = gql`
 
       nations: $nations
       location: $location
+      startDate: $startDate
+      endDate: $endDate
     ) {
       id
     }
@@ -283,7 +281,8 @@ class CreateProject extends Component {
                 activity: '',
                 nations: [],
                 location: location,
-                startDate: new Date().toISOString(),
+                startDate: new Date(),
+                endDate: new Date(),
               }}
               onSubmit={async (values, actions) => {
                 const {
@@ -295,6 +294,8 @@ class CreateProject extends Component {
                   activity,
                   nations,
                   location,
+                  startDate,
+                  endDate,
                 } = values;
 
                 let newCountries = [];
@@ -315,6 +316,8 @@ class CreateProject extends Component {
                     activity,
                     nations: newCountries,
                     location,
+                    startDate,
+                    endDate,
                   },
                 });
                 // You can access the signup mutation in here now
@@ -469,7 +472,7 @@ class CreateProject extends Component {
                         {({ data }) => {
                           const options = [];
                           data &&
-                            data.getCountries.forEach((country) => {
+                            data.countries.forEach((country) => {
                               options.push({
                                 label: country.name,
                                 value: country.name,
