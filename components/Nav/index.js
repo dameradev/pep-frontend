@@ -41,15 +41,21 @@ class Nav extends Component {
                       pathname: `${
                         me.permissions.includes('ORGANIZATION') ? '/organization' : 'participant'
                       }`,
-                      query: { id: me.id },
+                      query: { id: me.id, edit: false },
                     }}
                   >
                     <a>Profile</a>
                   </Link>
 
+                  {me.permissions.includes('ADMIN') && (
+                    <Link href="/dashboard">
+                      <a>Dashboard</a>
+                    </Link>
+                  )}
                   <Singout />
                 </>
               )}
+
               {!me && (
                 <Link href={{ pathname: '/auth', query: { path: 'login' } }}>
                   <a>Sign in</a>

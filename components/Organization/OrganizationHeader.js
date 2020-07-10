@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 import { HeaderStyled } from './styles';
-import { Tabs, Tab, Paper, AppBar } from '@material-ui/core';
+import { Tabs, Tab, TextField } from '@material-ui/core';
 
 // import icons from '../../utils/icons';
 
@@ -14,8 +14,8 @@ import { Tabs, Tab, Paper, AppBar } from '@material-ui/core';
 // };
 
 const OrganizationHeader = (props) => {
-  const { name, email, router } = props;
-  console.log(props);
+  const { id, name, email, edit: editValue, slogan, handleChange, handleTabChange, value } = props;
+  // console.log(editValue, 'damae');
   return (
     <HeaderStyled>
       <div className="organization__cover">&nbsp;</div>
@@ -24,8 +24,34 @@ const OrganizationHeader = (props) => {
         src="https://www.logogenie.net/download/preview/medium/5319421"
       />
       <div className="organization__profile">
-        <h3>{name}</h3>
-        <h4>Training and Networking Transnational Youth Initiatives Strategic Partnerships</h4>
+        {editValue === 'false' ? (
+          <h3>{name}</h3>
+        ) : (
+          <TextField
+            className="form__input"
+            type="text"
+            onChange={(e) => handleChange(e)}
+            value={name}
+            name="name"
+            placeholder="Organization name"
+            label="Organization name"
+            variant="outlined"
+          />
+        )}
+        {editValue === 'false' ? (
+          <h4>{slogan}</h4>
+        ) : (
+          <TextField
+            className="form__input"
+            type="text"
+            onChange={(e) => handleChange(e)}
+            value={slogan}
+            name="slogan"
+            placeholder="Your slogan"
+            label="Your slogan"
+            variant="outlined"
+          />
+        )}
       </div>
 
       <div className="organization__contact">
@@ -36,8 +62,8 @@ const OrganizationHeader = (props) => {
       {/* <AppBar position="static" color="primary"> */}
       <Tabs
         className="organization__nav"
-        value={props.value}
-        onChange={props.handleChange}
+        value={value}
+        onChange={handleTabChange}
         indicatorColor="primary"
         textColor="primary"
         variant="fullWidth"
@@ -48,64 +74,26 @@ const OrganizationHeader = (props) => {
         <Tab label="History" />
       </Tabs>
       {/* </AppBar>/ */}
-      <ul>
-        <li>
-          {/* <Link
-            href={{
-              pathname: router.pathname,
-              query: { id: router.query.id, path: 'about' },
-            }}
-          >
-            <a>
-              {icons.aboutOrganization}
-              <span>About us</span>
-            </a>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href={{
-              pathname: router.pathname,
-              query: { id: router.query.id, path: 'projects' },
-            }}
-          >
-            <a>
-              {icons.projectsOrganization}
-              <span>Projects</span>
-            </a>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href={{
-              pathname: router.pathname,
-              query: { id: router.query.id, path: 'history' },
-            }}
-          >
-            <a>
-              {icons.historyOrganization}
-              <span>History</span>
-            </a>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href={{
-              pathname: router.pathname,
-              query: { id: router.query.id, path: 'partner' },
-            }}
-          >
-            <a>
-              {icons.partnerOrganization}
-              <span>Become a Partner</span>
-            </a>
-          </Link> */}
-        </li>
-      </ul>
+
       <div className="organization__stats">
         <p>2345 projects</p>
         <p>10+ upcoming projects</p>
       </div>
+
+      {editValue === 'false' ? (
+        <Link
+          href={{
+            pathname: `/organization`,
+            query: { id, edit: editValue === 'false' ? true : false },
+          }}
+        >
+          <a className="organization__edit">
+            {editValue === 'true' ? 'Save changes' : 'Edit page'}
+          </a>
+        </Link>
+      ) : (
+        <button className="organization__edit">Save page</button>
+      )}
     </HeaderStyled>
   );
 };

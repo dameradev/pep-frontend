@@ -1,58 +1,18 @@
-import React, { Component } from 'react';
-import { Query, Mutation } from 'react-apollo';
+import React, { Component, useState, useEffect, useRef } from 'react';
+import Router from 'next/router';
+import { Query, Mutation, useLazyQuery, useMutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 
 import Icons from '../../utils/icons';
 
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, TextField } from '@material-ui/core';
 
 import { OrganizationStyles } from './styles';
 
 import OrganizationHeader from './OrganizationHeader';
 import OrganizationSidebar from './OrganizationSidebar';
 import SimilarOrganizations from './SimilarOrganizations';
-
-const SINGLE_ORGANIZATION_QUERY = gql`
-  query SINGLE_ORGANIZATION_QUERY($id: ID) {
-    organization(where: { id: $id }) {
-      name
-      email
-      projectsCreated {
-        id
-        title
-        costs
-        totalNumberOfParticipants
-        projectType
-        activity
-        nations {
-          name
-          numberOfParticipants
-        }
-        location {
-          address
-        }
-        description
-        participants {
-          id
-          name
-          email
-        }
-        applicants {
-          id
-          motivation
-          expectations
-          status
-          applicant {
-            id
-            name
-            email
-          }
-        }
-      }
-    }
-  }
-`;
 
 const CHANGE_APPLICANT_STATUS_MUTATION = gql`
   mutation CHANGE_APPLICANT_STATUS_MUTATION(
@@ -176,9 +136,16 @@ const SectionStyled = styled.section`
   }
 `;
 
+const usePrevious = (value) => {
+  const ref = React.useRef();
+  React.useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+};
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
-  console.log(index, 'dame');
+
   return (
     <div
       role="tabpanel"
@@ -196,87 +163,148 @@ const TabPanel = (props) => {
   );
 };
 
-class Organization extends Component {
-  state = {
-    displayApplicants: false,
-    displayParticipants: false,
-    activeProject: null,
-    value: 0,
+const UPDATE_ORGANIZATION = gql`
+  mutation updateOrganization(
+    $id: String
+    $name: String
+    $slogan: String
+    $summary: String
+    $responsiblePerson: String
+    $phoneNumber: String
+    $website: String
+  ) {
+    updateOrganization(
+      id: $id
+      name: $name
+      slogan: $slogan
+      summary: $summary
+      responsiblePerson: $responsiblePerson
+      phoneNumber: $phoneNumber
+      website: $website
+    ) {
+      id
+      responsiblePerson
+    }
+  }
+`;
+
+const Organization = (props) => {
+  const [tabValue, setTabValue] = useState(0);
+  const [name, setName] = useState(0);
+  const [slogan, setSlogan] = useState(0);
+  const [summary, setSummary] = useState(0);
+  const [responsiblePerson, setResponsiblePerson] = useState(0);
+  const [phoneNumber, setPhoneNumber] = useState(0);
+  const [website, setWebsite] = useState(0);
+
+  const handleTabChange = (event, value) => {
+    setTabValue(value);
   };
 
-  // handleDisplayPanel = panelToDisplay => {
-  //   this.setState(({ panelToDisplay }) => ({ panelToDisplay: !panelToDisplay }));
-  // };
+  const { id, path, edit } = props;
 
-  handleDisplayApplicants = (project) =>
-    this.setState(({ displayApplicants }) => ({
-      displayApplicants: !displayApplicants,
-      displayParticipants: false,
-      activeProject: project,
-    }));
+  useEffect(() => {
+    if (props.organization) {
+      if (!responsiblePerson) setResponsiblePerson(props.organization.responsiblePerson);
+      if (!phoneNumber) setPhoneNumber(props.organization.phoneNumber);
+      if (!website) setWebsite(props.organization.website);
+      if (!slogan) setSlogan(props.organization.slogan);
+      if (!name) setName(props.organization.name);
+      if (!summary) setSummary(props.organization.summary);
+    }
+  });
 
-  handleDisplayParticipants = (project) =>
-    this.setState(({ displayParticipants }) => ({
-      displayParticipants: !displayParticipants,
-      displayApplicants: false,
-      activeProject: project,
-    }));
-
-  handleTabChange = (event, value) => {
-    console.log(value);
-    this.setState({
-      value,
-    });
+  const handleChange = (e) => {
+    switch (e.target.name) {
+      case 'name':
+        setName(e.target.value);
+        break;
+      case 'slogan':
+        setSlogan(e.target.value);
+        break;
+      case 'summary':
+        setSummary(e.target.value);
+        break;
+      case 'responsiblePerson':
+        setResponsiblePerson(e.target.value);
+        break;
+      case 'phoneNumber':
+        setPhoneNumber(e.target.value);
+        break;
+      case 'website':
+        setWebsite(e.target.value);
+        break;
+    }
   };
 
-  // andleClick = () => this.setState(({isOpened}) => ({ isOpened: !isOpened }));
+  const [updateOrganization] = useMutation(UPDATE_ORGANIZATION);
 
-  render() {
-    const { id, path } = this.props;
-    const { displayParticipants, displayApplicants, activeProject, value } = this.state;
-    console.log(this.state);
-    return (
-      <Query query={SINGLE_ORGANIZATION_QUERY} variables={{ id }}>
-        {({ data: { organization } = {}, error, loading }) => {
-          console.log(organization);
-          // const { name, email, projectsCreated } = organization && organization;
-          return (
-            <OrganizationStyles>
-              <OrganizationHeader
-                name={organization && organization.name}
-                email={organization && organization.email}
-                className="organization__header"
-                handleChange={this.handleTabChange}
-                value={value}
+  return (
+    <OrganizationStyles>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          updateOrganization({
+            variables: { id, name, slogan, summary, responsiblePerson, phoneNumber, website },
+          });
+
+          Router.push({
+            pathname: '/organization',
+            query: { id, edit: false },
+          });
+        }}
+      >
+        <OrganizationHeader
+          id={props.organization?.id}
+          name={name}
+          email={props.organization?.email}
+          slogan={slogan}
+          edit={edit}
+          className="organization__header"
+          handleTabChange={handleTabChange}
+          handleChange={handleChange}
+          value={tabValue}
+        />
+        <OrganizationSidebar
+          className="organization__sidebar"
+          edit={edit}
+          responsiblePerson={responsiblePerson}
+          website={website}
+          phoneNumber={phoneNumber}
+          email={props.organization?.email}
+          handleChange={handleChange}
+        />
+        <TabPanel className="tab" value={tabValue} index={0}>
+          <SectionStyled>
+            <h3>Summary</h3>
+            {edit === 'false' ? (
+              <p>{summary}</p>
+            ) : (
+              <TextField
+                className="form__input organization__summary"
+                type="text"
+                onChange={(e) => handleChange(e)}
+                value={summary}
+                name="summary"
+                placeholder="Describe what your organization is about"
+                multiline
+                rows={8}
+                variant="outlined"
               />
-              <OrganizationSidebar className="organization__sidebar" />
-              {/* <SwipeableViews
-                axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                index={value}
-                onChangeIndex={handleChangeIndex}
-              > */}
-              {/* </SwipeableViews> */}
+            )}
+          </SectionStyled>
+        </TabPanel>
+        <TabPanel className="tab" value={tabValue} index={1}>
+          Item Two
+        </TabPanel>
+        <TabPanel className="tab" value={tabValue} index={2}>
+          Item Three
+        </TabPanel>
+        <SimilarOrganizations className="organization__similar" />
+      </form>
+      {/* </> */}
 
-              <TabPanel className="tab" value={value} index={0}>
-                <SectionStyled>
-                  <h3>Summary</h3>
-                  <p>
-                    The Comunità Montana Sirentina (Sirentina Mountain Community - CMS) implements
-                    initiatives and exchanges good practices at international level with the aim of
-                    fostering youth engagement through the promotion of the local natural and
-                    cultural heritage.
-                  </p>
-                </SectionStyled>
-              </TabPanel>
-              <TabPanel className="tab" value={value} index={1}>
-                Item Two
-              </TabPanel>
-              <TabPanel className="tab" value={value} index={2}>
-                Item Three
-              </TabPanel>
-
-              <SimilarOrganizations className="organization__similar" />
-              {/* <div>
+      {/* <div>
                 <h2 className="projects-title">Your currently active projects!</h2>
                 <ul>
                   {projectsCreated.map((project) => (
@@ -358,13 +386,9 @@ class Organization extends Component {
                   ))}
                 </ul>
               </div> */}
-            </OrganizationStyles>
-          );
-        }}
-      </Query>
-    );
-  }
-}
+    </OrganizationStyles>
+  );
+};
 
 class Applicant extends Component {
   state = { status: this.props.user.status };

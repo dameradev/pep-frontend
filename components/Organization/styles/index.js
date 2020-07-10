@@ -1,20 +1,29 @@
 import styled from 'styled-components';
 
 export const OrganizationStyles = styled.div`
-  display: grid;
+  form {
+    display: grid;
 
-  grid-template-columns:
-    [full-start]
-    minmax(6rem, 1fr) [center-start]repeat(8, [col-start] minmax(min-content, 18rem) [col-end])
-    [center-end] minmax(6rem, 1fr) [full-end];
+    grid-template-columns:
+      [full-start]
+      minmax(6rem, 1fr) [center-start]repeat(8, [col-start] minmax(min-content, 18rem) [col-end])
+      [center-end] minmax(6rem, 1fr) [full-end];
 
-  grid-gap: 3rem;
+    grid-gap: 3rem;
+  }
   .organization {
     &__sidebar {
       grid-row: 2 / 3;
     }
 
     &__similar {
+    }
+
+    &__summary {
+      width: 100%;
+      textarea {
+        padding: 1rem;
+      }
     }
   }
   .organization-details {
@@ -118,17 +127,14 @@ export const OrganizationStyles = styled.div`
   }
 
   .tab {
-    grid-column: col-start 2 / col-end 6;
+    grid-column: col-start 3 / col-end 6;
     div {
       padding: 0;
     }
   }
-
-  /* width: 80%;
-  margin: 0 auto; */
-  ul {
-    /* padding: 20px; */
-  }
+  /* .form__input {
+    padding: 2rem;
+  } */
 `;
 
 export const HeaderStyled = styled.div`
@@ -172,6 +178,8 @@ export const HeaderStyled = styled.div`
       padding: 8rem 0 3rem 2.5rem;
       z-index: 10;
       grid-column: 1 / 3;
+      display: flex;
+      flex-direction: column;
       h3 {
         font-size: 3rem;
       }
@@ -253,12 +261,47 @@ export const HeaderStyled = styled.div`
       margin-bottom: 0.5rem; */
       }
     }
+
+    &__edit {
+      width: 15rem;
+      height: 5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem 2rem;
+      grid-column: 3/4;
+      align-self: end;
+      justify-self: end;
+      margin: 1rem;
+      width: fit-content;
+      border: 2px solid currentColor;
+      color: ${(props) => props.theme.blue};
+      border-radius: 5px;
+      font-size: 1.6rem;
+
+      transition: all 0.2s;
+
+      &:hover {
+        background: #eee;
+      }
+
+      &:active {
+        transform: translateY(2px);
+      }
+    }
+  }
+
+  .form__input {
+    width: 40%;
+    &:first-of-type {
+      padding-bottom: 1rem;
+    }
   }
 `;
 
 export const SidebarStyled = styled.aside`
   grid-row: 2 / 3;
-  grid-column: center-start/ col-end 1;
+  grid-column: center-start/ col-end 2;
   /* box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.1); */
   border: 1px solid ${(props) => props.theme.borderColorPrimary};
   background: #fff;

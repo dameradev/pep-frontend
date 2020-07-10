@@ -4,26 +4,81 @@ import icons from '../../utils/icons';
 
 import { SidebarStyled } from './styles';
 
-const OrganizationSidebar = () => {
+import { TextField } from '@material-ui/core';
+
+const OrganizationSidebar = ({
+  edit,
+  responsiblePerson,
+  phoneNumber,
+  website,
+  email,
+  handleChange,
+}) => {
   return (
     <SidebarStyled>
       <h1>Contact</h1>
       <ul>
         <li>
           <h3>Responsible person</h3>
-          <span>Comunità Montana Sirentina</span>
+          {edit === 'false' ? (
+            <span>{responsiblePerson}</span>
+          ) : (
+            <TextField
+              className="form__input"
+              type="text"
+              onChange={(e) => handleChange(e)}
+              value={responsiblePerson}
+              name="responsiblePerson"
+              placeholder="Responsible person"
+              variant="outlined"
+            />
+          )}
         </li>
         <li>
           <h3>E-mail</h3>
-          <span>sustvallesubequana@gmail.com</span>
+          <span>{email}</span>
         </li>
         <li>
           <h3>Website</h3>
-          <span>https://www.comunitamontanasirentina.it/</span>
+          {edit === 'false' ? (
+            <a href={website} target="blank">
+              View our website
+            </a>
+          ) : (
+            <TextField
+              className="form__input"
+              type="text"
+              // onChange={handleChange}
+              onChange={(e) => handleChange(e)}
+              // onBlur={handleBlur}
+              value={website}
+              name="website"
+              placeholder="Website"
+              // id="standard-basic"
+              // label="Website"
+              variant="outlined"
+            />
+          )}
         </li>
         <li>
           <h3>Phone</h3>
-          <span>+30 322 442 553</span>
+          {edit === 'false' ? (
+            <span>{phoneNumber}</span>
+          ) : (
+            <TextField
+              className="form__input"
+              type="text"
+              // onChange={handleChange}
+              onChange={(e) => handleChange(e)}
+              // onBlur={handleBlur}
+              value={phoneNumber}
+              name="phoneNumber"
+              placeholder="Phone"
+              // id="standard-basic"
+              // label="Phone"
+              variant="outlined"
+            />
+          )}
         </li>
       </ul>
     </SidebarStyled>
