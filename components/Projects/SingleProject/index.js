@@ -4,12 +4,6 @@ import Icons from '../../../utils/icons';
 // import icons from "../../../utils/icons";
 
 const Project = styled.div`
-  /* border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-   */
-  /* border-radius: 20px */
-
-  margin-top: 2rem;
   padding: 2rem;
   /* width: 70vw; */
   font-size: 1.4rem;

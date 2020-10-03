@@ -132,9 +132,15 @@ export const OrganizationStyles = styled.div`
       padding: 0;
     }
   }
-  /* .form__input {
-    padding: 2rem;
-  } */
+  .form__list-input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .form__input {
+      width: 95%;
+      margin-bottom: 0.5rem;
+    }
+  }
 `;
 
 export const HeaderStyled = styled.div`
@@ -300,6 +306,7 @@ export const HeaderStyled = styled.div`
 `;
 
 export const SidebarStyled = styled.aside`
+  height: max-content;
   grid-row: 2 / 3;
   grid-column: center-start/ col-end 2;
   /* box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.1); */

@@ -14,6 +14,7 @@ const SINGLE_ORGANIZATION_QUERY = gql`
       phoneNumber
       slogan
       summary
+      focusedOn
       projectsCreated {
         id
         title
@@ -37,7 +38,6 @@ const SINGLE_ORGANIZATION_QUERY = gql`
         applicants {
           id
           motivation
-          expectations
           status
           applicant {
             id
@@ -57,7 +57,11 @@ const OrganizationPage = (props) => {
     // console.log('inside');
     if (!data?.organization) {
       getOrganization();
+      console.log(getOrganization);
     }
+    console.log(data, 'data');
+    console.log(loading, 'data');
+    console.log(error, 'data');
     // else if (data) {
     //   console.log('useEffect');
     //   if (responsiblePerson === 0) {

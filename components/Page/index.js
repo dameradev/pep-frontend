@@ -67,6 +67,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     font-size: 62.5%;
     font-family: 'Roboto';
+    scroll-behavior: smooth;
   }
   *, *:before, *:after {
     box-sizing: inherit;

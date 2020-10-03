@@ -6,7 +6,8 @@ import styled from 'styled-components';
 
 import Icons from '../../utils/icons';
 
-import { Box, Typography, TextField } from '@material-ui/core';
+import { Box, Typography, TextField, Icon } from '@material-ui/core';
+// import { Icon } from '@material-ui/icons';
 
 import { OrganizationStyles } from './styles';
 
@@ -123,6 +124,7 @@ const SectionStyled = styled.section`
   background: #fff;
   padding: 2rem;
   border-radius: 5px;
+  margin-bottom: 2rem;
   h3 {
     border-bottom: 1px solid ${(props) => props.theme.borderColorPrimary};
     padding-bottom: 1rem;
@@ -172,6 +174,7 @@ const UPDATE_ORGANIZATION = gql`
     $responsiblePerson: String
     $phoneNumber: String
     $website: String
+    $focusedOn: [String]
   ) {
     updateOrganization(
       id: $id
@@ -181,9 +184,46 @@ const UPDATE_ORGANIZATION = gql`
       responsiblePerson: $responsiblePerson
       phoneNumber: $phoneNumber
       website: $website
+      focusedOn: $focusedOn
     ) {
       id
       responsiblePerson
+    }
+  }
+`;
+
+const PROJECTS_BY_ORGANIZATION = gql`
+  query projectsByOrganization($organizationId: String) {
+    projectsByOrganization(organizationId: $organizationId) {
+      id
+      title
+      costs
+      totalNumberOfParticipants
+      projectType
+      activity
+      nations {
+        name
+        numberOfParticipants
+      }
+      location {
+        address
+      }
+      description
+      participants {
+        id
+        name
+        email
+      }
+      applicants {
+        id
+        motivation
+        status
+        applicant {
+          id
+          name
+          email
+        }
+      }
     }
   }
 `;
@@ -196,6 +236,10 @@ const Organization = (props) => {
   const [responsiblePerson, setResponsiblePerson] = useState(0);
   const [phoneNumber, setPhoneNumber] = useState(0);
   const [website, setWebsite] = useState(0);
+  const [focusedOn, setFocusedOn] = useState(0);
+  const [interestedIn, setInterestedIn] = useState(0);
+
+  const [updateOrganization] = useMutation(UPDATE_ORGANIZATION);
 
   const handleTabChange = (event, value) => {
     setTabValue(value);
@@ -211,7 +255,9 @@ const Organization = (props) => {
       if (!slogan) setSlogan(props.organization.slogan);
       if (!name) setName(props.organization.name);
       if (!summary) setSummary(props.organization.summary);
+      if (!focusedOn) setFocusedOn(props.organization.focusedOn);
     }
+    console.log(props.organization);
   });
 
   const handleChange = (e) => {
@@ -237,7 +283,40 @@ const Organization = (props) => {
     }
   };
 
-  const [updateOrganization] = useMutation(UPDATE_ORGANIZATION);
+  const handleArrayChange = (e, index, array) => {
+    const newArray = [...array];
+    newArray[index] = e.target.value;
+
+    switch (e.target.name) {
+      case 'focusedOn':
+        setFocusedOn(newArray);
+        break;
+    }
+  };
+
+  const addArrayElement = (name) => {
+    let newArray = name === 'focusedOn' ? focusedOn : interestedIn;
+    newArray = [...newArray];
+    newArray.push('');
+
+    if (name === 'focusedOn') {
+      setFocusedOn(newArray);
+    } else {
+      setInterestedIn(newArray);
+    }
+  };
+
+  const removeArrayElement = (name, index) => {
+    let newArray = name === 'focusedOn' ? focusedOn : interestedIn;
+    newArray = [...newArray];
+    newArray.splice(index, 1);
+
+    if (name === 'focusedOn') {
+      setFocusedOn(newArray);
+    } else {
+      setInterestedIn(newArray);
+    }
+  };
 
   return (
     <OrganizationStyles>
@@ -245,7 +324,16 @@ const Organization = (props) => {
         onSubmit={(e) => {
           e.preventDefault();
           updateOrganization({
-            variables: { id, name, slogan, summary, responsiblePerson, phoneNumber, website },
+            variables: {
+              id,
+              name,
+              slogan,
+              summary,
+              responsiblePerson,
+              phoneNumber,
+              website,
+              focusedOn,
+            },
           });
 
           Router.push({
@@ -293,6 +381,62 @@ const Organization = (props) => {
               />
             )}
           </SectionStyled>
+          <SectionStyled>
+            <h3>Focused on</h3>
+            <ul>
+              {focusedOn.length ? (
+                focusedOn.map((item, index) => (
+                  <li>
+                    {edit === 'false' ? (
+                      <p>{item}</p>
+                    ) : (
+                      <div className="form__list-input">
+                        <TextField
+                          className="form__input"
+                          type="text"
+                          onChange={(e) => handleArrayChange(e, index, focusedOn)}
+                          value={item}
+                          name="focusedOn"
+                          placeholder="Enter focused on item"
+                          variant="outlined"
+                        />
+
+                        <Icon
+                          onClick={() => removeArrayElement('focusedOn', index)}
+                          color="primary"
+                        >
+                          remove_circle
+                        </Icon>
+                      </div>
+                    )}
+                  </li>
+                ))
+              ) : (
+                <p>Please add a what you're focused on by clicking on the plus icon below.</p>
+              )}
+            </ul>
+
+            {edit !== 'false' && (
+              <Icon onClick={() => addArrayElement('focusedOn')} color="primary">
+                add_circle
+              </Icon>
+            )}
+          </SectionStyled>
+          <SectionStyled>
+            <h3>Interested in</h3>
+
+            <ul>
+              <li>
+                <p>Democracy/Active citizenship</p>
+              </li>
+              <li>
+                <p>European citizenship</p>
+              </li>
+              <li>
+                <p>Intercultural dialogue</p>
+              </li>
+            </ul>
+          </SectionStyled>
         </TabPanel>
         <TabPanel className="tab" value={tabValue} index={1}>
           Item Two
@@ -302,9 +446,63 @@ const Organization = (props) => {
         </TabPanel>
         <SimilarOrganizations className="organization__similar" />
       </form>
-      {/* </> */}
+    </OrganizationStyles>
+  );
+};
 
-      {/* <div>
+class Applicant extends Component {
+  state = { status: this.props.user.status };
+
+  handleChange = (e, changeApplicantStatus) => {
+    this.setState({ status: e.target.value }, () => changeApplicantStatus());
+  };
+
+  render() {
+    const { status } = this.state;
+    const { user, projectId } = this.props;
+    return (
+      <Mutation
+        mutation={CHANGE_APPLICANT_STATUS_MUTATION}
+        variables={{ status, applicantId: user.id, projectId, userId: user.applicant.id }}
+        refetchQueries={[{ query: SINGLE_ORGANIZATION_QUERY }]}
+      >
+        {(changeApplicantStatus, { error, loading }) => (
+          <ApplicantStyles status={status}>
+            {error && <p>{error}</p>}
+            <h4>Name: {user.applicant.name}</h4>
+            <h4>Email: {user.applicant.email}</h4>
+            <div className="applicant-status">
+              <p>
+                Status: <span>{status}</span>
+              </p>
+              <select value={status} onChange={(e) => this.handleChange(e, changeApplicantStatus)}>
+                {applicantStatus.map((status) => (
+                  <option value={status} label={status} />
+                ))}
+              </select>
+            </div>
+            <div className="applicant-footer">
+              <img src="https://www.sunsource.com.mt/wp-content/uploads/2019/09/Download-PDF-Button.png" />
+              <p className="read-more">Read more</p>
+            </div>
+          </ApplicantStyles>
+        )}
+      </Mutation>
+    );
+  }
+}
+
+const Participant = (props) => (
+  <ParticipantStyles>
+    <p>{props.participant.name}</p>
+    <p>{props.participant.email}</p>
+  </ParticipantStyles>
+);
+
+export default Organization;
+
+{
+  /* <div>
                 <h2 className="projects-title">Your currently active projects!</h2>
                 <ul>
                   {projectsCreated.map((project) => (
@@ -385,58 +583,5 @@ const Organization = (props) => {
                     </li>
                   ))}
                 </ul>
-              </div> */}
-    </OrganizationStyles>
-  );
-};
-
-class Applicant extends Component {
-  state = { status: this.props.user.status };
-
-  handleChange = (e, changeApplicantStatus) => {
-    this.setState({ status: e.target.value }, () => changeApplicantStatus());
-  };
-
-  render() {
-    const { status } = this.state;
-    const { user, projectId } = this.props;
-    return (
-      <Mutation
-        mutation={CHANGE_APPLICANT_STATUS_MUTATION}
-        variables={{ status, applicantId: user.id, projectId, userId: user.applicant.id }}
-        refetchQueries={[{ query: SINGLE_ORGANIZATION_QUERY }]}
-      >
-        {(changeApplicantStatus, { error, loading }) => (
-          <ApplicantStyles status={status}>
-            {error && <p>{error}</p>}
-            <h4>Name: {user.applicant.name}</h4>
-            <h4>Email: {user.applicant.email}</h4>
-            <div className="applicant-status">
-              <p>
-                Status: <span>{status}</span>
-              </p>
-              <select value={status} onChange={(e) => this.handleChange(e, changeApplicantStatus)}>
-                {applicantStatus.map((status) => (
-                  <option value={status} label={status} />
-                ))}
-              </select>
-            </div>
-            <div className="applicant-footer">
-              <img src="https://www.sunsource.com.mt/wp-content/uploads/2019/09/Download-PDF-Button.png" />
-              <p className="read-more">Read more</p>
-            </div>
-          </ApplicantStyles>
-        )}
-      </Mutation>
-    );
-  }
+              </div> */
 }
-
-const Participant = (props) => (
-  <ParticipantStyles>
-    <p>{props.participant.name}</p>
-    <p>{props.participant.email}</p>
-  </ParticipantStyles>
-);
-
-export default Organization;

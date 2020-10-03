@@ -83,7 +83,7 @@ class Signin extends Component {
                 </Link>
               </div>
 
-              <button type="submit">Sign Up</button>
+              <button type="submit">Log in</button>
             </Form>
           </Center>
         )}
