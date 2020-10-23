@@ -22,7 +22,7 @@ class Logo extends Component {
   render() {
     return (
       <LogoStyles router={this.props.router}>
-        <h1 className="logo">Youth Network</h1>
+        <h1 className="logo">PEP</h1>
         {/* <img src="../../static/logo.png" /> */}
       </LogoStyles>
     );

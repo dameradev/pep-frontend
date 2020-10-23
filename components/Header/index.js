@@ -3,9 +3,13 @@ import Link from 'next/link';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
 
+import { IconButton } from '@material-ui/core';
+import { Menu } from '@material-ui/icons';
+
 import Nav from '../Nav';
 import Logo from '../Logo';
 
+import { respondTo } from '../../utils/respondTo';
 const LoginNav = styled.header`
   background: ${(props) => props.theme.blue};
   width: 100%;
@@ -44,6 +48,17 @@ const HeaderStyles = styled.header`
     .logo {
       color: ${(props) => props.headerBgnColor && 'white'};
     }
+
+    .hamburger-icon {
+      color: white;
+      display: none;
+    }
+
+    .nav {
+      ${respondTo.tabletMini` 
+      display: none;
+    `}
+    }
   }
 `;
 
@@ -63,7 +78,7 @@ class Header extends Component {
   }
 
   render() {
-    const { router } = this.props;
+    const { router, handleDrawerToggle, drawerOpen } = this.props;
     return (
       <HeaderStyles headerBgnColor={this.state.windowScroll} router={router}>
         {/* <LoginNav>
@@ -75,7 +90,17 @@ class Header extends Component {
               <Logo />
             </a>
           </Link>
-          <Nav />
+          <Nav className="nav" />
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={() => handleDrawerToggle(drawerOpen)}
+            // className="icon-button"
+            className="hamburger-icon"
+          >
+            <Menu fontSize={'large'} />
+          </IconButton>
         </div>
       </HeaderStyles>
     );

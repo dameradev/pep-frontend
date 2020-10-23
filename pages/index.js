@@ -78,23 +78,33 @@ const BubblesStyled = styled.div`
 
     li {
       /* margin: 2rem 0; */
-      width: 200px;
-      display: flex;
-      flex-direction: column;
+      width: 20rem;
+      height: 25rem;
+      display: grid;
+      /* flex-direction: column; */
+      align-items: center;
+      justify-content: center;
+      justify-items: center;
+      font-size: 2rem;
       /* justify-content: space-between; */
       text-align: center;
       align-items: center;
+
+      grid-template-columns: 1fr;
+      /* grid-auto-flow: dense; */
       div {
-        width: 80%;
-        display: flex;
+        /* width: 80%; */
+        /* display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: center; */
 
         .bubbles-icon {
           align-self: center;
           svg {
-            width: 80%;
-            padding: 20px;
+            width: 10rem;
+            height: 10rem;
+
+            /* padding: 20px; */
           }
           /* padding: 20%; */
         }

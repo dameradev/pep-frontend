@@ -93,7 +93,7 @@ const Project = styled.div`
       align-self: stretch;
 
       font-size: 2rem;
-      background-color: ${(props) => props.theme.red};
+      background-color: ${(props) => props.theme.blue};
       color: #fff;
       /* background-image: linear-gradient(rgba(#549bf0, 93%)); */
 

@@ -5,6 +5,7 @@ import User from '../User';
 import Singout from '../Signout';
 import { DropDown, DropDownItem } from '../styles/DropDown';
 
+import { respondTo } from '../../utils/respondTo';
 const Navigation = styled.nav`
   display: flex;
   align-items: center;
@@ -23,7 +24,7 @@ class Nav extends Component {
       <User>
         {({ data: { me } = {} }) => {
           return (
-            <Navigation>
+            <Navigation className={`${this.props.className}`}>
               <Link href="/">
                 <a>Home</a>
               </Link>

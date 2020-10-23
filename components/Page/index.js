@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import styled, { ThemeProvider, createGlobalStyle, css } from 'styled-components';
-import { ThemeProvider as MuiThemeProvider, createMuiTheme, colors } from '@material-ui/core';
+import {
+  ThemeProvider as MuiThemeProvider,
+  createMuiTheme,
+  colors,
+  Drawer,
+  Divider,
+  List,
+  IconButton,
+} from '@material-ui/core';
+import { Cancel } from '@material-ui/icons';
 import Meta from '../Meta';
 import Header from '../Header';
 import Footer from '../Footer';
 import { withRouter } from 'next/router';
-
+import Nav from '../Nav';
 const MuiTheme = createMuiTheme({
   typography: {
     htmlFontSize: 10,
@@ -45,6 +54,31 @@ const StyledPage = styled.div`
   min-height: 100vh;
   color: ${(props) => props.theme.black};
   padding-top: ${(props) => props.router.route !== '/' && '70px'};
+
+  .mobile-nav {
+    flex-direction: column;
+    /* align-items: flex-start; */
+    width: 100%;
+    /* text-align: left; */
+    /* padding: 2rem; */
+
+    a {
+      padding: 1rem 3rem;
+      text-transform: uppercase;
+      font-size: 1.6rem;
+      text-decoration: none;
+      /* box-shadow: ${(props) => props.theme.bs}; */
+      border-bottom: 1px solid ${(props) => props.theme.colorPrimary};
+      &:last-of-type {
+        /* margin-bottom: 1rem; */
+      }
+    }
+    button {
+      margin: 0;
+      border-radius: 0;
+      height: 5rem;
+    }
+  }
 `;
 
 const GlobalStyle = createGlobalStyle`
@@ -58,9 +92,6 @@ const GlobalStyle = createGlobalStyle`
     
     font-family: 'Roboto', sans-serif;
     
-    /* @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap'); */
-
-
   }
 
   html {
@@ -99,28 +130,42 @@ const GlobalStyle = createGlobalStyle`
   ul {
     list-style: none;
     padding: 0;
+    margin: 0;
   }
 
 `;
 
-// injectGlobal`
-//   `;
+const Page = (props) => {
+  const [open, setOpen] = React.useState(false);
 
-class Page extends Component {
-  render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <MuiThemeProvider theme={MuiTheme}>
-          <StyledPage router={this.props.router}>
-            <GlobalStyle />
-            <Meta />
-            <Header />
-            {this.props.children}
-            <Footer />
-          </StyledPage>
-        </MuiThemeProvider>
-      </ThemeProvider>
-    );
-  }
-}
+  const handleDrawerToggle = (open) => {
+    setOpen(!open);
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
+      <MuiThemeProvider theme={MuiTheme}>
+        <StyledPage router={props.router}>
+          <GlobalStyle />
+          <Meta />
+          <Header handleDrawerToggle={handleDrawerToggle} drawerOpen={open} />
+          <Drawer className="drawer" variant="persistent" anchor="right" open={open}>
+            <div className="cancel-icon-container">
+              <IconButton className="cancel-icon" onClick={() => handleDrawerToggle(open)}>
+                <Cancel />
+              </IconButton>
+            </div>
+
+            <Divider />
+            <List>
+              <Nav className="mobile-nav" />
+            </List>
+          </Drawer>
+          {props.children}
+          <Footer />
+        </StyledPage>
+      </MuiThemeProvider>
+    </ThemeProvider>
+  );
+};
 export default withRouter(Page);

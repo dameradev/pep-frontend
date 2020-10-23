@@ -26,7 +26,7 @@ const SignoutButton = styled.button`
 `;
 
 const Signout = (props) => (
-  <Mutation mutation={SIGNOUT_MUTATION} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
+  <Mutation mutation={SIGNOUT_MUTATION}>
     {(signout) => <SignoutButton onClick={signout}>Sing out</SignoutButton>}
   </Mutation>
 );
