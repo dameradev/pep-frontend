@@ -67,8 +67,9 @@ const StyledPage = styled.div`
       text-transform: uppercase;
       font-size: 1.6rem;
       text-decoration: none;
+      color: grey;
       /* box-shadow: ${(props) => props.theme.bs}; */
-      border-bottom: 1px solid ${(props) => props.theme.colorPrimary};
+      /* border-bottom: 1px solid ${(props) => props.theme.colorPrimary}; */
       &:last-of-type {
         /* margin-bottom: 1rem; */
       }
@@ -162,7 +163,7 @@ const Page = (props) => {
             </List>
           </Drawer>
           {props.children}
-          <Footer />
+          {/* <Footer /> */}
         </StyledPage>
       </MuiThemeProvider>
     </ThemeProvider>

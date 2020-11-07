@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { respondTo } from '../../../utils/respondTo';
+
 export const OrganizationStyles = styled.div`
   form {
     display: grid;
@@ -131,6 +133,16 @@ export const OrganizationStyles = styled.div`
     div {
       padding: 0;
     }
+    ${respondTo.tablet` 
+      grid-column: center-start / col-end 7;
+    `}
+    ${respondTo.tabletMini` 
+      grid-column: center-start / center-end;
+    `}
+    ${respondTo.mobilePortrait` 
+      grid-column: full-start / full-end;
+      margin: 0 5%;
+    `}
   }
   .form__list-input {
     display: flex;
@@ -149,16 +161,20 @@ export const HeaderStyled = styled.div`
 
   grid-column: center-start / center-end;
   display: grid;
-  grid-template-columns: minmax(25rem, 1fr) minmax(25rem, 1fr) minmax(25rem, 1fr);
+  /* grid-template-columns: minmax(25rem, 1fr) minmax(25rem, 1fr) minmax(25rem, 1fr); */
   grid-template-rows: 1fr min-content;
   background: #fff;
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1);
 
+  ${respondTo.tablet` 
+    grid-column: full-start / full-end;
+  `}
   .organization {
     &__cover {
       grid-row: 1 / 2;
       grid-column: 1/ 4;
       min-height: 20rem;
+      width: 100%;
       background-image: url('https://images.unsplash.com/photo-1510936111840-65e151ad71bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1367&q=80');
       background-size: cover;
 
@@ -316,6 +332,20 @@ export const SidebarStyled = styled.aside`
   /* margin-top: 2.5rem; */
   padding: 1.5rem 3rem;
 
+  ${respondTo.tablet` 
+    grid-column: col-start 8 / center-end;
+    grid-row: 2 / 3;
+  `}
+
+  ${respondTo.tabletMini` 
+    grid-column: center-start / center-end;
+    grid-row: 3/4;
+  `}
+  ${respondTo.mobilePortrait` 
+    grid-column: full-start / full-end;
+    margin: 0 5%;
+  `}
+
   h1 {
     padding: 1rem 0 2rem 0;
     margin-bottom: 1.5rem;
@@ -343,6 +373,10 @@ export const SidebarStyled = styled.aside`
 
 export const SimilarOrganizationStyled = styled.aside`
   grid-column: col-start 7 / center-end;
+
+  ${respondTo.tablet` 
+    display:none;
+  `}
   h1 {
     font-weight: 100;
     font-size: 2rem;

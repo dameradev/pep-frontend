@@ -12,6 +12,8 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import { FormWrapper, CountriesStyled } from './styles';
 
+import { respondTo } from '../../../utils/respondTo';
+
 import { GET_ALL_COUNTRIES_QUERY } from '../../../utils/queries';
 
 const LocationPicker = dynamic(() => import('react-location-picker'), {
@@ -77,6 +79,12 @@ const CREATE_PROJECT_MUTATION = gql`
 
 const ProjectFormWrapper = styled.div`
   /* background: black; */
+
+  .guidelines {
+    ${respondTo.tabletMini` 
+      display: none;
+    `}
+  }
   .form {
     padding: 2rem;
     background: #eee;
@@ -84,6 +92,9 @@ const ProjectFormWrapper = styled.div`
     color: #505050;
     /* width: 100%; */
     /* height: 100vh; */
+    ${respondTo.tabletMini` 
+      background: unset;
+    `}
     form {
       /* grid-column: full-start/ full-end; */
       width: 100%;
@@ -93,6 +104,11 @@ const ProjectFormWrapper = styled.div`
         [full-start]
         minmax(6rem, 1fr) [center-start]repeat(8, [col-start] minmax(min-content, 18rem) [col-end])
         [center-end] minmax(6rem, 1fr) [full-end];
+
+      ${respondTo.tabletMini` 
+        display: flex;
+        flex-direction: column;
+      `}
     }
     h1 {
       grid-column: full-start / full-end;
@@ -171,10 +187,26 @@ const ProjectFormWrapper = styled.div`
       justify-items: top;
       /* align-content: start; */
 
+      ${respondTo.tabletMini` 
+        display: flex;
+        flex-direction: column;
+      `}
+
       &__title {
         /* color: blue; */
         width: 100%;
         grid-column: 1 / 3;
+      }
+
+      &__dates {
+        display: flex;
+        flex-direction: row;
+        grid-column: 1 / 3;
+        gap: 2rem;
+        ${respondTo.tabletMini` 
+        
+        gap: 2rem;
+      `}
       }
 
       &__start-date {
@@ -352,6 +384,41 @@ class CreateProject extends Component {
                             variant="standard"
                           />
                         </div>
+                        <div className="basic-details__dates">
+                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            {/* <div className="basic-details__start-date"> */}
+                            <KeyboardDatePicker
+                              className="basic-details__start-date"
+                              format="MM/dd/yyyy"
+                              margin="normal"
+                              id="date-picker-inline"
+                              label="Start date"
+                              name="startDate"
+                              inputProps={{ className: 'input' }}
+                              value={values.startDate}
+                              onChange={(value) => setFieldValue('startDate', value)}
+                              KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                              }}
+                            />
+                            {/* </div> */}
+
+                            <KeyboardDatePicker
+                              className="basic-details__end-date"
+                              format="MM/dd/yyyy"
+                              margin="normal"
+                              id="date-picker-inline"
+                              label="Date picker inline"
+                              label="End date"
+                              name="endDate"
+                              value={values.endDate}
+                              onChange={(value) => setFieldValue('endDate', value)}
+                              // KeyboardButtonProps={{
+                              //   'aria-label': 'change date',
+                              // }}
+                            />
+                          </MuiPickersUtilsProvider>
+                        </div>
 
                         <div className="basic-details__type">
                           {/* <label>Project Type</label> */}
@@ -373,41 +440,6 @@ class CreateProject extends Component {
                             ))}
                           </TextField>
                         </div>
-
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          {/* <div className="basic-details__start-date"> */}
-                          <KeyboardDatePicker
-                            className="basic-details__start-date"
-                            format="MM/dd/yyyy"
-                            margin="normal"
-                            id="date-picker-inline"
-                            label="Start date"
-                            name="startDate"
-                            inputProps={{ className: 'input' }}
-                            value={values.startDate}
-                            onChange={(value) => setFieldValue('startDate', value)}
-                            KeyboardButtonProps={{
-                              'aria-label': 'change date',
-                            }}
-                          />
-                          {/* </div> */}
-
-                          <KeyboardDatePicker
-                            className="basic-details__end-date"
-                            format="MM/dd/yyyy"
-                            margin="normal"
-                            id="date-picker-inline"
-                            label="Date picker inline"
-                            label="End date"
-                            name="endDate"
-                            value={values.endDate}
-                            onChange={(value) => setFieldValue('endDate', value)}
-                            // KeyboardButtonProps={{
-                            //   'aria-label': 'change date',
-                            // }}
-                          />
-                        </MuiPickersUtilsProvider>
-
                         <div className="basic-details__activity">
                           <TextField
                             className="form__select"

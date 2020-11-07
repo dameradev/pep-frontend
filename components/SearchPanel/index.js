@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 import { TextField, MenuItem, Button } from '@material-ui/core';
 
+import { respondTo } from '../../utils/respondTo';
+
 const Panel = styled.div`
   margin-top: 2rem;
   box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.1);
@@ -13,6 +15,11 @@ const Panel = styled.div`
   min-height: 80vh;
   /* padding: 20px; */
 
+  ${respondTo.tabletMini` 
+    // height: 20rem !important;
+    min-height: unset;
+  `}
+
   .Header {
     border-bottom: 1px solid ${(props) => props.theme.borderColorPrimary};
     padding: 2rem;
@@ -20,7 +27,7 @@ const Panel = styled.div`
     h3 {
       text-transform: uppercase;
       font-size: 2.5rem;
-      font-weight: 100;
+      font-weight: 300;
     }
   }
   .filters {

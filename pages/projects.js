@@ -13,6 +13,8 @@ import styled from 'styled-components';
 import { projectTypes } from '../config';
 import { GET_ALL_COUNTRIES_QUERY } from '../utils/queries';
 
+import { respondTo } from '../utils/respondTo';
+
 const SEARCH_PROJECTS_QUERY = gql`
   query SEARCH_PROJECTS_QUERY($nation: String, $projectType: String) {
     searchProjects(nation: $nation, projectType: $projectType) {
@@ -37,9 +39,14 @@ const SEARCH_PROJECTS_QUERY = gql`
 const ProjectsPage = styled.div`
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: minmax(15rem, 30rem) 1fr;
+  grid-template-columns: 30rem 1fr;
   grid-column-gap: 3rem;
-  padding: 0 15rem;
+  padding: 0 5%;
+
+  ${respondTo.tabletMini` 
+    display: flex;
+    flex-direction: column;
+  `}
 `;
 
 const Projects = () => {

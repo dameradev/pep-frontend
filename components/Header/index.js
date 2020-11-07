@@ -52,10 +52,13 @@ const HeaderStyles = styled.header`
     .hamburger-icon {
       color: white;
       display: none;
+      ${respondTo.tablet` 
+        display: block;
+      `}
     }
 
     .nav {
-      ${respondTo.tabletMini` 
+      ${respondTo.tablet` 
       display: none;
     `}
     }
