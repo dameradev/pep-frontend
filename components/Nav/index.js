@@ -22,7 +22,7 @@ class Nav extends Component {
   render() {
     return (
       <User>
-        {({ data: { me } = {} }) => {
+        {({ data: { me } = {}, data }) => {
           return (
             <Navigation className={`${this.props.className}`}>
               <Link href="/">

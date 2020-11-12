@@ -1,10 +1,11 @@
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 const CURRENT_USER_QUERY = gql`
-  query {
-    me {
+  query me($token: String) {
+    me(token: $token) {
       id
       email
       name
@@ -13,11 +14,17 @@ const CURRENT_USER_QUERY = gql`
   }
 `;
 
-const User = (props) => (
-  <Query {...props} query={CURRENT_USER_QUERY}>
-    {(payload) => props.children(payload)}
-  </Query>
-);
+const User = (props) => {
+  const [token, setToken] = useState('');
+  useEffect(() => {
+    setToken(localStorage.getItem('token'));
+  });
+  return (
+    <Query {...props} query={CURRENT_USER_QUERY} variables={{ token }}>
+      {(payload) => props.children(payload)}
+    </Query>
+  );
+};
 
 User.propTypes = {
   children: PropTypes.func.isRequired,

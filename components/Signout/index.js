@@ -2,6 +2,7 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { CURRENT_USER_QUERY } from '../User';
 import styled from 'styled-components';
+import Router from 'next/router';
 
 const SIGNOUT_MUTATION = gql`
   mutation {
@@ -26,8 +27,18 @@ const SignoutButton = styled.button`
 `;
 
 const Signout = (props) => (
-  <Mutation mutation={SIGNOUT_MUTATION}>
-    {(signout) => <SignoutButton onClick={signout}>Sing out</SignoutButton>}
+  <Mutation mutation={SIGNOUT_MUTATION} refetchQueries={CURRENT_USER_QUERY}>
+    {(signout) => (
+      <SignoutButton
+        onClick={() => {
+          localStorage.removeItem('token');
+          Router.push('/');
+          signout();
+        }}
+      >
+        Sing out
+      </SignoutButton>
+    )}
   </Mutation>
 );
 
