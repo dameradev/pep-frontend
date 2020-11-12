@@ -14,10 +14,13 @@ import { CURRENT_USER_QUERY } from '../User';
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
     signin(email: $email, password: $password) {
-      id
-      name
-      age
-      email
+      user {
+        name
+        age
+        id
+        email
+      }
+      token
     }
   }
 `;
@@ -43,8 +46,11 @@ class Signin extends Component {
               method="post"
               onSubmit={async (e) => {
                 e.preventDefault();
-                await signin();
+                const { data } = await signin();
+                localStorage.setItem('token', data.signin.token);
+
                 Router.push('/');
+
                 this.setState({ email: '', password: '' });
               }}
             >
