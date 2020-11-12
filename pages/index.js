@@ -11,9 +11,11 @@ import SearchBox from '../components/SearchBox';
 
 import ButtonStyled from '../components/styles/ButtonStyled';
 
+import { respondTo } from '../utils/respondTo';
+
 const Hero = styled.div`
   width: 100%;
-  height: 60rem;
+
   background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
     url('https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWptHL?ver=3e39&q=90&m=2&h=768&w=1024&b=%23FFFFFFFF&aim=true');
   background-size: cover;
@@ -24,24 +26,35 @@ const Hero = styled.div`
     padding-top: 100px;
     display: flex;
     justify-content: space-between;
-    div {
-      width: 40%;
-    }
+
+    ${respondTo.tablet` 
+      flex-direction: column;
+      height: 80vh;
+    `}
+
     .buttons-container {
-      padding-top: 5rem;
+      /* padding-top: 5rem; */
       a {
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
+        button {
+          width: 100%;
+        }
       }
+      padding-bottom: 5rem;
     }
 
     .searchbox-container {
       height: 100%;
+      width: 60%;
       padding: 20px;
       color: white;
       background: rgba(47, 93, 168, 0.5);
       text-align: center;
+
+      ${respondTo.tablet` 
+      width: 100%;
+    `}
       select {
         display: block;
         width: 100%;
@@ -76,6 +89,10 @@ const BubblesStyled = styled.div`
     justify-content: space-between;
     align-items: center;
 
+    ${respondTo.tabletMini` 
+      flex-direction: column;
+
+    `}
     li {
       /* margin: 2rem 0; */
       width: 20rem;
@@ -119,13 +136,17 @@ const BubblesStyled = styled.div`
 `;
 
 const FactsStyled = styled.div`
-  height: 300px;
+  /* height: 300px; */
+  padding: 5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: ${(props) => props.theme.blue};
   color: white;
   .facts-inner {
     width: ${(props) => props.theme.maxWidth};
     margin: 0 auto;
-    padding-top: 5rem;
+    /* padding-top: 5rem; */
     text-align: center;
   }
 `;
@@ -138,8 +159,14 @@ const Testamonials = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10rem;
+
+    ${respondTo.tabletMini` 
+      flex-direction: column;
+      
+    `}
     div {
-      width: 45%;
+      /* width: 45%; */
       padding: auto;
       i {
         font-size: 20rem;
@@ -193,7 +220,12 @@ const Home = (props) => {
         <div className="hero-inner">
           <SearchBox />
           <div className="buttons-container">
-            <Link href="/organization">
+            <Link
+              href={{
+                pathname: '/auth',
+                query: { path: 'register', user: 'organization' },
+              }}
+            >
               <a>
                 <ButtonStyled
                   className="button"
@@ -204,7 +236,12 @@ const Home = (props) => {
                 </ButtonStyled>
               </a>
             </Link>
-            <Link href="/projects">
+            <Link
+              href={{
+                pathname: '/auth',
+                query: { path: 'register', user: 'participant' },
+              }}
+            >
               <a>
                 <ButtonStyled
                   className="button"

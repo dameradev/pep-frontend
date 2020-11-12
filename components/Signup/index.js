@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -9,6 +9,8 @@ import ButtonStyled from '../styles/ButtonStyled';
 import Center from '../styles/Center';
 
 import ErrorMessage from '../ErrorMessage';
+import useForm from '../../lib/useForm';
+import { useEffect } from 'react';
 
 const GET_ALL_COUNTRIES_QUERY = gql`
   query GET_ALL_COUNTRIES_QUERY {
@@ -49,131 +51,137 @@ const typeOfUser = [
   { label: 'Organization', value: 'organization' },
 ];
 
-class Signup extends Component {
-  state = { email: '', name: '', age: 0, password: '', type: 'participant', nationality: '' };
+const Signup = (props) => {
+  const {
+    values: { email, name, age, password, type, nationality } = {},
+    values,
+    updateValue,
+    updateValueManually,
+  } = useForm({
+    email: '',
+    name: '',
+    age: 0,
+    password: '',
+    type: '',
+    nationality: '',
+  });
 
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  const router = useRouter();
 
-  handleDateChange = (date) => {
-    this.setState({ age: date });
-  };
+  useEffect(() => {
+    if (!type) updateValueManually('type', router.query.user);
+  });
 
-  render() {
-    const { email, password, name, age, type, nationality } = this.state;
+  return (
+    <Mutation mutation={SIGNUP_MUTATION} variables={values}>
+      {(signup, { error, loading }) => (
+        <Center>
+          <Form
+            method="post"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              await signup();
+              Router.push('/');
+              // this.setState({ email: '', name: '', password: '', age: '' });
+            }}
+          >
+            <h2>Register for an account</h2>
+            <fieldset disabled={loading} aria-busy={loading}></fieldset>
+            <ErrorMessage error={error} />
 
-    return (
-      <Mutation mutation={SIGNUP_MUTATION} variables={this.state}>
-        {(signup, { error, loading }) => (
-          <Center>
-            <Form
-              method="post"
-              onSubmit={async (e) => {
-                e.preventDefault();
-                await signup();
-                Router.push('/');
-                this.setState({ email: '', name: '', password: '', age: '' });
-              }}
-            >
-              <h2>Register for an account</h2>
-              <fieldset disabled={loading} aria-busy={loading}></fieldset>
-              <ErrorMessage error={error} />
+            <label htmlFor="email">
+              <input
+                name="email"
+                type="email"
+                id="email"
+                value={email}
+                placeholder="Email Address"
+                onChange={updateValue}
+              />
+            </label>
+            <label htmlFor="name">
+              <input
+                name="name"
+                type="name"
+                id="name"
+                value={name}
+                placeholder="Please enter your name"
+                onChange={updateValue}
+              />
+            </label>
+            <label htmlFor="password">
+              <input
+                name="password"
+                type="password"
+                id="password"
+                value={password}
+                placeholder="Please enter your password"
+                onChange={updateValue}
+              />
+            </label>
+            <label htmlFor="type">
+              {/* <DatePickerInput name="type" value={type} onChange={this.handleDateChange} /> */}
 
-              <label htmlFor="email">
+              <select
+                name="type"
+                type="number"
+                id="type"
+                value={type}
+                placeholder="Please enter your type"
+                onChange={updateValue}
+              >
+                {typeOfUser.map((user) => (
+                  <option value={user.value} label={user.label} />
+                ))}
+              </select>
+            </label>
+            {type === 'participant' && (
+              <label htmlFor="age">
+                {/* <DatePickerInput name="age" value={age} onChange={this.handleDateChange} /> */}
+
                 <input
-                  name="email"
-                  type="email"
-                  id="email"
-                  value={email}
-                  placeholder="Email Address"
-                  onChange={this.handleChange}
-                />
-              </label>
-              <label htmlFor="name">
-                <input
-                  name="name"
-                  type="name"
-                  id="name"
-                  value={name}
-                  placeholder="Please enter your name"
-                  onChange={this.handleChange}
-                />
-              </label>
-              <label htmlFor="password">
-                <input
-                  name="password"
-                  type="password"
-                  id="password"
-                  value={password}
-                  placeholder="Please enter your password"
-                  onChange={this.handleChange}
-                />
-              </label>
-              <label htmlFor="type">
-                {/* <DatePickerInput name="type" value={type} onChange={this.handleDateChange} /> */}
-
-                <select
-                  name="type"
+                  name="age"
                   type="number"
-                  id="type"
-                  value={type}
-                  placeholder="Please enter your type"
-                  onChange={this.handleChange}
-                >
-                  {typeOfUser.map((user) => (
-                    <option value={user.value} label={user.label} />
-                  ))}
-                </select>
+                  id="age"
+                  value={age}
+                  placeholder="Please enter your age"
+                  onChange={updateValue}
+                ></input>
               </label>
-              {type === 'participant' && (
-                <label htmlFor="age">
-                  {/* <DatePickerInput name="age" value={age} onChange={this.handleDateChange} /> */}
+            )}
 
-                  <input
-                    name="age"
-                    type="number"
-                    id="age"
-                    value={age}
-                    placeholder="Please enter your age"
-                    onChange={this.handleChange}
-                  ></input>
-                </label>
-              )}
+            <label htmlFor="nationality">
+              <select
+                name="nationality"
+                id="nationality"
+                value={nationality}
+                placeholder="Please select your nationality"
+                onChange={updateValue}
+              >
+                <Query query={GET_ALL_COUNTRIES_QUERY}>
+                  {({ data: { countries } = {}, data, error, loading }) => {
+                    console.log(data);
+                    return countries
+                      ? countries.map((country) => (
+                          <option value={country.name} label={country.name} />
+                        ))
+                      : 'Loading';
+                  }}
+                </Query>
+              </select>
+            </label>
+            <div className="links-container">
+              <Link href={{ pathname: '/auth', query: { path: 'login' } }}>
+                <a>Already have an account?</a>
+              </Link>
+            </div>
 
-              <label htmlFor="nationality">
-                <select
-                  name="nationality"
-                  id="nationality"
-                  value={nationality}
-                  placeholder="Please select your nationality"
-                  onChange={this.handleChange}
-                >
-                  <Query query={GET_ALL_COUNTRIES_QUERY}>
-                    {({ data: { countries } = {}, data, error, loading }) => {
-                      console.log(data);
-                      return countries
-                        ? countries.map((country) => (
-                            <option value={country.name} label={country.name} />
-                          ))
-                        : 'Loading';
-                    }}
-                  </Query>
-                </select>
-              </label>
-              <div className="links-container">
-                <Link href={{ pathname: '/auth', query: { path: 'login' } }}>
-                  <a>Already have an account?</a>
-                </Link>
-              </div>
-
-              <button type="submit">Sign Up</button>
-            </Form>
-          </Center>
-        )}
-      </Mutation>
-    );
-  }
-}
+            <button type="submit">Sign Up</button>
+          </Form>
+        </Center>
+      )}
+    </Mutation>
+  );
+};
 
 export default Signup;

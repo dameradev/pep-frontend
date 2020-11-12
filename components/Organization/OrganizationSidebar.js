@@ -21,7 +21,7 @@ const OrganizationSidebar = ({
         <li>
           <h3>Responsible person</h3>
           {edit === 'false' ? (
-            <span>{responsiblePerson}</span>
+            <span>{responsiblePerson ? responsiblePerson : 'Contact person here'}</span>
           ) : (
             <TextField
               className="form__input"
@@ -36,7 +36,7 @@ const OrganizationSidebar = ({
         </li>
         <li>
           <h3>E-mail</h3>
-          <span>{email}</span>
+          <span>{email ? email : 'Your email here'}</span>
         </li>
         <li>
           <h3>Website</h3>
@@ -63,7 +63,7 @@ const OrganizationSidebar = ({
         <li>
           <h3>Phone</h3>
           {edit === 'false' ? (
-            <span>{phoneNumber}</span>
+            <span>{phoneNumber ? phoneNumber : 'Your phone number here'}</span>
           ) : (
             <TextField
               className="form__input"

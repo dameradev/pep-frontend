@@ -133,8 +133,8 @@ export const OrganizationStyles = styled.div`
     div {
       padding: 0;
     }
-    ${respondTo.tablet` 
-      grid-column: center-start / col-end 7;
+    ${respondTo.laptop` 
+      grid-column: center-start / col-end 6;
     `}
     ${respondTo.tabletMini` 
       grid-column: center-start / center-end;
@@ -332,8 +332,8 @@ export const SidebarStyled = styled.aside`
   /* margin-top: 2.5rem; */
   padding: 1.5rem 3rem;
 
-  ${respondTo.tablet` 
-    grid-column: col-start 8 / center-end;
+  ${respondTo.laptop` 
+    grid-column: col-start 7 / center-end;
     grid-row: 2 / 3;
   `}
 

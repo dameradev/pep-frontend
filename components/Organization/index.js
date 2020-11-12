@@ -230,14 +230,14 @@ const PROJECTS_BY_ORGANIZATION = gql`
 
 const Organization = (props) => {
   const [tabValue, setTabValue] = useState(0);
-  const [name, setName] = useState(0);
-  const [slogan, setSlogan] = useState(0);
-  const [summary, setSummary] = useState(0);
-  const [responsiblePerson, setResponsiblePerson] = useState(0);
-  const [phoneNumber, setPhoneNumber] = useState(0);
-  const [website, setWebsite] = useState(0);
-  const [focusedOn, setFocusedOn] = useState(0);
-  const [interestedIn, setInterestedIn] = useState(0);
+  const [name, setName] = useState('');
+  const [slogan, setSlogan] = useState('');
+  const [summary, setSummary] = useState('');
+  const [responsiblePerson, setResponsiblePerson] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [website, setWebsite] = useState('');
+  const [focusedOn, setFocusedOn] = useState('');
+  const [interestedIn, setInterestedIn] = useState('');
 
   const [updateOrganization] = useMutation(UPDATE_ORGANIZATION);
 
@@ -257,7 +257,6 @@ const Organization = (props) => {
       if (!summary) setSummary(props.organization.summary);
       if (!focusedOn) setFocusedOn(props.organization.focusedOn);
     }
-    console.log(props.organization);
   });
 
   const handleChange = (e) => {
@@ -318,6 +317,8 @@ const Organization = (props) => {
     }
   };
 
+  console.log(props, 'props');
+
   return (
     <OrganizationStyles>
       <form
@@ -366,7 +367,7 @@ const Organization = (props) => {
           <SectionStyled>
             <h3>Summary</h3>
             {edit === 'false' ? (
-              <p>{summary}</p>
+              <p>{summary ? summary : 'Edit your page to enter summary'}</p>
             ) : (
               <TextField
                 className="form__input organization__summary"
@@ -384,7 +385,7 @@ const Organization = (props) => {
           <SectionStyled>
             <h3>Focused on</h3>
             <ul>
-              {focusedOn.length ? (
+              {focusedOn?.length ? (
                 focusedOn.map((item, index) => (
                   <li>
                     {edit === 'false' ? (

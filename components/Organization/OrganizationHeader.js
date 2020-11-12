@@ -25,7 +25,7 @@ const OrganizationHeader = (props) => {
       />
       <div className="organization__profile">
         {editValue === 'false' ? (
-          <h3>{name}</h3>
+          <h3>{name ? name : 'Your name here'}</h3>
         ) : (
           <TextField
             className="form__input"
@@ -39,7 +39,7 @@ const OrganizationHeader = (props) => {
           />
         )}
         {editValue === 'false' ? (
-          <h4>{slogan}</h4>
+          <h4>{slogan ? slogan : 'Your slogan here'}</h4>
         ) : (
           <TextField
             className="form__input"
@@ -55,7 +55,8 @@ const OrganizationHeader = (props) => {
       </div>
 
       <div className="organization__contact">
-        <p>{email}</p>
+        <p>{email ? email : 'Your email here'}</p>
+        {console.log(email, 'email')}
         <button>View Website</button>
       </div>
 
