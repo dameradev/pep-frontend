@@ -6,6 +6,7 @@ import Singout from '../Signout';
 import { DropDown, DropDownItem } from '../styles/DropDown';
 
 import { respondTo } from '../../utils/respondTo';
+import MenuLink from './MenuLink';
 const Navigation = styled.nav`
   display: flex;
   align-items: center;
@@ -16,6 +17,9 @@ const Navigation = styled.nav`
     color: white;
     text-transform: uppercase;
   }
+  a.active {
+    color: ${(props) => props.theme.red};
+  }
 `;
 
 class Nav extends Component {
@@ -25,19 +29,13 @@ class Nav extends Component {
         {({ data: { me } = {}, data }) => {
           return (
             <Navigation className={`${this.props.className}`}>
-              <Link href="/">
-                <a>Home</a>
-              </Link>
-              <Link href="/projects">
-                <a>Projects</a>
-              </Link>
+              <MenuLink href="/">Home</MenuLink>
+              <MenuLink href="/projects">Projects</MenuLink>
               {me && (
                 <>
-                  <Link href="/create-project">
-                    <a>Create a project</a>
-                  </Link>
+                  <MenuLink href="/create-project">Create a project</MenuLink>
 
-                  <Link
+                  <MenuLink
                     href={{
                       pathname: `${
                         me.permissions.includes('ORGANIZATION') ? '/organization' : 'participant'
@@ -45,22 +43,18 @@ class Nav extends Component {
                       query: { id: me.id, edit: false },
                     }}
                   >
-                    <a>Profile</a>
-                  </Link>
+                    Profile
+                  </MenuLink>
 
                   {me.permissions.includes('ADMIN') && (
-                    <Link href="/dashboard">
-                      <a>Dashboard</a>
-                    </Link>
+                    <MenuLink href="/dashboard">Dashboard</MenuLink>
                   )}
                   <Singout />
                 </>
               )}
 
               {!me && (
-                <Link href={{ pathname: '/auth', query: { path: 'login' } }}>
-                  <a>Sign in</a>
-                </Link>
+                <MenuLink href={{ pathname: '/auth', query: { path: 'login' } }}>Sign in</MenuLink>
               )}
             </Navigation>
           );
