@@ -344,6 +344,7 @@ const Organization = (props) => {
         }}
       >
         <OrganizationHeader
+          className="organization__header"
           id={props.organization?.id}
           name={name}
           email={props.organization?.email}
@@ -354,98 +355,100 @@ const Organization = (props) => {
           handleChange={handleChange}
           value={tabValue}
         />
-        <OrganizationSidebar
-          className="organization__sidebar"
-          edit={edit}
-          responsiblePerson={responsiblePerson}
-          website={website}
-          phoneNumber={phoneNumber}
-          email={props.organization?.email}
-          handleChange={handleChange}
-        />
-        <TabPanel className="tab" value={tabValue} index={0}>
-          <SectionStyled>
-            <h3>Summary</h3>
-            {edit === 'false' ? (
-              <p>{summary ? summary : 'Edit your page to enter summary'}</p>
-            ) : (
-              <TextField
-                className="form__input organization__summary"
-                type="text"
-                onChange={(e) => handleChange(e)}
-                value={summary}
-                name="summary"
-                placeholder="Describe what your organization is about"
-                multiline
-                rows={8}
-                variant="outlined"
-              />
-            )}
-          </SectionStyled>
-          <SectionStyled>
-            <h3>Focused on</h3>
-            <ul>
-              {focusedOn?.length ? (
-                focusedOn.map((item, index) => (
-                  <li>
-                    {edit === 'false' ? (
-                      <p>{item}</p>
-                    ) : (
-                      <div className="form__list-input">
-                        <TextField
-                          className="form__input"
-                          type="text"
-                          onChange={(e) => handleArrayChange(e, index, focusedOn)}
-                          value={item}
-                          name="focusedOn"
-                          placeholder="Enter focused on item"
-                          variant="outlined"
-                        />
-
-                        <Icon
-                          onClick={() => removeArrayElement('focusedOn', index)}
-                          color="primary"
-                        >
-                          remove_circle
-                        </Icon>
-                      </div>
-                    )}
-                  </li>
-                ))
+        <section className="organization__main">
+          <OrganizationSidebar
+            className="organization__sidebar"
+            edit={edit}
+            responsiblePerson={responsiblePerson}
+            website={website}
+            phoneNumber={phoneNumber}
+            email={props.organization?.email}
+            handleChange={handleChange}
+          />
+          <TabPanel className="tab" value={tabValue} index={0}>
+            <SectionStyled>
+              <h3>Summary</h3>
+              {edit === 'false' ? (
+                <p>{summary ? summary : 'Edit your page to enter summary'}</p>
               ) : (
-                <p>Please add a what you're focused on by clicking on the plus icon below.</p>
+                <TextField
+                  className="form__input organization__summary"
+                  type="text"
+                  onChange={(e) => handleChange(e)}
+                  value={summary}
+                  name="summary"
+                  placeholder="Describe what your organization is about"
+                  multiline
+                  rows={8}
+                  variant="outlined"
+                />
               )}
-            </ul>
+            </SectionStyled>
+            <SectionStyled>
+              <h3>Focused on</h3>
+              <ul>
+                {focusedOn?.length ? (
+                  focusedOn.map((item, index) => (
+                    <li>
+                      {edit === 'false' ? (
+                        <p>{item}</p>
+                      ) : (
+                        <div className="form__list-input">
+                          <TextField
+                            className="form__input"
+                            type="text"
+                            onChange={(e) => handleArrayChange(e, index, focusedOn)}
+                            value={item}
+                            name="focusedOn"
+                            placeholder="Enter focused on item"
+                            variant="outlined"
+                          />
 
-            {edit !== 'false' && (
-              <Icon onClick={() => addArrayElement('focusedOn')} color="primary">
-                add_circle
-              </Icon>
-            )}
-          </SectionStyled>
-          <SectionStyled>
-            <h3>Interested in</h3>
+                          <Icon
+                            onClick={() => removeArrayElement('focusedOn', index)}
+                            color="primary"
+                          >
+                            remove_circle
+                          </Icon>
+                        </div>
+                      )}
+                    </li>
+                  ))
+                ) : (
+                  <p>Please add a what you're focused on by clicking on the plus icon below.</p>
+                )}
+              </ul>
 
-            <ul>
-              <li>
-                <p>Democracy/Active citizenship</p>
-              </li>
-              <li>
-                <p>European citizenship</p>
-              </li>
-              <li>
-                <p>Intercultural dialogue</p>
-              </li>
-            </ul>
-          </SectionStyled>
-        </TabPanel>
-        <TabPanel className="tab" value={tabValue} index={1}>
-          Item Two
-        </TabPanel>
-        <TabPanel className="tab" value={tabValue} index={2}>
-          Item Three
-        </TabPanel>
-        <SimilarOrganizations className="organization__similar" />
+              {edit !== 'false' && (
+                <Icon onClick={() => addArrayElement('focusedOn')} color="primary">
+                  add_circle
+                </Icon>
+              )}
+            </SectionStyled>
+            <SectionStyled>
+              <h3>Interested in</h3>
+
+              <ul>
+                <li>
+                  <p>Democracy/Active citizenship</p>
+                </li>
+                <li>
+                  <p>European citizenship</p>
+                </li>
+                <li>
+                  <p>Intercultural dialogue</p>
+                </li>
+              </ul>
+            </SectionStyled>
+          </TabPanel>
+          <TabPanel className="tab" value={tabValue} index={1}>
+            Item Two
+          </TabPanel>
+          <TabPanel className="tab" value={tabValue} index={2}>
+            Item Three
+          </TabPanel>
+          <SimilarOrganizations className="organization__similar" />
+        </section>
       </form>
     </OrganizationStyles>
   );

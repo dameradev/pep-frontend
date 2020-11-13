@@ -13,9 +13,10 @@ const OrganizationSidebar = ({
   website,
   email,
   handleChange,
+  className,
 }) => {
   return (
-    <SidebarStyled>
+    <SidebarStyled className={className}>
       <h1>Contact</h1>
       <ul>
         <li>

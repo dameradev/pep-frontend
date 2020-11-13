@@ -17,7 +17,7 @@ const OrganizationHeader = (props) => {
   const { id, name, email, edit: editValue, slogan, handleChange, handleTabChange, value } = props;
   // console.log(editValue, 'damae');
   return (
-    <HeaderStyled>
+    <HeaderStyled className={props.className}>
       <div className="organization__cover">&nbsp;</div>
       <img
         className="organization__profile-picture"

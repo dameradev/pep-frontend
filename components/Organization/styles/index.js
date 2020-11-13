@@ -4,20 +4,39 @@ import { respondTo } from '../../../utils/respondTo';
 
 export const OrganizationStyles = styled.div`
   form {
-    display: grid;
+    display: flex;
+    flex-direction: column;
 
-    grid-template-columns:
+    /* grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); */
+    /* grid-template-columns:
       [full-start]
       minmax(6rem, 1fr) [center-start]repeat(8, [col-start] minmax(min-content, 18rem) [col-end])
-      [center-end] minmax(6rem, 1fr) [full-end];
-
-    grid-gap: 3rem;
+      [center-end] minmax(6rem, 1fr) [full-end]; */
+    width: 100%;
+    /* grid-gap: 3rem; */
   }
   .organization {
-    &__sidebar {
-      grid-row: 2 / 3;
+    &__header {
     }
+    &__main {
+      max-width: 100%;
+      grid-row: 2 / auto;
+      display: grid;
+      grid-template-columns: 30rem 1fr 30rem;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      gap: 1rem;
 
+      ${respondTo.laptop` 
+        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+      `}
+
+      ${respondTo.tabletMini` 
+        grid-template-columns: 100%;
+      `}
+    }
+    &__sidebar {
+    }
     &__similar {
     }
 
@@ -129,20 +148,18 @@ export const OrganizationStyles = styled.div`
   }
 
   .tab {
-    grid-column: col-start 3 / col-end 6;
     div {
       padding: 0;
     }
-    ${respondTo.laptop` 
+    /* ${respondTo.laptop` 
       grid-column: center-start / col-end 6;
-    `}
+    `} */
     ${respondTo.tabletMini` 
-      grid-column: center-start / center-end;
-    `}
-    ${respondTo.mobilePortrait` 
-      grid-column: full-start / full-end;
-      margin: 0 5%;
-    `}
+      grid-row: 1/2;
+    `}/* ${respondTo.mobilePortrait` 
+      padding: 0 5%;
+      
+    `} */
   }
   .form__list-input {
     display: flex;
@@ -158,8 +175,8 @@ export const OrganizationStyles = styled.div`
 export const HeaderStyled = styled.div`
   /* margin: 10rem 0; */
   /* max-width: 120rem; */
+  width: 100%;
 
-  grid-column: center-start / center-end;
   display: grid;
   /* grid-template-columns: minmax(25rem, 1fr) minmax(25rem, 1fr) minmax(25rem, 1fr); */
   grid-template-rows: 1fr min-content;
@@ -323,8 +340,7 @@ export const HeaderStyled = styled.div`
 
 export const SidebarStyled = styled.aside`
   height: max-content;
-  grid-row: 2 / 3;
-  grid-column: center-start/ col-end 2;
+
   /* box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.1); */
   border: 1px solid ${(props) => props.theme.borderColorPrimary};
   background: #fff;
@@ -333,17 +349,15 @@ export const SidebarStyled = styled.aside`
   padding: 1.5rem 3rem;
 
   ${respondTo.laptop` 
-    grid-column: col-start 7 / center-end;
-    grid-row: 2 / 3;
+    
   `}
 
   ${respondTo.tabletMini` 
-    grid-column: center-start / center-end;
-    grid-row: 3/4;
+    
   `}
   ${respondTo.mobilePortrait` 
-    grid-column: full-start / full-end;
     margin: 0 5%;
+    
   `}
 
   h1 {
@@ -372,11 +386,11 @@ export const SidebarStyled = styled.aside`
 `;
 
 export const SimilarOrganizationStyled = styled.aside`
-  grid-column: col-start 7 / center-end;
+  /* grid-column: col-start 7 / center-end; */
 
-  ${respondTo.tablet` 
+  /* ${respondTo.tablet` 
     display:none;
-  `}
+  `} */
   h1 {
     font-weight: 100;
     font-size: 2rem;
