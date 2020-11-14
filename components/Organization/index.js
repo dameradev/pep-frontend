@@ -167,7 +167,7 @@ const TabPanel = (props) => {
 
 const UPDATE_ORGANIZATION = gql`
   mutation updateOrganization(
-    $id: String
+    $id: Int
     $name: String
     $slogan: String
     $summary: String
@@ -186,8 +186,10 @@ const UPDATE_ORGANIZATION = gql`
       website: $website
       focusedOn: $focusedOn
     ) {
-      id
-      responsiblePerson
+      organizationProfile {
+        id
+        summary
+      }
     }
   }
 `;
@@ -249,13 +251,14 @@ const Organization = (props) => {
 
   useEffect(() => {
     if (props.organization) {
-      if (!responsiblePerson) setResponsiblePerson(props.organization.responsiblePerson);
-      if (!phoneNumber) setPhoneNumber(props.organization.phoneNumber);
-      if (!website) setWebsite(props.organization.website);
-      if (!slogan) setSlogan(props.organization.slogan);
+      if (!responsiblePerson)
+        setResponsiblePerson(props.organization.organizationProfile.responsiblePerson);
+      if (!phoneNumber) setPhoneNumber(props.organization.organizationProfile.phoneNumber);
+      if (!website) setWebsite(props.organization.organizationProfile.website);
+      if (!slogan) setSlogan(props.organization.organizationProfile.slogan);
       if (!name) setName(props.organization.name);
-      if (!summary) setSummary(props.organization.summary);
-      if (!focusedOn) setFocusedOn(props.organization.focusedOn);
+      if (!summary) setSummary(props.organization.organizationProfile.summary);
+      if (!focusedOn) setFocusedOn(props.organization.organizationProfile.focusedOn);
     }
   });
 
@@ -324,6 +327,7 @@ const Organization = (props) => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          console.log(id);
           updateOrganization({
             variables: {
               id,

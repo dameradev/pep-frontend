@@ -301,7 +301,7 @@ const Project = (props) => {
                   <p>{project.totalNumberOfParticipants}</p>
                 </div>
                 <div className="project__countries-table">
-                  {project.nations.map((nation) => (
+                  {project.nations?.map((nation) => (
                     <div>
                       <h4>{nation.name}</h4>
                       <p>Spots left: {nation.numberOfParticipants}</p>

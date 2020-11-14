@@ -9,12 +9,14 @@ const SINGLE_ORGANIZATION_QUERY = gql`
       id
       name
       email
-      responsiblePerson
-      website
-      phoneNumber
-      slogan
-      summary
-      focusedOn
+      organizationProfile {
+        responsiblePerson
+        website
+        phoneNumber
+        slogan
+        summary
+        focusedOn
+      }
       projectsCreated {
         id
         title
