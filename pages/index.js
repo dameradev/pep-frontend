@@ -42,10 +42,13 @@ const Hero = styled.div`
         }
       }
       padding-bottom: 5rem;
+      ${respondTo.mobilePortrait` 
+        display: none;
+      `}
     }
 
     .searchbox-container {
-      height: 100%;
+      height: fit-content;
       width: 60%;
       padding: 20px;
       color: white;
@@ -53,8 +56,8 @@ const Hero = styled.div`
       text-align: center;
 
       ${respondTo.tablet` 
-      width: 100%;
-    `}
+        width: 100%;
+      `}
       select {
         display: block;
         width: 100%;

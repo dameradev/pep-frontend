@@ -538,7 +538,7 @@ class CreateProject extends Component {
                                       const countriesSelected = [...this.state.countriesSelected];
                                       console.log(countriesSelected);
                                       countriesSelected.push({
-                                        country: option.option.value,
+                                        country: option.option?.value,
                                         numberOfParticipants: 0,
                                       });
                                       this.setState({ countriesSelected });

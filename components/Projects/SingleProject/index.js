@@ -214,7 +214,7 @@ const SingleProject = (props) => {
       <h3 className="project__activity">Activity: {activity && activity.split('_').join(' ')}</h3>
       <div className="project__nations">
         <h4>Participating countires</h4>
-        {nations.map(({ name, numberOfParticipants }) => (
+        {nations?.map(({ name, numberOfParticipants }) => (
           <div className="project__nations__country">
             {name}: {numberOfParticipants} participants
             <span>{Icons[name.split(' ')[0]]}</span>

@@ -17,8 +17,8 @@ import {
 import Error from '../ErrorMessage';
 
 const SINGLE_PROJECT_QUERY = gql`
-  query SINGLE_PROJECT_QUERY($id: ID!) {
-    project(where: { id: $id }) {
+  query SINGLE_PROJECT_QUERY($id: Int!) {
+    project(id: $id) {
       title
       description
       costs
@@ -312,13 +312,13 @@ const Project = (props) => {
               <p>{project.location && project.location.address}</p>
             </div>
             <div className="project__organization">
-              <h1>{project.user.name}</h1>
+              <h1>{project.user?.name}</h1>
               <p className="description">
                 yEUth is seated in the beautiful city of Leiden, a city full of young people and
                 students which is actually the target group of our work: Youth Empowerment.
               </p>
               <p>Contact Person: Dame Radev</p>
-              <p>{project.user.email}</p>
+              <p>{project.user?.email}</p>
 
               <div className="buttons-container">
                 <button onClick={() => handleFormDisplay()}>Apply</button>
