@@ -23,6 +23,8 @@ const SEARCH_PROJECTS_QUERY = gql`
       projectType
       costs
       activity
+      startDate
+      endDate
       nations {
         name
         numberOfParticipants

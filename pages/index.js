@@ -288,23 +288,21 @@ const Home = (props) => {
           open={what}
         >
           <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-            What we're about
+            What is our platform about
           </DialogTitle>
           <DialogContent dividers>
             <Typography gutterBottom>
-              Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac
-              facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum
-              at eros.
+              "Platform for Erasmus Projects (PEP)" is a brand new online platform, established in
+              2021, that provides services for connecting organizations and individuals, in order to
+              make it easier for the organizations to find participants for their Erasmus+ projects
+              and to help individuals to find the perfect project for themselves.
             </Typography>
             <Typography gutterBottom>
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-              lacus vel augue laoreet rutrum faucibus dolor auctor.
+              It is available for all types of Erasmus+ projects. It is very simple to use, and it
+              is the fastest way to find participants/projects and the best part... <br />
+              <b>IT IS FREE OF CHARGE!</b>
             </Typography>
-            <Typography gutterBottom>
-              Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-              scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-              auctor fringilla.
-            </Typography>
+            <Typography gutterBottom></Typography>
           </DialogContent>
         </Dialog>
         <Dialog
@@ -313,7 +311,21 @@ const Home = (props) => {
           aria-labelledby="customized-dialog-title"
           open={how}
         >
-          How It works
+          <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+            How it works
+          </DialogTitle>
+          <DialogContent dividers>
+            <Typography gutterBottom>
+              We are a place where organizations and individuals meet. On our platform, as an
+              individual can just register and create your profile and then simply begin to look for
+              a project that will become your best Erasmus+ experience.
+            </Typography>
+            <Typography gutterBottom>
+              For organizations works the same way, with registration and creating your profile you
+              can provide information about your organization and start publishing your projects and
+              looking for potential participants.
+            </Typography>
+          </DialogContent>
         </Dialog>
         <Dialog
           className="dialog"
