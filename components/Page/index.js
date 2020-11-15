@@ -91,14 +91,15 @@ const GlobalStyle = createGlobalStyle`
   }
   @font-face {
     
-    font-family: 'Roboto', sans-serif;
-    
+    /* font-family: 'Roboto', sans-serif; */
+    font-family: 'Poppins', sans-serif;
   }
 
   html {
     box-sizing: border-box;
     font-size: 62.5%;
-    font-family: 'Roboto';
+    /* font-family: 'Roboto'; */
+    font-family: 'Poppins', sans-serif;
     scroll-behavior: smooth;
   }
   *, *:before, *:after {
@@ -109,7 +110,8 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     font-size: 1.6rem;
     line-height: 2;
-    font-family: 'Roboto';
+    /* font-family: 'Roboto'; */
+    font-family: 'Poppins', sans-serif;
     color: #505050;
   }
   h1,
