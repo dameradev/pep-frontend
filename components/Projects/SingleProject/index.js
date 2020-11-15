@@ -154,7 +154,7 @@ const Project = styled.article`
   margin-bottom: 2rem;
   position: relative;
   font-size: 1.4rem;
-  min-height: 40vh;
+  /* min-height: 40vh; */
 
   ${respondTo.mobilePortrait` 
     padding: 2rem;
@@ -168,9 +168,9 @@ const Project = styled.article`
       display: block;
     }
     &__location {
-      text-align: center;
       display: flex;
       align-items: center;
+      padding-bottom: 1rem;
       svg {
         width: 2rem;
         height: 2rem;
