@@ -24,34 +24,40 @@ const OrganizationHeader = (props) => {
         src="https://www.logogenie.net/download/preview/medium/5319421"
       />
       <div className="organization__profile">
-        {editValue === 'false' ? (
-          <h3>{name ? name : 'Your name here'}</h3>
-        ) : (
-          <TextField
-            className="form__input"
-            type="text"
-            onChange={(e) => handleChange(e)}
-            value={name}
-            name="name"
-            placeholder="Organization name"
-            label="Organization name"
-            variant="outlined"
-          />
-        )}
-        {editValue === 'false' ? (
-          <h4>{slogan ? slogan : 'Your slogan here'}</h4>
-        ) : (
-          <TextField
-            className="form__input"
-            type="text"
-            onChange={(e) => handleChange(e)}
-            value={slogan}
-            name="slogan"
-            placeholder="Your slogan"
-            label="Your slogan"
-            variant="outlined"
-          />
-        )}
+        <div>
+          {editValue === 'false' ? (
+            <h3>{name ? name : 'Your name here'}</h3>
+          ) : (
+            <TextField
+              className="form__input"
+              type="text"
+              onChange={(e) => handleChange(e)}
+              value={name}
+              name="name"
+              placeholder="Organization name"
+              label="Organization name"
+              variant="outlined"
+            />
+          )}
+          {editValue === 'false' ? (
+            <h4>{slogan ? slogan : 'Your slogan here'}</h4>
+          ) : (
+            <TextField
+              className="form__input"
+              type="text"
+              onChange={(e) => handleChange(e)}
+              value={slogan}
+              name="slogan"
+              placeholder="Your slogan"
+              label="Your slogan"
+              variant="outlined"
+            />
+          )}
+        </div>
+        <div className="organization__stats">
+          <p>2345 projects</p>
+          <p>10+ upcoming projects</p>
+        </div>
       </div>
 
       <div className="organization__contact">
@@ -60,41 +66,33 @@ const OrganizationHeader = (props) => {
         <button>View Website</button>
       </div>
 
-      {/* <AppBar position="static" color="primary"> */}
-      <Tabs
-        className="organization__nav"
-        value={value}
-        onChange={handleTabChange}
-        indicatorColor="primary"
-        textColor="primary"
-        variant="fullWidth"
-        // aria-label="full width tabs example"
-      >
-        <Tab className="active" label="About us" />
-        <Tab label="Our projects" />
-        <Tab label="History" />
-      </Tabs>
-      {/* </AppBar>/ */}
-
-      <div className="organization__stats">
-        <p>2345 projects</p>
-        <p>10+ upcoming projects</p>
-      </div>
-
-      {editValue === 'false' ? (
-        <Link
-          href={{
-            pathname: `/organization`,
-            query: { id, edit: editValue === 'false' ? true : false },
-          }}
+      <div className="header__bottom">
+        <Tabs
+          className="organization__nav"
+          value={value}
+          onChange={handleTabChange}
+          indicatorColor="primary"
+          textColor="primary"
+          variant="fullWidth"
+          // aria-label="full width tabs example"
         >
-          <a className="organization__edit">
-            {editValue === 'true' ? 'Save changes' : 'Edit page'}
-          </a>
-        </Link>
-      ) : (
-        <button className="organization__edit">Save page</button>
-      )}
+          <Tab className="active" label="About us" />
+          <Tab label="Our projects" />
+          {/* <Tab label="History" /> */}
+        </Tabs>
+        {editValue === 'false' ? (
+          <Link
+            href={{
+              pathname: `/organization`,
+              query: { id, edit: editValue === 'false' ? true : false },
+            }}
+          >
+            <a className="organization__edit">{editValue === 'true' ? 'Save' : 'Edit'}</a>
+          </Link>
+        ) : (
+          <button className="organization__edit">Save page</button>
+        )}
+      </div>
     </HeaderStyled>
   );
 };

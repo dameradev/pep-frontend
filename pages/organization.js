@@ -17,37 +17,6 @@ const SINGLE_ORGANIZATION_QUERY = gql`
         summary
         focusedOn
       }
-      projectsCreated {
-        id
-        title
-        costs
-        totalNumberOfParticipants
-        projectType
-        activity
-        nations {
-          name
-          numberOfParticipants
-        }
-        location {
-          address
-        }
-        description
-        participants {
-          id
-          name
-          email
-        }
-        applicants {
-          id
-          motivation
-          status
-          applicant {
-            id
-            name
-            email
-          }
-        }
-      }
     }
   }
 `;

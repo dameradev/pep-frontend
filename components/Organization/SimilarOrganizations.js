@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { SimilarOrganizationStyled } from './styles';
-const SimilarOrganization = () => {
+const SimilarOrganization = (props) => {
   return (
-    <SimilarOrganizationStyled>
+    <SimilarOrganizationStyled className={props.className}>
       <h1>Similar Organizations</h1>
       <ul className="similar_organizations">
         <li className="similar_organizations__item">

@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
 import Router from 'next/router';
-import { Query, Mutation, useLazyQuery, useMutation } from 'react-apollo';
+import { Query, Mutation, useLazyQuery, useMutation, useQuery } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 
@@ -14,6 +14,8 @@ import { OrganizationStyles } from './styles';
 import OrganizationHeader from './OrganizationHeader';
 import OrganizationSidebar from './OrganizationSidebar';
 import SimilarOrganizations from './SimilarOrganizations';
+
+import SingleProject from '../Projects/SingleProject';
 
 const CHANGE_APPLICANT_STATUS_MUTATION = gql`
   mutation CHANGE_APPLICANT_STATUS_MUTATION(
@@ -195,7 +197,7 @@ const UPDATE_ORGANIZATION = gql`
 `;
 
 const PROJECTS_BY_ORGANIZATION = gql`
-  query projectsByOrganization($organizationId: String) {
+  query projectsByOrganization($organizationId: Int) {
     projectsByOrganization(organizationId: $organizationId) {
       id
       title
@@ -203,28 +205,14 @@ const PROJECTS_BY_ORGANIZATION = gql`
       totalNumberOfParticipants
       projectType
       activity
+      startDate
+      endDate
       nations {
         name
         numberOfParticipants
       }
       location {
         address
-      }
-      description
-      participants {
-        id
-        name
-        email
-      }
-      applicants {
-        id
-        motivation
-        status
-        applicant {
-          id
-          name
-          email
-        }
       }
     }
   }
@@ -247,6 +235,11 @@ const Organization = (props) => {
     setTabValue(value);
   };
 
+  const { loading, error, data } = useQuery(PROJECTS_BY_ORGANIZATION, {
+    variables: { id: props.organization?.id },
+  });
+
+  // console.log(data, 'projects');
   const { id, path, edit } = props;
 
   useEffect(() => {
@@ -446,11 +439,13 @@ const Organization = (props) => {
             </SectionStyled>
           </TabPanel>
           <TabPanel className="tab" value={tabValue} index={1}>
-            Item Two
+            {data?.projectsByOrganization?.map((project) => (
+              <SingleProject key={project.id} project={project} />
+            ))}
           </TabPanel>
-          <TabPanel className="tab" value={tabValue} index={2}>
+          {/* <TabPanel className="tab" value={tabValue} index={2}>
             Item Three
-          </TabPanel>
+          </TabPanel> */}
           <SimilarOrganizations className="organization__similar" />
         </section>
       </form>

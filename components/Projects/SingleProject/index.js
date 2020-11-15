@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import { useQuery } from 'react-apollo';
 import styled from 'styled-components';
+import icons from '../../../utils/icons';
 import Icons from '../../../utils/icons';
 import { GET_ALL_COUNTRIES_QUERY } from '../../../utils/queries';
+
+import { respondTo } from '../../../utils/respondTo';
 // import icons from "../../../utils/icons";
 
 // const Project = styled.div`
@@ -152,6 +155,10 @@ const Project = styled.article`
   position: relative;
   font-size: 1.4rem;
   min-height: 40vh;
+
+  ${respondTo.mobilePortrait` 
+    padding: 2rem;
+  `}
   .project {
     &__title {
       color: ${(props) => props.theme.blue};
@@ -185,11 +192,14 @@ const Project = styled.article`
     &__nations {
       background: #f7f7f7;
       margin: 2rem -3rem;
-      padding: 1.5rem 3rem;
+      padding: 1.5rem 3rem !important;
 
       &__list {
         max-height: 10rem;
         overflow-y: scroll;
+        display: grid;
+        justify-content: space-between;
+        grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
         img {
           width: 3rem;
           height: 1.8rem;
@@ -203,6 +213,9 @@ const Project = styled.article`
       p {
         font-weight: 300;
         width: 30rem;
+        ${respondTo.mobilePortrait` 
+          width: 25rem;
+        `}
         /* padding-left: 1.5rem; */
         display: flex;
         justify-content: space-between;
@@ -217,7 +230,7 @@ const Project = styled.article`
       position: absolute;
       top: 0;
       right: 0;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 1rem !important;
       background: ${(props) => props.theme.blue};
       color: white;
       font-weight: bold;
@@ -234,7 +247,7 @@ const Project = styled.article`
       &-apply {
         background: ${(props) => props.theme.blue};
         font-size: 1.6rem;
-        width: 80%;
+        width: 20rem;
         position: absolute;
         bottom: 0;
         right: 0;
@@ -246,13 +259,17 @@ const Project = styled.article`
       &-save {
         background: ${(props) => props.theme.red};
         font-size: 1.6rem;
-        width: 18%;
+        width: 6rem;
         position: absolute;
         bottom: 0;
         left: 0;
-        padding: 1.5rem;
+        padding: 1.2rem;
         border-bottom-left-radius: 10px;
         border-top-right-radius: 10px;
+        svg {
+          width: 2rem;
+          height: 2rem;
+        }
       }
     }
   }
@@ -332,12 +349,8 @@ const SingleProject = (props) => {
     startDate,
     endDate,
   } = props.project;
-  const {
-    loading,
-    error,
-    data: { countries },
-  } = useQuery(GET_ALL_COUNTRIES_QUERY);
-  console.log(countries);
+  const { loading, error, data } = useQuery(GET_ALL_COUNTRIES_QUERY);
+  // console.log(countries);
 
   return (
     <Project>
@@ -362,9 +375,10 @@ const SingleProject = (props) => {
             return (
               <p>
                 <span>
-                  <img src={countries.find((country) => country.name === name).image} /> {name}
+                  <img src={data?.countries.find((country) => country.name === name).image} />{' '}
+                  {name}
                 </span>
-                <span>{numberOfParticipants} participants</span>
+                <span>{numberOfParticipants} spots</span>
               </p>
             );
             {
@@ -384,7 +398,7 @@ const SingleProject = (props) => {
         {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
       </div>
 
-      <button className="project__btn project__btn-save">Save</button>
+      <button className="project__btn project__btn-save">{icons.SaveProject}</button>
       <button className="project__btn project__btn-apply">Apply Now</button>
     </Project>
   );
