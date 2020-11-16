@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { useQuery } from 'react-apollo';
+import { useMutation, useQuery } from 'react-apollo';
+import gql from 'graphql-tag';
 import styled from 'styled-components';
 import icons from '../../../utils/icons';
 import Icons from '../../../utils/icons';
@@ -145,6 +146,14 @@ import { respondTo } from '../../../utils/respondTo';
     } */
 // `;
 
+const SAVE_PROJECT_MUTATION = gql`
+  mutation SAVE_PROJECT_MUTATION($projectId: Int) {
+    saveProject(projectId: $projectId) {
+      isSaved
+    }
+  }
+`;
+
 const Project = styled.article`
   color: #95989d;
   background: #fff;
@@ -244,6 +253,7 @@ const Project = styled.article`
       border: none;
       text-transform: uppercase;
       color: #fff;
+      outline: none;
       &-apply {
         background: ${(props) => props.theme.blue};
         font-size: 1.6rem;
@@ -350,7 +360,12 @@ const SingleProject = (props) => {
     endDate,
   } = props.project;
   const { loading, error, data } = useQuery(GET_ALL_COUNTRIES_QUERY);
-  // console.log(countries);
+
+  const [saveProject, { data: saveProjectData }] = useMutation(SAVE_PROJECT_MUTATION, {
+    variables: { projectId: id },
+  });
+
+  const isProjectSaved = saveProjectData?.saveProject.isSaved;
 
   return (
     <Project>
@@ -398,7 +413,9 @@ const SingleProject = (props) => {
         {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
       </div>
 
-      <button className="project__btn project__btn-save">{icons.SaveProject}</button>
+      <button className="project__btn project__btn-save" onClick={() => saveProject()}>
+        {isProjectSaved ? icons.SaveProjectFilled : icons.SaveProject}
+      </button>
       <button className="project__btn project__btn-apply">Apply Now</button>
     </Project>
   );
