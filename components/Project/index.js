@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
+import { respondTo } from '../../utils/respondTo';
 
 import {
   TextField,
@@ -15,6 +16,7 @@ import {
 } from '@material-ui/core';
 
 import Error from '../ErrorMessage';
+import SingleProject from '../Projects/SingleProject';
 
 const SINGLE_PROJECT_QUERY = gql`
   query SINGLE_PROJECT_QUERY($id: Int!) {
@@ -25,6 +27,9 @@ const SINGLE_PROJECT_QUERY = gql`
       totalNumberOfParticipants
       projectType
       activity
+      startDate
+      endDate
+      savedProjectUserIds
       nations {
         name
         numberOfParticipants
@@ -64,94 +69,46 @@ const APPLY_FOR_PROJECT_MUTATION = gql`
 `;
 
 const ProjectStyles = styled.div`
-  margin-top: 2rem;
-  display: grid;
-  grid-template-columns:
-    [full-start]
-    minmax(6rem, 1fr) [center-start]repeat(8, [col-start] minmax(min-content, 18rem) [col-end])
-    [center-end] minmax(6rem, 1fr) [full-end];
-  grid-gap: 3rem;
+  /* margin: 2rem 10%; */
+  padding: 2rem 5%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
+  ${respondTo.tabletMini` 
+    padding: 0;
+  `}
+
+  .top {
+    display: flex;
+    gap: 2rem;
+    ${respondTo.tabletMini` 
+      flex-direction:column-reverse;
+      
+    `}
+  }
   .project {
     &__details {
-      padding: 3rem;
-
-      grid-column: center-start / col-end 6;
-
-      border-radius: 5px;
-      background: #fff;
-      box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
-      border: 1px solid ${(props) => props.theme.borderColorPrimary};
-      color: ${(props) => props.theme.darkGrey1};
+      width: 100%;
+      ${respondTo.tabletMini` 
+        margin: 2rem 5%;
+        width: auto;
+      `}
     }
-
-    &__header {
-      margin: -3rem;
-      padding: 3rem;
-      h1 {
-        line-height: 5rem;
-        font-weight: 400;
-      }
-      p {
-        font-size: 1.8rem;
-        color: ${(props) => props.theme.lightGrey1};
-      }
-      border-bottom: 1px solid ${(props) => props.theme.borderColorPrimary};
-    }
-
-    &__description,
-    &__costs {
-      margin-top: 4rem;
-      text-align: justify;
-
-      h2 {
-        font-weight: 400;
-        padding: 2rem 0;
-
-        /* font-size: 2.2rem; */
-      }
-    }
-    &__costs {
-      margin-top: 0;
-    }
-
-    &__nations {
-      margin-top: 3rem;
-    }
-
-    &__totalParticipants {
-      display: flex;
-      align-items: center;
-      font-size: 2rem;
-      padding-bottom: 1rem;
-      h3 {
-        margin-right: 2rem;
-        font-weight: 400;
-      }
-    }
-
-    &__countries-table {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-
-      h4 {
-        font-size: 2rem;
-        font-weight: 500;
-      }
-      p {
-        font-weight: 400;
-        color: ${(props) => props.theme.lightGrey1};
-      }
-    }
-
     &__organization {
-      grid-column: col-start 7 / center-end;
+      max-width: 40rem;
       border-radius: 5px;
       background: #fff;
       box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
       border: 1px solid ${(props) => props.theme.borderColorPrimary};
       color: ${(props) => props.theme.darkGrey1};
       height: max-content;
+      ${respondTo.tabletMini` 
+        max-width: 100%;
+        border-radius: 0;
+        text-align: center;
+      `}
 
       & > * {
         padding: 0 3rem;
@@ -166,6 +123,7 @@ const ProjectStyles = styled.div`
         margin-top: 2rem;
         width: 100%;
         padding: 0;
+
         button {
           width: 50%;
           padding: 2rem 3.5rem;
@@ -176,11 +134,18 @@ const ProjectStyles = styled.div`
           cursor: pointer;
           border-bottom-left-radius: 5px;
 
+          ${respondTo.tabletMini` 
+
+            border-radius: 0;
+          `};
           background: ${(props) => props.theme.blue};
           &:not(:first-of-type) {
             background: ${(props) => props.theme.red};
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 5px;
+            ${respondTo.tabletMini`   
+              border-radius: 0;
+            `};
           }
         }
       }
@@ -189,7 +154,6 @@ const ProjectStyles = styled.div`
 
   .application-form {
     padding: 3rem;
-    grid-column: center-start / col-end 6;
 
     border-radius: 5px;
     background: #fff;
@@ -199,11 +163,17 @@ const ProjectStyles = styled.div`
 
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
+    ${respondTo.tabletMini` 
+      margin: 2rem 5%;
+      width: auto;
+    `}
 
     h2 {
-      padding-bottom: 2rem;
+      padding-bottom: 1.8rem;
+      color: ${(props) => props.theme.blue};
+      font-weight: bold;
     }
-    h2,
+
     h3 {
       font-weight: 300;
     }
@@ -253,79 +223,59 @@ const Project = (props) => {
     GlutenFree: false,
     None: false,
   });
-
-  const handleChange = (event) => {
-    setFoodPreference({ ...foodPreference, [event.target.name]: event.target.checked });
-  };
-
-  const { Vegetarian, Vegan, GlutenFree, None } = foodPreference;
-  const errorFoodPreference = [Vegetarian, Vegan, GlutenFree, None].filter((v) => v).length > 2;
-
-  const formRef = useRef(null);
-
-  const { id } = props;
-
-  const foodProccesed = getKeyFromObject(foodPreference);
-
-  console.log(foodProccesed);
-
   const handleFormDisplay = () => {
     setFormDisplay(true);
     window.scrollTo(0, formRef?.current?.offsetTop);
   };
 
+  const handleChange = (event) => {
+    setFoodPreference({ ...foodPreference, [event.target.name]: event.target.checked });
+  };
+  const {
+    query: { id, apply },
+  } = props;
+
+  useEffect(() => {
+    if (apply === 'true') {
+      handleFormDisplay();
+    }
+  });
+  const { Vegetarian, Vegan, GlutenFree, None } = foodPreference;
+  const errorFoodPreference = [Vegetarian, Vegan, GlutenFree, None].filter((v) => v).length > 2;
+
+  const formRef = useRef(null);
+
+  const foodProccesed = getKeyFromObject(foodPreference);
+
+  console.log(foodProccesed);
+
   return (
-    <Query query={SINGLE_PROJECT_QUERY} variables={{ id }}>
+    <Query query={SINGLE_PROJECT_QUERY} variables={{ id: id }}>
       {({ data: { project } = {}, error, loading }) => {
         return project ? (
           <ProjectStyles>
-            <div className="project__details">
-              <div className="project__header">
-                <h1>{project.title}</h1>
-                <p>{project.projectType.split('_').join(' ')}</p>
-              </div>
-              <div className="project__description">
-                <h2>Description</h2>
-                <p>{project.description}</p>
-              </div>
+            <div className="top">
+              <SingleProject
+                className="project__details"
+                project={project}
+                userId={1}
+                handleFormDisplay={handleFormDisplay}
+              />
+              <div className="project__organization">
+                <h1>{project.user?.name}</h1>
+                <p className="description">
+                  yEUth is seated in the beautiful city of Leiden, a city full of young people and
+                  students which is actually the target group of our work: Youth Empowerment.
+                </p>
+                <p>Contact Person: Dame Radev</p>
+                <p>{project.user?.email}</p>
 
-              <div className="project__costs">
-                <h2>This project relates to</h2>
-                <p>{project.costs}</p>
-              </div>
-              {/* <p>{project.activity}</p> */}
-
-              <div className="project__nations">
-                <div className="project__totalParticipants">
-                  <h3>Total number of participants</h3>
-                  <p>{project.totalNumberOfParticipants}</p>
-                </div>
-                <div className="project__countries-table">
-                  {project.nations?.map((nation) => (
-                    <div>
-                      <h4>{nation.name}</h4>
-                      <p>Spots left: {nation.numberOfParticipants}</p>
-                    </div>
-                  ))}
+                <div className="buttons-container">
+                  <button>Our Projects</button>
+                  <button>View Profile</button>
                 </div>
               </div>
-              <p>{project.location && project.location.address}</p>
             </div>
-            <div className="project__organization">
-              <h1>{project.user?.name}</h1>
-              <p className="description">
-                yEUth is seated in the beautiful city of Leiden, a city full of young people and
-                students which is actually the target group of our work: Youth Empowerment.
-              </p>
-              <p>Contact Person: Dame Radev</p>
-              <p>{project.user?.email}</p>
-
-              <div className="buttons-container">
-                <button onClick={() => handleFormDisplay()}>Apply</button>
-                <button>View Profile</button>
-              </div>
-            </div>
-
             <Mutation
               mutation={APPLY_FOR_PROJECT_MUTATION}
               variables={{

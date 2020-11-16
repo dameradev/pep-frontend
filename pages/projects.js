@@ -22,7 +22,6 @@ const SEARCH_PROJECTS_QUERY = gql`
       id
       title
       projectType
-      costs
       activity
       startDate
       endDate
