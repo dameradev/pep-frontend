@@ -281,7 +281,6 @@ const Home = (props) => {
           </li>
         </ul>
         <Dialog
-          classes="dialog"
           className="dialog"
           onClose={handleClose}
           aria-labelledby="customized-dialog-title"

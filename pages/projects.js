@@ -61,7 +61,7 @@ const Composed = adopt({
 
 const Projects = () => {
   const [projectType, setProjectType] = useState('ESC');
-  const [nation, setNation] = useState();
+  const [nation, setNation] = useState('North Macedonia');
 
   const [searchProjects, { loading, error, data }] = useLazyQuery(SEARCH_PROJECTS_QUERY, {
     variables: {
@@ -75,17 +75,20 @@ const Projects = () => {
         {({ user, localState }) => {
           const me = user.data?.me;
           const nations = localState.data?.countries;
+
           return (
             <>
-              <SearchPanel
-                projectTypes={projectTypes}
-                projectType={projectType}
-                setProjectType={setProjectType}
-                nations={nations}
-                nation={nation}
-                setNation={setNation}
-                submit={searchProjects}
-              />
+              {!localState.loading && (
+                <SearchPanel
+                  projectTypes={projectTypes}
+                  projectType={projectType}
+                  setProjectType={setProjectType}
+                  nations={nations}
+                  nation={nation}
+                  setNation={setNation}
+                  submit={searchProjects}
+                />
+              )}
               <ProjectsList projects={data && data.searchProjects} userId={me?.id} />
             </>
           );

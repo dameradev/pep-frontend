@@ -41,7 +41,7 @@ export default {
   ),
   whatAbout: (
     <svg
-      enable-background="new 0 0 24 24"
+      enableBackground="new 0 0 24 24"
       height="512"
       viewBox="0 0 24 24"
       width="512"
@@ -183,10 +183,9 @@ export default {
       <defs></defs>
       <g transform="translate(0.294 0.25)">
         <path
-          class="a"
           fill="none"
           stroke="#e85565"
-          stroke-width="0.5px"
+          strokeWidth="0.5px"
           d="M88.784,2.064A4.818,4.818,0,0,0,84.811,0c-.071,0-.141,0-.212,0a4.818,4.818,0,0,0-3.973,2.063,3.745,3.745,0,0,0-.063,4.146l3.417,5.471,0,.007a.893.893,0,0,0,1.441,0l0-.007L88.847,6.21a3.745,3.745,0,0,0-.063-4.146ZM84.7,5.461a1.831,1.831,0,0,1-1.938-1.7,1.955,1.955,0,0,1,3.875,0A1.831,1.831,0,0,1,84.7,5.461Z"
           transform="translate(-79.968 0)"
         />

@@ -39,7 +39,6 @@ const ProjectList = styled.div`
 export default class Projects extends Component {
   render() {
     const { projects, userId } = this.props;
-    console.log(projects);
     return (
       <Center>
         <>

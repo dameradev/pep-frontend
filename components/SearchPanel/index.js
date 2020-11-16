@@ -57,6 +57,7 @@ const SearchPanel = (props) => {
           value={props.projectType}
           onChange={(e) => props.setProjectType(e.target.value)}
           helperText="Select type of project"
+          children={props.projectTypes}
         >
           {props.projectTypes.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -69,9 +70,10 @@ const SearchPanel = (props) => {
           // id="standard-select-currency"
           select
           label="Select"
-          value={props.nation}
+          value={props?.nation}
           onChange={(e) => props.setNation(e.target.value)}
           helperText="Select type of project"
+          children={props.nations}
         >
           {props.nations?.map((option) => (
             <MenuItem key={option.name} value={option.name}>

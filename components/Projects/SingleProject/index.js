@@ -331,20 +331,20 @@ const ReadMore = styled.button`
   }
 `;
 
-const countriesList = (data) => {
-  console.log(data);
-  return (
-    data &&
-    data.map(({ name, numberOfParticipants }) => (
-      <li>
-        <p className="participating-countries__country">
-          {name}: {numberOfParticipants} participants
-          <span>{Icons[name.split(' ')[0]]}</span>
-        </p>
-      </li>
-    ))
-  );
-};
+// const countriesList = (data) => {
+//   console.log(data);
+//   return (
+//     data &&
+//     data.map(({ name, numberOfParticipants }) => (
+//       <li>
+//         <p className="participating-countries__country">
+//           {name}: {numberOfParticipants} participants
+//           <span>{Icons[name.split(' ')[0]]}</span>
+//         </p>
+//       </li>
+//     ))
+//   );
+// };
 
 const SingleProject = (props) => {
   const {
@@ -363,9 +363,12 @@ const SingleProject = (props) => {
   const { userId } = props;
   const { loading, error, data } = useQuery(GET_ALL_COUNTRIES_QUERY);
 
-  const [saveProject, { data: saveProjectData }] = useMutation(SAVE_PROJECT_MUTATION, {
-    variables: { projectId: id },
-  });
+  const [saveProject, { data: saveProjectData, loading: saveProjectLoading }] = useMutation(
+    SAVE_PROJECT_MUTATION,
+    {
+      variables: { projectId: id },
+    }
+  );
 
   let isProjectSaved = saveProjectData
     ? saveProjectData.saveProject.isSaved
@@ -392,7 +395,7 @@ const SingleProject = (props) => {
         <div className="project__nations__list">
           {nations?.map(({ name, numberOfParticipants }) => {
             return (
-              <p>
+              <p key={name}>
                 <span>
                   <img src={data?.countries.find((country) => country.name === name).image} />{' '}
                   {name}
@@ -417,7 +420,11 @@ const SingleProject = (props) => {
         {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
       </div>
 
-      <button className="project__btn project__btn-save" onClick={() => saveProject()}>
+      <button
+        className="project__btn project__btn-save"
+        onClick={() => saveProject()}
+        disabled={saveProjectLoading}
+      >
         {isProjectSaved ? icons.SaveProjectFilled : icons.SaveProject}
       </button>
       <button className="project__btn project__btn-apply">Apply Now</button>
