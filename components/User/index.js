@@ -3,16 +3,7 @@ import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-const CURRENT_USER_QUERY = gql`
-  query me($token: String) {
-    me(token: $token) {
-      id
-      email
-      name
-      permissions
-    }
-  }
-`;
+import { CURRENT_USER_QUERY } from '../../utils/queries';
 
 const User = (props) => {
   const [token, setToken] = useState('');

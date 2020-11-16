@@ -7,3 +7,14 @@ export const GET_ALL_COUNTRIES_QUERY = gql`
     }
   }
 `;
+
+export const CURRENT_USER_QUERY = gql`
+  query me($token: String) {
+    me(token: $token) {
+      id
+      email
+      name
+      permissions
+    }
+  }
+`;

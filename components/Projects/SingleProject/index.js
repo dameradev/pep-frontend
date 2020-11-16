@@ -358,14 +358,18 @@ const SingleProject = (props) => {
     id,
     startDate,
     endDate,
+    savedProjectUserIds,
   } = props.project;
+  const { userId } = props;
   const { loading, error, data } = useQuery(GET_ALL_COUNTRIES_QUERY);
 
   const [saveProject, { data: saveProjectData }] = useMutation(SAVE_PROJECT_MUTATION, {
     variables: { projectId: id },
   });
 
-  const isProjectSaved = saveProjectData?.saveProject.isSaved;
+  let isProjectSaved = saveProjectData
+    ? saveProjectData.saveProject.isSaved
+    : savedProjectUserIds.find((id) => id === parseInt(userId));
 
   return (
     <Project>

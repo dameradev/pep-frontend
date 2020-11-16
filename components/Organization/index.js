@@ -207,6 +207,7 @@ const PROJECTS_BY_ORGANIZATION = gql`
       activity
       startDate
       endDate
+      savedProjectUserIds
       nations {
         name
         numberOfParticipants
@@ -440,7 +441,7 @@ const Organization = (props) => {
           </TabPanel>
           <TabPanel className="tab" value={tabValue} index={1}>
             {data?.projectsByOrganization?.map((project) => (
-              <SingleProject key={project.id} project={project} />
+              <SingleProject key={project.id} project={project} userId={props.organization?.id} />
             ))}
           </TabPanel>
           {/* <TabPanel className="tab" value={tabValue} index={2}>

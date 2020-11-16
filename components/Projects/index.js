@@ -38,7 +38,7 @@ const ProjectList = styled.div`
 
 export default class Projects extends Component {
   render() {
-    const { projects } = this.props;
+    const { projects, userId } = this.props;
     console.log(projects);
     return (
       <Center>
@@ -47,7 +47,9 @@ export default class Projects extends Component {
             {!projects ? (
               <h1>Please enter search parameters on the search panel to get results</h1>
             ) : projects.length > 0 ? (
-              projects.map((project) => <SingleProject key={project.id} project={project} />)
+              projects.map((project) => (
+                <SingleProject key={project.id} project={project} userId={userId} />
+              ))
             ) : (
               <h1>No results for your parameters</h1>
             )}

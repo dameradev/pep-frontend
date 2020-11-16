@@ -1,9 +1,10 @@
 import { useState } from 'react';
-
+import { adopt } from 'react-adopt';
 import ProjectsList from '../components/Projects';
 
-import { Query, useLazyQuery, useQuery } from 'react-apollo';
+import { Query, useLazyQuery, useMutation, useQuery } from 'react-apollo';
 
+import User from '../components/User';
 // import { useQuery, useLazyQuery, query } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
@@ -11,7 +12,7 @@ import SearchPanel from '../components/SearchPanel';
 import styled from 'styled-components';
 
 import { projectTypes } from '../config';
-import { GET_ALL_COUNTRIES_QUERY } from '../utils/queries';
+import { GET_ALL_COUNTRIES_QUERY, CURRENT_USER_QUERY } from '../utils/queries';
 
 import { respondTo } from '../utils/respondTo';
 
@@ -25,6 +26,7 @@ const SEARCH_PROJECTS_QUERY = gql`
       activity
       startDate
       endDate
+      savedProjectUserIds
       nations {
         name
         numberOfParticipants
@@ -51,6 +53,12 @@ const ProjectsPage = styled.div`
   `}
 `;
 
+const Composed = adopt({
+  user: ({ render }) => <User>{render}</User>,
+
+  localState: ({ render }) => <Query query={GET_ALL_COUNTRIES_QUERY}>{render}</Query>,
+});
+
 const Projects = () => {
   const [projectType, setProjectType] = useState('ESC');
   const [nation, setNation] = useState();
@@ -61,27 +69,28 @@ const Projects = () => {
       nation: nation,
     },
   });
-
   return (
     <ProjectsPage>
-      <Query query={GET_ALL_COUNTRIES_QUERY}>
-        {({ data: nationsData }) => {
+      <Composed>
+        {({ user, localState }) => {
+          const me = user.data?.me;
+          const nations = localState.data?.countries;
           return (
             <>
               <SearchPanel
                 projectTypes={projectTypes}
                 projectType={projectType}
                 setProjectType={setProjectType}
-                nations={nationsData?.countries}
+                nations={nations}
                 nation={nation}
                 setNation={setNation}
                 submit={searchProjects}
               />
-              <ProjectsList projects={data && data.searchProjects} />
+              <ProjectsList projects={data && data.searchProjects} userId={me?.id} />
             </>
           );
         }}
-      </Query>
+      </Composed>
     </ProjectsPage>
   );
 };
