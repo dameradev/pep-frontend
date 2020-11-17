@@ -8,7 +8,7 @@ import Form from '../styles/Form';
 import ButtonStyled from '../styles/ButtonStyled';
 import Center from '../styles/Center';
 
-import ErrorMessage from '../ErrorMessage';
+import ErrorMessage from '../styles/ErrorMessage';
 import { CURRENT_USER_QUERY } from '../User';
 
 const SIGNIN_MUTATION = gql`
