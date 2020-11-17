@@ -38,6 +38,7 @@ const Project = styled.article`
       border-bottom: 1px solid grey;
       width: 100%;
       display: block;
+      padding-top: 2rem;
     }
     &__location {
       display: flex;
@@ -60,7 +61,9 @@ const Project = styled.article`
         }
       }
     }
-
+    &__description {
+      text-align: justify;
+    }
     &__nations {
       background: #f7f7f7;
       margin: 2rem -3rem;
@@ -72,6 +75,7 @@ const Project = styled.article`
         display: grid;
         justify-content: space-between;
         grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+        column-gap: 1rem;
         img {
           width: 3rem;
           height: 1.8rem;

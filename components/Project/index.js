@@ -40,6 +40,11 @@ const SINGLE_PROJECT_QUERY = gql`
       user {
         name
         email
+        organizationProfile {
+          slogan
+          phoneNumber
+          responsiblePerson
+        }
       }
       # participants {
       #   name
@@ -82,7 +87,7 @@ const ProjectStyles = styled.div`
 
   .top {
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
     ${respondTo.tabletMini` 
       flex-direction:column-reverse;
       
@@ -91,25 +96,67 @@ const ProjectStyles = styled.div`
   .project {
     &__details {
       width: 100%;
+      height: max-content;
       ${respondTo.tabletMini` 
         margin: 2rem 5%;
         width: auto;
       `}
     }
     &__organization {
-      max-width: 40rem;
+      width: 50rem;
       border-radius: 5px;
       background: #fff;
-      box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
-      border: 1px solid ${(props) => props.theme.borderColorPrimary};
+      box-shadow: 0px 3px 6px #00000029;
+
       color: ${(props) => props.theme.darkGrey1};
       height: max-content;
       ${respondTo.tabletMini` 
-        max-width: 100%;
+        width: 100%;
         border-radius: 0;
-        text-align: center;
+
       `}
 
+      .header {
+        padding: 4rem 2rem 1rem 2rem;
+        text-align: center;
+        img {
+          box-shadow: 0px 3px 6px #00000029;
+          border-radius: 50%;
+          width: 15rem;
+          height: 15rem;
+          object-fit: cover;
+        }
+        h2 {
+          font-weight: 200;
+          font-size: 2.4rem;
+        }
+        p {
+          font-size: 1.6rem;
+        }
+      }
+      .contact {
+        padding: 4rem 3rem;
+        h3 {
+          text-transform: uppercase;
+          font-weight: 300;
+          position: relative;
+          &::after {
+            content: '';
+            background: ${(props) => props.theme.red};
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 0.5rem;
+            width: 3rem;
+          }
+        }
+        p {
+          font-style: italic;
+        }
+        & > div {
+          padding: 1rem 0;
+        }
+      }
       & > * {
         padding: 0 3rem;
       }
@@ -126,34 +173,44 @@ const ProjectStyles = styled.div`
 
         button {
           width: 50%;
-          padding: 2rem 3.5rem;
-          font-size: 2rem;
+          padding: 1rem 3.5rem;
+          font-size: 1.6rem;
           outline: none;
           border: none;
           color: #fff;
           cursor: pointer;
-          border-bottom-left-radius: 5px;
 
           ${respondTo.tabletMini` 
 
             border-radius: 0;
           `};
-          background: ${(props) => props.theme.blue};
+          background: ${(props) => props.theme.red};
           &:not(:first-of-type) {
-            background: ${(props) => props.theme.red};
-            border-bottom-left-radius: 0;
+            background: ${(props) => props.theme.blue};
+            /* border-bottom-left-radius: 0;
             border-bottom-right-radius: 5px;
             ${respondTo.tabletMini`   
               border-radius: 0;
-            `};
+            `}; */
           }
         }
       }
     }
   }
+  .form-wrapper {
+    display: flex;
+    gap: 3rem;
+  }
 
+  .placeholder {
+    width: 50rem;
+    ${respondTo.tabletMini` 
+        display: none;
+      `}
+  }
   .application-form {
     padding: 3rem;
+    width: 100%;
 
     border-radius: 5px;
     background: #fff;
@@ -252,6 +309,7 @@ const Project = (props) => {
   return (
     <Query query={SINGLE_PROJECT_QUERY} variables={{ id: id }}>
       {({ data: { project } = {}, error, loading }) => {
+        const { user: { organizationProfile, name, email } = {} } = project || {};
         return project ? (
           <ProjectStyles>
             <div className="top">
@@ -262,17 +320,28 @@ const Project = (props) => {
                 handleFormDisplay={handleFormDisplay}
               />
               <div className="project__organization">
-                <h1>{project.user?.name}</h1>
-                <p className="description">
-                  yEUth is seated in the beautiful city of Leiden, a city full of young people and
-                  students which is actually the target group of our work: Youth Empowerment.
-                </p>
-                <p>Contact Person: Dame Radev</p>
-                <p>{project.user?.email}</p>
-
+                <div className="header">
+                  <img src="https://www.logogenie.net/download/preview/medium/5319421" />
+                  <h2>{project.user?.name}</h2>
+                  <p className="slogan">{project.user.organizationProfile?.slogan}</p>
+                </div>
                 <div className="buttons-container">
                   <button>Our Projects</button>
                   <button>View Profile</button>
+                </div>
+                <div className="contact">
+                  <div className="contact__responsible-person">
+                    <h3>Responsible person</h3>
+                    <p>{organizationProfile.responsiblePerson}</p>
+                  </div>
+                  <div className="contact__email">
+                    <h3>Email</h3>
+                    <p>{email}</p>
+                  </div>
+                  <div className="contact__phone">
+                    <h3>Phone</h3>
+                    <p>{organizationProfile.phoneNumber}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -287,121 +356,122 @@ const Project = (props) => {
               }}
             >
               {(applyForProject, { error, loading }) => (
-                <form
-                  ref={formRef}
-                  id="application-form"
-                  className={`application-form ${formDisplay && 'display-application-form'}`}
-                  onSubmit={async (e) => {
-                    e.preventDefault();
+                <div className="form-wrapper">
+                  <form
+                    ref={formRef}
+                    id="application-form"
+                    className={`application-form ${formDisplay && 'display-application-form'}`}
+                    onSubmit={async (e) => {
+                      e.preventDefault();
 
-                    const res = await applyForProject();
-                    if (res.data?.applyForProject?.id) {
-                    }
-                  }}
-                >
-                  <h2> Please fill out the form in order to apply for this project </h2>
-                  {error && <Error error={error} />}
+                      const res = await applyForProject();
+                      if (res.data?.applyForProject?.id) {
+                      }
+                    }}
+                  >
+                    <h2> Please fill out the form in order to apply for this project </h2>
+                    {error && <Error error={error} />}
 
-                  <div className="application-form__diet">
-                    <FormControl required error={error} component="fieldset">
-                      {errorFoodPreference && (
-                        <p className="error">2 options is the most you can select</p>
-                      )}
-                      <label>Food preference</label>
-                      <FormGroup className="application-form__food-preference">
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={Vegetarian}
-                              onChange={handleChange}
-                              name="Vegetarian"
-                              color="primary"
-                            />
-                          }
-                          label="Vegetarian"
-                        />
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={Vegan}
-                              onChange={handleChange}
-                              name="Vegan"
-                              color="primary"
-                            />
-                          }
-                          label="Vegan"
-                        />
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={GlutenFree}
-                              onChange={handleChange}
-                              name="GlutenFree"
-                              color="primary"
-                            />
-                          }
-                          label="Gluten free"
-                        />
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={None}
-                              onChange={handleChange}
-                              name="None"
-                              color="primary"
-                            />
-                          }
-                          label="None"
-                        />
-                      </FormGroup>
+                    <div className="application-form__diet">
+                      <FormControl required error={error} component="fieldset">
+                        {errorFoodPreference && (
+                          <p className="error">2 options is the most you can select</p>
+                        )}
+                        <label>Food preference</label>
+                        <FormGroup className="application-form__food-preference">
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={Vegetarian}
+                                onChange={handleChange}
+                                name="Vegetarian"
+                                color="primary"
+                              />
+                            }
+                            label="Vegetarian"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={Vegan}
+                                onChange={handleChange}
+                                name="Vegan"
+                                color="primary"
+                              />
+                            }
+                            label="Vegan"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={GlutenFree}
+                                onChange={handleChange}
+                                name="GlutenFree"
+                                color="primary"
+                              />
+                            }
+                            label="Gluten free"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={None}
+                                onChange={handleChange}
+                                name="None"
+                                color="primary"
+                              />
+                            }
+                            label="None"
+                          />
+                        </FormGroup>
 
-                      {/* <FormHelperText>You can display an error</FormHelperText> */}
-                    </FormControl>
-                    <FormLabel component="legend">* Pick one or two</FormLabel>
-                    {/* <Checkbox
+                        {/* <FormHelperText>You can display an error</FormHelperText> */}
+                      </FormControl>
+                      <FormLabel component="legend">* Pick one or two</FormLabel>
+                      {/* <Checkbox
                       // checked={checked}
                       // onChange={handleChange}
                       color="primary"
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                     /> */}
-                  </div>
-                  <TextField
-                    className="textarea-input"
-                    id="filled-multiline-flexible"
-                    label="What's your main motivation for this project"
-                    placeholder="What's your main motivation for this project"
-                    multiline
-                    rowsMax={10}
-                    value={motivation}
-                    onChange={(e) => setMotivation(e.target.value)}
-                    // variant="outlined"
-                  />
+                    </div>
+                    <TextField
+                      className="textarea-input"
+                      id="filled-multiline-flexible"
+                      label="What's your main motivation for this project"
+                      placeholder="What's your main motivation for this project"
+                      multiline
+                      rowsMax={10}
+                      value={motivation}
+                      onChange={(e) => setMotivation(e.target.value)}
+                      // variant="outlined"
+                    />
 
-                  <TextField
-                    className="textarea-input"
-                    id="filled-multiline-flexible"
-                    // label="Project expectations"
-                    placeholder="Briefly explain why you want to participate and what skills you bring to the project"
-                    label="Briefly explain why you want to participate and what skills you bring to the project"
-                    multiline
-                    rowsMax={10}
-                    value={reason}
-                    onChange={(e) => setReason(e.target.value)}
-                    // variant="outlined"
-                  />
-                  <TextField
-                    className="textarea-input"
-                    id="filled-multiline-flexible"
-                    // label="Project expectations"
-                    placeholder="In which way you will implement the skills that you will learn in your everyday life and your society as well "
-                    label="In which way you will implement the skills that you will learn in your everyday life and your society as well "
-                    multiline
-                    rowsMax={10}
-                    value={afterProject}
-                    onChange={(e) => setAfterProject(e.target.value)}
-                    // variant="outlined"
-                  />
-                  {/* <label htmlFor="motivation">
+                    <TextField
+                      className="textarea-input"
+                      id="filled-multiline-flexible"
+                      // label="Project expectations"
+                      placeholder="Briefly explain why you want to participate and what skills you bring to the project"
+                      label="Briefly explain why you want to participate and what skills you bring to the project"
+                      multiline
+                      rowsMax={10}
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                      // variant="outlined"
+                    />
+                    <TextField
+                      className="textarea-input"
+                      id="filled-multiline-flexible"
+                      // label="Project expectations"
+                      placeholder="In which way you will implement the skills that you will learn in your everyday life and your society as well "
+                      label="In which way you will implement the skills that you will learn in your everyday life and your society as well "
+                      multiline
+                      rowsMax={10}
+                      value={afterProject}
+                      onChange={(e) => setAfterProject(e.target.value)}
+                      // variant="outlined"
+                    />
+                    {/* <label htmlFor="motivation">
                       <h3>Motivation letter</h3>
                       <textarea
                         type="motivation"
@@ -412,8 +482,8 @@ const Project = (props) => {
                       >
                         {motivation}
                       </textarea> */}
-                  {/* </label> */}
-                  {/* <label htmlFor="expectations">
+                    {/* </label> */}
+                    {/* <label htmlFor="expectations">
                       <h3>Project expectations</h3>
                       <textarea
                         type="expectations"
@@ -425,10 +495,12 @@ const Project = (props) => {
                         {expectations}
                       </textarea>
                     </label> */}
-                  <Button type="submit" variant="outlined" color="primary">
-                    Submit Application
-                  </Button>
-                </form>
+                    <Button type="submit" variant="outlined" color="primary">
+                      Submit Application
+                    </Button>
+                  </form>
+                  <div className="placeholder">&nbsp;</div>
+                </div>
               )}
             </Mutation>
           </ProjectStyles>
