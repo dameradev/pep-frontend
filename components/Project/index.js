@@ -15,7 +15,7 @@ import {
   FormHelperText,
 } from '@material-ui/core';
 
-import Error from '../ErrorMessage';
+import Error from '../styles/ErrorMessage';
 import SingleProject from '../Projects/SingleProject';
 
 const SINGLE_PROJECT_QUERY = gql`

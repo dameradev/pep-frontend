@@ -6,7 +6,14 @@ import Select from 'react-select';
 import Router from 'next/router';
 import dynamic from 'next/dynamic';
 
-import { TextField, MenuItem } from '@material-ui/core';
+import {
+  TextField,
+  MenuItem,
+  DialogContent,
+  DialogTitle,
+  Dialog,
+  Typography,
+} from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -14,18 +21,18 @@ import { FormWrapper, CountriesStyled } from './styles';
 
 import { respondTo } from '../../../utils/respondTo';
 
+import ErrorMessage from '../../styles/ErrorMessage';
+
 import { GET_ALL_COUNTRIES_QUERY } from '../../../utils/queries';
+
+import * as Yup from 'yup';
+
+import Geosuggest from 'react-geosuggest';
+import styled from 'styled-components';
 
 const LocationPicker = dynamic(() => import('react-location-picker'), {
   ssr: false,
 });
-
-import Geosuggest from 'react-geosuggest';
-// import Form from "../../styles/Form";
-import styled from 'styled-components';
-import Error from '../../ErrorMessage';
-
-import ButtonStyled from '../../styles/ButtonStyled';
 
 const numberOfParticipants = [
   { value: 0, label: '0 Spots left' },
@@ -49,7 +56,7 @@ const CREATE_PROJECT_MUTATION = gql`
     $title: String
     $description: String
     $costs: String
-    $totalNumberOfParticipants: Float
+    $totalNumberOfParticipants: Int
     $projectType: ProjectType
     $activity: specificActivity
     $location: LocationCreateInput
@@ -79,7 +86,6 @@ const CREATE_PROJECT_MUTATION = gql`
 
 const ProjectFormWrapper = styled.div`
   /* background: black; */
-
   .guidelines {
     ${respondTo.tabletMini` 
       display: none;
@@ -259,6 +265,41 @@ const ProjectFormWrapper = styled.div`
   }
 `;
 
+// title: '',
+//                 description: '',
+//                 costs: '',
+//                 totalNumberOfParticipants: '',
+//                 projectType: '',
+//                 activity: '',
+//                 nations: [],
+//                 location: location,
+//                 startDate: new Date(),
+//                 endDate: new Date(),
+
+const ProjectSchema = Yup.object().shape({
+  title: Yup.string()
+    .min(20, 'Title is too short!')
+    .max(100, 'Title is too long!')
+    .required('Title is required'),
+  totalNumberOfParticipants: Yup.number().required(
+    'You must enter the total number of participants attending'
+  ),
+  projectType: Yup.string().required('Project type is required'),
+  activity: Yup.string().required('Activity is required'),
+});
+
+const ErrorValidationMessageStyles = styled.p`
+  color: ${(props) => props.theme.red};
+`;
+const ErrorValidationMessage = (props) => {
+  return (
+    <ErrorValidationMessageStyles>
+      {props.serverError && 'ERROR: '}
+      {props.children}
+    </ErrorValidationMessageStyles>
+  );
+};
+
 class CreateProject extends Component {
   state = {
     countriesSelected: [],
@@ -268,6 +309,15 @@ class CreateProject extends Component {
       lng: 3.9,
     },
     locationSelected: false,
+    dialogOpen: false,
+    errors: [],
+    error: false,
+  };
+
+  handleClose = () => {
+    this.setState({ dialogOpen: false });
+
+    this.setState({ error: false });
   };
 
   onLocationSelect = (locationData) => {
@@ -303,19 +353,43 @@ class CreateProject extends Component {
       <Mutation mutation={CREATE_PROJECT_MUTATION}>
         {(createProject, { loading, error }) => (
           <ProjectFormWrapper>
+            <Dialog
+              className="dialog"
+              onClose={this.handleClose}
+              aria-labelledby="customized-dialog-title"
+              open={this.state.dialogOpen}
+            >
+              <DialogTitle>We are creating your project please wait!</DialogTitle>
+            </Dialog>
+
+            <Dialog
+              className="dialog"
+              onClose={this.handleClose}
+              aria-labelledby="customized-dialog-title"
+              open={this.state.error}
+            >
+              <DialogTitle>
+                <ErrorValidationMessage serverError>{this.state.errors[0]}</ErrorValidationMessage>
+              </DialogTitle>
+            </Dialog>
+
+            {/* <p>{this.state.errors[0]}</p>
+            {this.state.errors.length && <ErrorMessage error={this.state.errors[0]} />} */}
             <Formik
+              disabled={loading}
               initialValues={{
-                title: '',
+                title: 'fdafaksjdfbakljfnakjfnka',
                 description: '',
                 costs: '',
-                totalNumberOfParticipants: '',
-                projectType: '',
-                activity: '',
+                totalNumberOfParticipants: 22,
+                projectType: 'ESC',
+                activity: 'ESC',
                 nations: [],
                 location: location,
                 startDate: new Date(),
                 endDate: new Date(),
               }}
+              validationSchema={ProjectSchema}
               onSubmit={async (values, actions) => {
                 const {
                   title,
@@ -338,6 +412,8 @@ class CreateProject extends Component {
                   })
                 );
 
+                this.setState({ dialogOpen: true });
+
                 createProject({
                   variables: {
                     title,
@@ -351,14 +427,30 @@ class CreateProject extends Component {
                     startDate,
                     endDate,
                   },
-                });
-                // You can access the signup mutation in here now
-                // You can access values.name, values.email, values.password
-                // You can access actions, e.g. actions.setSubmitting(false) once you've finished the mutation
+                })
+                  .then(({ data }) => {
+                    Router.push(`/project?id=${data.createProject.id}`);
+                  })
+                  .catch((res) => {
+                    if (res.graphQLErrors) {
+                      const errors = res.graphQLErrors.map((error) => {
+                        return error.message;
+                      });
+
+                      this.setState({ errors, dialogOpen: false, error: true });
+                    }
+                  });
               }}
             >
-              {({ handleChange, handleSubmit, handleBlur, values, setFieldValue }) => {
-                console.log(values);
+              {({
+                handleChange,
+                handleSubmit,
+                handleBlur,
+                values,
+                setFieldValue,
+                errors,
+                touched,
+              }) => {
                 return (
                   <FormWrapper onSubmit={handleSubmit} className="form">
                     {/* <h1>Please fill in the required information to publish your project!</h1> */}
@@ -370,7 +462,6 @@ class CreateProject extends Component {
 
                       <div className="form__input-group basic-details">
                         <div className="basic-details__title">
-                          {/* <label>Project Title</label> */}
                           <TextField
                             className="form__input"
                             type="text"
@@ -382,7 +473,11 @@ class CreateProject extends Component {
                             id="standard-basic"
                             label="Project Title"
                             variant="standard"
+                            required
                           />
+                          {errors.title && touched.title ? (
+                            <ErrorValidationMessage>{errors.title}</ErrorValidationMessage>
+                          ) : null}
                         </div>
                         <div className="basic-details__dates">
                           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -413,21 +508,17 @@ class CreateProject extends Component {
                               name="endDate"
                               value={values.endDate}
                               onChange={(value) => setFieldValue('endDate', value)}
-                              // KeyboardButtonProps={{
-                              //   'aria-label': 'change date',
-                              // }}
                             />
                           </MuiPickersUtilsProvider>
                         </div>
 
                         <div className="basic-details__type">
-                          {/* <label>Project Type</label> */}
-
                           <TextField
                             className="form__select"
                             id="input"
                             select
                             label="Project Type"
+                            required
                             name="projectType"
                             value={values.projectType}
                             onChange={handleChange}
@@ -439,6 +530,10 @@ class CreateProject extends Component {
                               </MenuItem>
                             ))}
                           </TextField>
+
+                          {errors.projectType && touched.projectType ? (
+                            <ErrorValidationMessage>{errors.projectType}</ErrorValidationMessage>
+                          ) : null}
                         </div>
                         <div className="basic-details__activity">
                           <TextField
@@ -447,6 +542,7 @@ class CreateProject extends Component {
                             select
                             label="Specific activity"
                             name="activity"
+                            required
                             value={values.activity}
                             onChange={handleChange}
                             helperText="Please select type of project"
@@ -457,19 +553,9 @@ class CreateProject extends Component {
                               </MenuItem>
                             ))}
                           </TextField>
-
-                          {/* <label>Specific Activity</label>
-                          <select
-                            name="activity"
-                            value={values.activity}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            style={{ display: 'block' }}
-                          >
-                            {options.map((option) => (
-                              <option value={option.value} label={option.label} />
-                            ))}
-                          </select> */}
+                          {errors.activity && touched.activity ? (
+                            <ErrorValidationMessage>{errors.activity}</ErrorValidationMessage>
+                          ) : null}
                         </div>
                       </div>
 
@@ -518,12 +604,19 @@ class CreateProject extends Component {
                                 <TextField
                                   className="total-participants__input"
                                   id="outlined-multiline-flexible"
-                                  // label=""
+                                  required
+                                  // type="number"
                                   name="totalNumberOfParticipants"
                                   value={values.totalNumberOfParticipants}
                                   onChange={handleChange}
                                   variant="outlined"
                                 />
+                                {errors.totalNumberOfParticipants &&
+                                touched.totalNumberOfParticipants ? (
+                                  <ErrorValidationMessage>
+                                    {errors.totalNumberOfParticipants}
+                                  </ErrorValidationMessage>
+                                ) : null}
                               </div>
 
                               <div className="wrapper">
@@ -533,54 +626,44 @@ class CreateProject extends Component {
                                   options={options && options}
                                   isMulti
                                   isSearchable
-                                  onChange={
-                                    (options, option) => {
-                                      const countriesSelected = [...this.state.countriesSelected];
-                                      console.log(countriesSelected);
-                                      countriesSelected.push({
-                                        country: option.option?.value,
-                                        numberOfParticipants: 0,
-                                      });
-                                      this.setState({ countriesSelected });
-                                    }
-                                    // this.setState({ countriesSelected: {country: option.option.value , numberOfParticipants: 0} })
-                                  }
+                                  required
+                                  onChange={(options, option) => {
+                                    const countriesSelected = [...this.state.countriesSelected];
+                                    console.log(countriesSelected);
+                                    countriesSelected.push({
+                                      country: option.option?.value,
+                                      numberOfParticipants: '',
+                                    });
+                                    this.setState({ countriesSelected });
+                                  }}
                                   placeholder="0 countries selected"
                                 />
                               </div>
 
                               {countriesSelected.length > 0 &&
-                                countriesSelected.map((country) => (
+                                countriesSelected.map((countryParent) => (
                                   <div className="country-block">
-                                    {/* <Select
-                                        name="numberOfParticipants"
-                                        options={numberOfParticipants}
-                                        onChange={(num) => {
-                                          const countriesSelected = [
-                                            ...this.state.countriesSelected,
-                                          ];
-                                          countriesSelected.find(
-                                            (c) => c.country === country.country
-                                          ).numberOfParticipants = num.value;
-                                          this.setState({ countriesSelected });
-                                        }}
-                                        onBlur={handleBlur}
-                                        style={{ display: 'block' }}
-                                      /> */}
-                                    <label>{country.country}</label>
+                                    {console.log(countryParent)}
+                                    <label>{countryParent.country}</label>
                                     <TextField
                                       className="country"
                                       id="standard-basic"
-                                      // label={country.country}
+                                      required
+                                      type="number"
+                                      value={countryParent.numberOfParticipants}
+                                      onChange={(e) => {
+                                        const newCountries = [...this.state.countriesSelected];
+                                        const currentIndex = newCountries.findIndex(
+                                          (countryItem) =>
+                                            countryItem.country === countryParent.country
+                                        );
+                                        newCountries[currentIndex].numberOfParticipants = parseInt(
+                                          e.target.value
+                                        );
+                                        this.setState({ countriesSelected: newCountries });
+                                      }}
                                       variant="outlined"
                                     />
-                                    {/* {numberOfParticipants.map(num => (
-                                            <option
-                                              value={num.value}
-                                              label={num.label}
-                                            />
-                                          ))}
-                                        </select> */}
                                   </div>
                                 ))}
                             </CountriesStyled>
@@ -623,6 +706,11 @@ class CreateProject extends Component {
                         type="submit"
                         disabled={loading}
                         btnColor={(props) => props.theme.blue}
+                        onClick={() => {
+                          if (errors) {
+                            window.scrollTo(0, 0);
+                          }
+                        }}
                       >
                         Publish Project
                       </button>

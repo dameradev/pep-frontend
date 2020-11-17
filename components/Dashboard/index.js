@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import styled from 'styled-components';
 import { TextField, Button, Checkbox } from '@material-ui/core';
 
-import Error from '../ErrorMessage';
+import Error from '../styles/ErrorMessage';
 
 const ALL_ORGANIZATIONS_QUERY = gql`
   query {
@@ -84,7 +84,7 @@ const OrganizationList = styled.ul`
   overflow-y: scroll;
   /* border: 1px solid ${(props) => props.theme.borderColorPrimary}; */
   background: #fff;
-  
+
   /* padding: 1.5rem; */
   .organization {
     &__item {
@@ -101,7 +101,6 @@ const OrganizationList = styled.ul`
         background: #e8e8e8;
         /* ${(props) => props.theme.lightGrey1} */
       }
-
 
       & > li {
         display: flex;
@@ -121,10 +120,10 @@ const OrganizationList = styled.ul`
             label {
               display: flex;
               align-items: center;
-              
+
               p {
-               line-height: 1rem;
-               text-transform: capitalize;
+                line-height: 1rem;
+                text-transform: capitalize;
               }
             }
           }
@@ -137,7 +136,7 @@ const OrganizationList = styled.ul`
       line-height: 2.5rem;
       h3 {
         font-weight: 400;
-        padding-bottom:1rem;
+        padding-bottom: 1rem;
         color: ${(props) => props.theme.darkGrey1};
       }
     }
