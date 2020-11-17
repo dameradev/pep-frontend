@@ -470,6 +470,7 @@ const Organization = (props) => {
     </OrganizationStyles>
   );
 };
+export default Organization;
 
 {
   /* <div>
