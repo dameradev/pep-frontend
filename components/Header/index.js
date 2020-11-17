@@ -37,6 +37,7 @@ const HeaderStyles = styled.header`
   z-index: 100;
   width: 100%;
 
+  box-shadow: 0px 3px 6px #00000029;
   .header {
     width: 90%;
     height: inherit;

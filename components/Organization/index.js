@@ -17,6 +17,8 @@ import SimilarOrganizations from './SimilarOrganizations';
 
 import SingleProject from '../Projects/SingleProject';
 
+import { respondTo } from '../../utils/respondTo';
+
 const CHANGE_APPLICANT_STATUS_MUTATION = gql`
   mutation CHANGE_APPLICANT_STATUS_MUTATION(
     $userId: ID!
@@ -120,24 +122,54 @@ const countriesList = (data) => {
 };
 
 const SectionStyled = styled.section`
-  /* box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1); */
   height: fit-content;
-  border: 1px solid ${(props) => props.theme.borderColorPrimary};
-  background: #fff;
+
   padding: 2rem;
   border-radius: 5px;
   margin-bottom: 2rem;
+
+  background: ${(props) => props.focusedOn && '#F7F7F7'};
+  margin: ${(props) => props.focusedOn && '0 -4rem'};
+  padding: ${(props) => props.focusedOn && '2rem 6rem'};
   h3 {
-    border-bottom: 1px solid ${(props) => props.theme.borderColorPrimary};
     padding-bottom: 1rem;
     margin-bottom: 2rem;
 
-    font-weight: 100;
-    font-size: 2rem;
+    font-weight: 500;
+    font-size: 4rem;
+    color: #585858;
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    &::before {
+      content: '-';
+      position: absolute;
+      left: -3rem;
+    }
+    &::after {
+      content: '';
+      background: ${(props) => props.theme.red};
+      position: absolute;
+      bottom: 2.2rem;
+      z-index: -1;
+      right: -1rem;
+      height: 2rem;
+      width: 10rem;
+      opacity: 0.8;
+    }
+    /* z-index: 10; */
   }
   p {
-    color: ${(props) => props.theme.darkGrey1};
+    color: #95989d;
   }
+
+  ${respondTo.tabletMini`   
+        background: #fff;
+        margin: 0 -4rem;
+        padding: 3rem 6rem;
+        border-radius:0;
+        background: ${(props) => props.focusedOn && '#F7F7F7'};
+    `}
 `;
 
 const usePrevious = (value) => {
@@ -354,16 +386,7 @@ const Organization = (props) => {
           value={tabValue}
         />
         <section className="organization__main">
-          <OrganizationSidebar
-            className="organization__sidebar"
-            edit={edit}
-            responsiblePerson={responsiblePerson}
-            website={website}
-            phoneNumber={phoneNumber}
-            email={props.organization?.email}
-            handleChange={handleChange}
-          />
-          <TabPanel className="tab" value={tabValue} index={0}>
+          <TabPanel className="tab organization__info" value={tabValue} index={0}>
             <SectionStyled>
               <h3>Summary</h3>
               {edit === 'false' ? (
@@ -382,7 +405,7 @@ const Organization = (props) => {
                 />
               )}
             </SectionStyled>
-            <SectionStyled>
+            <SectionStyled className="focused-on" focusedOn>
               <h3>Focused on</h3>
               <ul>
                 {focusedOn?.length ? (
@@ -444,10 +467,19 @@ const Organization = (props) => {
               <SingleProject key={project.id} project={project} userId={props.organization?.id} />
             ))}
           </TabPanel>
+          <OrganizationSidebar
+            className="organization__sidebar"
+            edit={edit}
+            responsiblePerson={responsiblePerson}
+            website={website}
+            phoneNumber={phoneNumber}
+            email={props.organization?.email}
+            handleChange={handleChange}
+          />
           {/* <TabPanel className="tab" value={tabValue} index={2}>
             Item Three
           </TabPanel> */}
-          <SimilarOrganizations className="organization__similar" />
+          {/* <SimilarOrganizations className="organization__similar" /> */}
         </section>
       </form>
     </OrganizationStyles>
