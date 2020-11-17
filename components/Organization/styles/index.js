@@ -58,6 +58,7 @@ export const OrganizationStyles = styled.div`
     }
 
     &__info {
+      max-width: 100%;
       background: #ffffff 0% 0% no-repeat padding-box;
       box-shadow: 0px 3px 6px #00000029;
       padding: 0 4rem;
@@ -65,6 +66,7 @@ export const OrganizationStyles = styled.div`
 
       ${respondTo.tabletMini` 
         padding: 0;
+        box-shadow:none;
       `}
     }
   }

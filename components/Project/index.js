@@ -46,6 +46,18 @@ const SINGLE_PROJECT_QUERY = gql`
           responsiblePerson
         }
       }
+      applicants {
+        motivation
+        reason
+        afterProject
+        foodPreference
+        status
+        applicant {
+          name
+          age
+          nationality
+        }
+      }
       # participants {
       #   name
       # }
@@ -208,14 +220,20 @@ const ProjectStyles = styled.div`
         display: none;
       `}
   }
+
+  .applicant {
+    box-shadow: 0px 3px 6px #00000029;
+    padding: 2rem;
+    margin-bottom: 1rem;
+    background: #fff;
+  }
   .application-form {
     padding: 3rem;
     width: 100%;
+    box-shadow: 0px 3px 6px #00000029;
 
     border-radius: 5px;
     background: #fff;
-    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
-    border: 1px solid ${(props) => props.theme.borderColorPrimary};
     color: ${(props) => props.theme.darkGrey1};
 
     opacity: 0;
@@ -309,7 +327,7 @@ const Project = (props) => {
   return (
     <Query query={SINGLE_PROJECT_QUERY} variables={{ id: id }}>
       {({ data: { project } = {}, error, loading }) => {
-        const { user: { organizationProfile, name, email } = {} } = project || {};
+        const { user: { organizationProfile, name, email } = {}, applicants } = project || {};
         return project ? (
           <ProjectStyles>
             <div className="top">
@@ -345,164 +363,182 @@ const Project = (props) => {
                 </div>
               </div>
             </div>
-            <Mutation
-              mutation={APPLY_FOR_PROJECT_MUTATION}
-              variables={{
-                motivation,
-                reason,
-                afterProject,
-                foodPreference: foodProccesed,
-                projectId: id,
-              }}
-            >
-              {(applyForProject, { error, loading }) => (
-                <div className="form-wrapper">
-                  <form
-                    ref={formRef}
-                    id="application-form"
-                    className={`application-form ${formDisplay && 'display-application-form'}`}
-                    onSubmit={async (e) => {
-                      e.preventDefault();
+            {false && (
+              <Mutation
+                mutation={APPLY_FOR_PROJECT_MUTATION}
+                variables={{
+                  motivation,
+                  reason,
+                  afterProject,
+                  foodPreference: foodProccesed,
+                  projectId: id,
+                }}
+              >
+                {(applyForProject, { error, loading }) => (
+                  <div className="form-wrapper">
+                    <form
+                      ref={formRef}
+                      id="application-form"
+                      className={`application-form ${formDisplay && 'display-application-form'}`}
+                      onSubmit={async (e) => {
+                        e.preventDefault();
 
-                      const res = await applyForProject();
-                      if (res.data?.applyForProject?.id) {
-                      }
-                    }}
-                  >
-                    <h2> Please fill out the form in order to apply for this project </h2>
-                    {error && <Error error={error} />}
+                        const res = await applyForProject();
+                        if (res.data?.applyForProject?.id) {
+                        }
+                      }}
+                    >
+                      <h2> Please fill out the form in order to apply for this project </h2>
+                      {error && <Error error={error} />}
 
-                    <div className="application-form__diet">
-                      <FormControl required error={error} component="fieldset">
-                        {errorFoodPreference && (
-                          <p className="error">2 options is the most you can select</p>
-                        )}
-                        <label>Food preference</label>
-                        <FormGroup className="application-form__food-preference">
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={Vegetarian}
-                                onChange={handleChange}
-                                name="Vegetarian"
-                                color="primary"
-                              />
-                            }
-                            label="Vegetarian"
-                          />
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={Vegan}
-                                onChange={handleChange}
-                                name="Vegan"
-                                color="primary"
-                              />
-                            }
-                            label="Vegan"
-                          />
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={GlutenFree}
-                                onChange={handleChange}
-                                name="GlutenFree"
-                                color="primary"
-                              />
-                            }
-                            label="Gluten free"
-                          />
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={None}
-                                onChange={handleChange}
-                                name="None"
-                                color="primary"
-                              />
-                            }
-                            label="None"
-                          />
-                        </FormGroup>
+                      <div className="application-form__diet">
+                        <FormControl required error={error} component="fieldset">
+                          {errorFoodPreference && (
+                            <p className="error">2 options is the most you can select</p>
+                          )}
+                          <label>Food preference</label>
+                          <FormGroup className="application-form__food-preference">
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={Vegetarian}
+                                  onChange={handleChange}
+                                  name="Vegetarian"
+                                  color="primary"
+                                />
+                              }
+                              label="Vegetarian"
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={Vegan}
+                                  onChange={handleChange}
+                                  name="Vegan"
+                                  color="primary"
+                                />
+                              }
+                              label="Vegan"
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={GlutenFree}
+                                  onChange={handleChange}
+                                  name="GlutenFree"
+                                  color="primary"
+                                />
+                              }
+                              label="Gluten free"
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={None}
+                                  onChange={handleChange}
+                                  name="None"
+                                  color="primary"
+                                />
+                              }
+                              label="None"
+                            />
+                          </FormGroup>
 
-                        {/* <FormHelperText>You can display an error</FormHelperText> */}
-                      </FormControl>
-                      <FormLabel component="legend">* Pick one or two</FormLabel>
-                      {/* <Checkbox
+                          {/* <FormHelperText>You can display an error</FormHelperText> */}
+                        </FormControl>
+                        <FormLabel component="legend">* Pick one or two</FormLabel>
+                        {/* <Checkbox
                       // checked={checked}
                       // onChange={handleChange}
                       color="primary"
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                     /> */}
-                    </div>
-                    <TextField
-                      className="textarea-input"
-                      id="filled-multiline-flexible"
-                      label="What's your main motivation for this project"
-                      placeholder="What's your main motivation for this project"
-                      multiline
-                      rowsMax={10}
-                      value={motivation}
-                      onChange={(e) => setMotivation(e.target.value)}
-                      // variant="outlined"
-                    />
+                      </div>
+                      <TextField
+                        className="textarea-input"
+                        id="filled-multiline-flexible"
+                        label="What's your main motivation for this project"
+                        placeholder="What's your main motivation for this project"
+                        multiline
+                        rowsMax={10}
+                        rows={5}
+                        value={motivation}
+                        onChange={(e) => setMotivation(e.target.value)}
+                        // variant="outlined"
+                      />
 
-                    <TextField
-                      className="textarea-input"
-                      id="filled-multiline-flexible"
-                      // label="Project expectations"
-                      placeholder="Briefly explain why you want to participate and what skills you bring to the project"
-                      label="Briefly explain why you want to participate and what skills you bring to the project"
-                      multiline
-                      rowsMax={10}
-                      value={reason}
-                      onChange={(e) => setReason(e.target.value)}
-                      // variant="outlined"
-                    />
-                    <TextField
-                      className="textarea-input"
-                      id="filled-multiline-flexible"
-                      // label="Project expectations"
-                      placeholder="In which way you will implement the skills that you will learn in your everyday life and your society as well "
-                      label="In which way you will implement the skills that you will learn in your everyday life and your society as well "
-                      multiline
-                      rowsMax={10}
-                      value={afterProject}
-                      onChange={(e) => setAfterProject(e.target.value)}
-                      // variant="outlined"
-                    />
-                    {/* <label htmlFor="motivation">
-                      <h3>Motivation letter</h3>
-                      <textarea
-                        type="motivation"
-                        name="motivation"
-                        id="motivation"
-                        placeholder="Enter here what motivaties you to join this project"
-                        // onChange={this.handleChange}
-                      >
-                        {motivation}
-                      </textarea> */}
-                    {/* </label> */}
-                    {/* <label htmlFor="expectations">
-                      <h3>Project expectations</h3>
-                      <textarea
-                        type="expectations"
-                        name="expectations"
-                        id="expectations"
-                        placeholder="What do you expect to gain from this project"
-                        // onChange={this.handleChange}
-                      >
-                        {expectations}
-                      </textarea>
-                    </label> */}
-                    <Button type="submit" variant="outlined" color="primary">
-                      Submit Application
-                    </Button>
-                  </form>
-                  <div className="placeholder">&nbsp;</div>
-                </div>
-              )}
-            </Mutation>
+                      <TextField
+                        className="textarea-input"
+                        id="filled-multiline-flexible"
+                        // label="Project expectations"
+                        placeholder="Briefly explain why you want to participate and what skills you bring to the project"
+                        label="Briefly explain why you want to participate and what skills you bring to the project"
+                        multiline
+                        rowsMax={10}
+                        rows={5}
+                        value={reason}
+                        onChange={(e) => setReason(e.target.value)}
+                        // variant="outlined"
+                      />
+                      <TextField
+                        className="textarea-input"
+                        id="filled-multiline-flexible"
+                        // label="Project expectations"
+                        placeholder="In which way you will implement the skills that you will learn in your everyday life and your society as well "
+                        label="In which way you will implement the skills that you will learn in your everyday life and your society as well "
+                        multiline
+                        rows={5}
+                        rowsMax={10}
+                        value={afterProject}
+                        onChange={(e) => setAfterProject(e.target.value)}
+                      />
+
+                      <Button type="submit" variant="outlined" color="primary">
+                        Submit Application
+                      </Button>
+                    </form>
+                    <div className="placeholder">&nbsp;</div>
+                  </div>
+                )}
+              </Mutation>
+            )}
+            <div>
+              <h2>Applicants for project</h2>
+              <ul>
+                {applicants.length &&
+                  applicants.map(
+                    ({
+                      motivation,
+                      reason,
+                      foodPreference,
+                      status,
+                      afterProject,
+                      applicant: { name, nationality } = {},
+                    }) => (
+                      <li className="applicant">
+                        <h3>Name</h3>
+                        <p>{name}</p>
+                        <h3>Nationality</h3>
+                        <p>{nationality}</p>
+                        <h3>Motivation</h3>
+                        <p>{motivation}</p>
+                        <h3>Status</h3>
+                        <p>{status}</p>
+                        <h3>Motivation</h3>
+                        <p>{motivation}</p>
+                        <h3>Reason</h3>
+                        <p>{reason}</p>
+                        <h3>After project</h3>
+                        <p>{afterProject}</p>
+                        <h3>Food preference</h3>
+                        {foodPreference.map((foodItem) => (
+                          <p>{foodItem}</p>
+                        ))}
+                      </li>
+                    )
+                  )}
+              </ul>
+            </div>
           </ProjectStyles>
         ) : (
           'Loading..'
