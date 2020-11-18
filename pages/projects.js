@@ -1,43 +1,19 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { adopt } from 'react-adopt';
 import ProjectsList from '../components/Projects';
 
 import { Query, useLazyQuery, useMutation, useQuery } from 'react-apollo';
 
-import User from '../components/User';
-// import { useQuery, useLazyQuery, query } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import SearchPanel from '../components/SearchPanel';
 import styled from 'styled-components';
 
 import { projectTypes } from '../config';
-import { GET_ALL_COUNTRIES_QUERY, CURRENT_USER_QUERY } from '../utils/queries';
+import { GET_ALL_COUNTRIES_QUERY, SEARCH_PROJECTS_QUERY } from '../utils/queries';
 
 import { respondTo } from '../utils/respondTo';
-
-const SEARCH_PROJECTS_QUERY = gql`
-  query SEARCH_PROJECTS_QUERY($nation: String, $projectType: String) {
-    searchProjects(nation: $nation, projectType: $projectType) {
-      id
-      title
-      projectType
-      activity
-      startDate
-      endDate
-      savedProjectUserIds
-      nations {
-        name
-        numberOfParticipants
-      }
-      location {
-        address
-        lat
-        lng
-      }
-    }
-  }
-`;
+import UserContext from '../lib/auth';
 
 const ProjectsPage = styled.div`
   display: grid;
@@ -53,14 +29,14 @@ const ProjectsPage = styled.div`
 `;
 
 const Composed = adopt({
-  user: ({ render }) => <User>{render}</User>,
-
   localState: ({ render }) => <Query query={GET_ALL_COUNTRIES_QUERY}>{render}</Query>,
 });
 
 const Projects = () => {
   const [projectType, setProjectType] = useState('ESC');
   const [nation, setNation] = useState('North Macedonia');
+
+  const user = useContext(UserContext);
 
   const [searchProjects, { loading, error, data }] = useLazyQuery(SEARCH_PROJECTS_QUERY, {
     variables: {
@@ -71,8 +47,7 @@ const Projects = () => {
   return (
     <ProjectsPage>
       <Composed>
-        {({ user, localState }) => {
-          const me = user.data?.me;
+        {({ localState }) => {
           const nations = localState.data?.countries;
 
           return (
@@ -88,7 +63,7 @@ const Projects = () => {
                   submit={searchProjects}
                 />
               )}
-              <ProjectsList projects={data && data.searchProjects} userId={me?.id} />
+              <ProjectsList projects={data?.searchProjects} userId={user?.id} />
             </>
           );
         }}

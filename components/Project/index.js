@@ -18,52 +18,7 @@ import {
 import Error from '../styles/ErrorMessage';
 import SingleProject from '../Projects/SingleProject';
 
-const SINGLE_PROJECT_QUERY = gql`
-  query SINGLE_PROJECT_QUERY($id: Int!) {
-    project(id: $id) {
-      title
-      description
-      costs
-      totalNumberOfParticipants
-      projectType
-      activity
-      startDate
-      endDate
-      savedProjectUserIds
-      nations {
-        name
-        numberOfParticipants
-      }
-      location {
-        address
-      }
-      user {
-        name
-        email
-        organizationProfile {
-          slogan
-          phoneNumber
-          responsiblePerson
-        }
-      }
-      applicants {
-        motivation
-        reason
-        afterProject
-        foodPreference
-        status
-        applicant {
-          name
-          age
-          nationality
-        }
-      }
-      # participants {
-      #   name
-      # }
-    }
-  }
-`;
+import { SINGLE_PROJECT_QUERY } from '../../utils/queries';
 
 const APPLY_FOR_PROJECT_MUTATION = gql`
   mutation APPLY_FOR_PROJECT_MUTATION(

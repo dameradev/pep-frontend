@@ -8,6 +8,8 @@ import Icons from '../../../utils/icons';
 import { GET_ALL_COUNTRIES_QUERY } from '../../../utils/queries';
 
 import { respondTo } from '../../../utils/respondTo';
+import UserContext from '../../../lib/auth';
+import { useContext } from 'react';
 
 const SAVE_PROJECT_MUTATION = gql`
   mutation SAVE_PROJECT_MUTATION($projectId: Int) {
@@ -176,8 +178,13 @@ const SingleProject = (props) => {
     description,
     totalNumberOfParticipants,
   } = props.project;
-  const { userId, handleFormDisplay } = props;
+
+  const { handleFormDisplay } = props;
   const { loading, error, data } = useQuery(GET_ALL_COUNTRIES_QUERY);
+
+  const user = useContext(UserContext);
+
+  const currentUserId = user?.id;
 
   const [saveProject, { data: saveProjectData, loading: saveProjectLoading }] = useMutation(
     SAVE_PROJECT_MUTATION,
@@ -188,7 +195,7 @@ const SingleProject = (props) => {
 
   let isProjectSaved = saveProjectData
     ? saveProjectData.saveProject.isSaved
-    : savedProjectUserIds.find((id) => id === parseInt(userId));
+    : savedProjectUserIds.find((id) => id === parseInt(currentUserId));
 
   return (
     <Project className={props.className}>

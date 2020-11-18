@@ -54,7 +54,8 @@ const OrganizationHeader = (props) => {
             />
           )}
         </div>
-        {userId === id &&
+        {userId &&
+          userId === id &&
           (editValue === 'false' ? (
             <Link
               href={{
@@ -65,7 +66,7 @@ const OrganizationHeader = (props) => {
               <a className="header__edit">{editValue === 'true' ? 'Save' : 'Edit'}</a>
             </Link>
           ) : (
-            <button className="header__edit">Save page</button>
+            <button className="header__edit">Save</button>
           ))}
       </div>
 

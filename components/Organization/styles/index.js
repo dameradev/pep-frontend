@@ -233,7 +233,7 @@ export const SectionStyles = styled.section`
   `}
 `;
 
-export const SidebarStyled = styled.aside`
+export const SidebarStyled = styled.div`
   height: max-content;
 
   background: #fff;

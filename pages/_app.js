@@ -3,6 +3,8 @@ import { ApolloProvider } from 'react-apollo';
 import withData from '../lib/withData';
 import Page from '../components/Page';
 
+import { UserProvider } from '../lib/auth';
+
 class MyApp extends App {
   static async getInitialProps({ Component, ctx, pathname }) {
     let pageProps = {};
@@ -18,9 +20,11 @@ class MyApp extends App {
     const { Component, apollo, pageProps } = this.props;
     return (
       <ApolloProvider client={apollo}>
-        <Page>
-          <Component {...pageProps} />
-        </Page>
+        <UserProvider>
+          <Page>
+            <Component {...pageProps} />
+          </Page>
+        </UserProvider>
       </ApolloProvider>
     );
   }

@@ -33,6 +33,10 @@ const Form = styled.form`
   justify-items: center;
   justify-content: center;
 
+  ${respondTo.tabletMini`
+    width: 100%;
+    
+  `}
   fieldset {
     border: none;
     width: 100%;

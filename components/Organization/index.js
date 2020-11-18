@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect, useRef } from 'react';
+import React, { Component, useState, useEffect, useContext } from 'react';
 import { Query, Mutation, useLazyQuery, useMutation, useQuery } from 'react-apollo';
 import gql from 'graphql-tag';
 import Router from 'next/router';
@@ -12,10 +12,11 @@ import SingleProject from '../Projects/SingleProject';
 import { PROJECTS_BY_ORGANIZATION } from '../../utils/queries';
 import { UPDATE_ORGANIZATION } from '../../utils/mutations';
 import useForm from '../../lib/useForm';
-import useCurrentUser from '../../lib/useCurrentUser';
 
 import { OrganizationStyles, SectionStyles } from './styles';
 import { Box, Typography, TextField, Icon } from '@material-ui/core';
+
+import UserContext from '../../lib/auth';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -28,11 +29,7 @@ const TabPanel = (props) => {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box>{children}</Box>}
     </div>
   );
 };
@@ -63,8 +60,6 @@ const Organization = ({ id, path, edit, organization, organizationProfile }) => 
     interestedIn: organizationProfile.interestedIn,
   });
 
-  const userData = useCurrentUser();
-
   const [updateOrganization] = useMutation(UPDATE_ORGANIZATION);
   const { loading, error, data: { projectsByOrganization } = {} } = useQuery(
     PROJECTS_BY_ORGANIZATION,
@@ -72,6 +67,8 @@ const Organization = ({ id, path, edit, organization, organizationProfile }) => 
       variables: { id: id },
     }
   );
+
+  const user = useContext(UserContext);
 
   const handleTabChange = (event, value) => {
     setTabValue(value);
@@ -147,7 +144,7 @@ const Organization = ({ id, path, edit, organization, organizationProfile }) => 
           handleTabChange={handleTabChange}
           handleChange={updateValue}
           value={tabValue}
-          userId={userData?.id}
+          userId={user?.id}
         />
         <section className={`organization__main ${tabValue === 0 && 'organization__about-us'}`}>
           <TabPanel className="tab organization__info" value={tabValue} index={0}>
