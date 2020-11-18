@@ -1,68 +1,24 @@
 import React, { useEffect } from 'react';
-import { Query, Mutation, useLazyQuery } from 'react-apollo';
+import { Query, Mutation, useLazyQuery, useQuery } from 'react-apollo';
 import Organization from '../components/Organization';
-import gql from 'graphql-tag';
 
-const SINGLE_ORGANIZATION_QUERY = gql`
-  query SINGLE_ORGANIZATION_QUERY($id: ID) {
-    organization(where: { id: $id }) {
-      id
-      name
-      email
-      organizationProfile {
-        responsiblePerson
-        website
-        phoneNumber
-        slogan
-        summary
-        focusedOn
-      }
-    }
-  }
-`;
+import { SINGLE_ORGANIZATION_QUERY } from '../utils/queries';
 
 const OrganizationPage = (props) => {
-  const [getOrganization, { loading, error, data }] = useLazyQuery(SINGLE_ORGANIZATION_QUERY);
+  const { loading, error, data } = useQuery(SINGLE_ORGANIZATION_QUERY, {
+    variables: { id: props.query.id },
+  });
 
-  useEffect(() => {
-    // console.log('inside');
-    if (!data?.organization) {
-      getOrganization();
-      console.log(getOrganization);
-    }
-    console.log(data, 'data');
-    console.log(loading, 'data');
-    console.log(error, 'data');
-    // else if (data) {
-    //   console.log('useEffect');
-    //   if (responsiblePerson === 0) {
-    //     setResponsiblePerson(data?.organization.responsiblePerson);
-    //   }
-
-    //   if (!phoneNumber) {
-    //     setPhoneNumber(data?.organization.phoneNumber);
-    //   }
-
-    //   if (!phoneNumber) {
-    //     setWebsite(data?.organization.website);
-    //   }
-    // }
-    // return () => {
-    //   console.log('finish');
-    // };
-  }, []);
-
-  return (
-    // <ContentContainer>
-    //   <LeftPanel>
+  return !loading ? (
     <Organization
       id={props.query.id}
       path={props.query.path}
       edit={props.query.edit}
-      organization={data?.organization}
+      organization={data.organization}
+      organizationProfile={data.organization?.organizationProfile}
     />
-    //   </LeftPanel>
-    // </ContentContainer>
+  ) : (
+    'Loading'
   );
 };
 

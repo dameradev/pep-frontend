@@ -5,7 +5,17 @@ import { HeaderStyled } from './styles';
 import { Tabs, Tab, TextField } from '@material-ui/core';
 
 const OrganizationHeader = (props) => {
-  const { id, name, email, edit: editValue, slogan, handleChange, handleTabChange, value } = props;
+  const {
+    id,
+    name,
+    email,
+    edit: editValue,
+    slogan,
+    handleChange,
+    handleTabChange,
+    value,
+    userId,
+  } = props;
 
   return (
     <HeaderStyled className={props.className}>
@@ -44,18 +54,19 @@ const OrganizationHeader = (props) => {
             />
           )}
         </div>
-        {editValue === 'false' ? (
-          <Link
-            href={{
-              pathname: `/organization`,
-              query: { id, edit: editValue === 'false' ? true : false },
-            }}
-          >
-            <a className="header__edit">{editValue === 'true' ? 'Save' : 'Edit'}</a>
-          </Link>
-        ) : (
-          <button className="header__edit">Save page</button>
-        )}
+        {userId === id &&
+          (editValue === 'false' ? (
+            <Link
+              href={{
+                pathname: `/organization`,
+                query: { id, edit: editValue === 'false' ? true : false },
+              }}
+            >
+              <a className="header__edit">{editValue === 'true' ? 'Save' : 'Edit'}</a>
+            </Link>
+          ) : (
+            <button className="header__edit">Save page</button>
+          ))}
       </div>
 
       <div className="header__bottom">
@@ -67,9 +78,8 @@ const OrganizationHeader = (props) => {
           textColor="primary"
           variant="fullWidth"
         >
-          <Tab className="active" label="About us" />
-          <Tab label="Our projects" />
-          <Tab label="Applicants" />
+          <Tab className="header__nav__item" label="About us" />
+          <Tab className="header__nav__item" label="Our projects" />
         </Tabs>
       </div>
     </HeaderStyled>
