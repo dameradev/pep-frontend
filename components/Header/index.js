@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import { withRouter } from 'next/router';
 import styled from 'styled-components';
+import NProgress from 'nprogress';
 
 import { IconButton } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
 
 import Nav from '../Nav';
 import Logo from '../Logo';
+
+Router.onRouteChangeStart = NProgress.start;
+Router.onRouteChangeComplete = NProgress.done;
+Router.onRouteChangeError = NProgress.done;
 
 import { respondTo } from '../../utils/respondTo';
 const LoginNav = styled.header`

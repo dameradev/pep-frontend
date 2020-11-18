@@ -4,9 +4,13 @@ import styled from 'styled-components';
 import User from '../User';
 import Singout from '../Signout';
 import { DropDown, DropDownItem } from '../styles/DropDown';
+import gql from 'graphql-tag';
+
+import { SAVE_USER_MUTATION } from '../../utils/mutations';
 
 import { respondTo } from '../../utils/respondTo';
 import MenuLink from './MenuLink';
+import { useMutation } from 'react-apollo';
 const Navigation = styled.nav`
   display: flex;
   align-items: center;
