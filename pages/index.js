@@ -54,11 +54,10 @@ const Hero = styled.div`
       color: white;
       background: rgba(47, 93, 168, 0.5);
       text-align: center;
-
+      overflow: hidden;
       ${respondTo.tablet` 
         width: 100%;
-      `}
-      select {
+      `} select {
         display: block;
         width: 100%;
         height: 4rem;

@@ -31,7 +31,7 @@ const Nav = (props) => {
   return (
     <Navigation className={`${props.className}`}>
       <MenuLink href="/">Home</MenuLink>
-      <MenuLink href="/projects">Projects</MenuLink>
+      <MenuLink href="/search">Search</MenuLink>
       {user && (
         <>
           <MenuLink href="/create-project">Create a project</MenuLink>
