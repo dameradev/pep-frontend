@@ -52,18 +52,17 @@ const Projects = () => {
 
           return (
             <>
-              {!localState.loading && (
-                <SearchPanel
-                  projectTypes={projectTypes}
-                  projectType={projectType}
-                  setProjectType={setProjectType}
-                  nations={nations}
-                  nation={nation}
-                  setNation={setNation}
-                  submit={searchProjects}
-                />
-              )}
-              <ProjectsList projects={data?.searchProjects} userId={user?.id} />
+              <SearchPanel
+                projectTypes={projectTypes}
+                projectType={projectType}
+                setProjectType={setProjectType}
+                nations={nations}
+                nation={nation}
+                setNation={setNation}
+                submit={searchProjects}
+                loading={localState.loading}
+              />
+              <ProjectsList projects={data?.searchProjects} userId={user?.id} loading={loading} />
             </>
           );
         }}

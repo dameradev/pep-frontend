@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
@@ -47,6 +48,21 @@ const ProjectStyles = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  .skeleton {
+    display: grid;
+    grid-template-columns: 1fr 35rem;
+    gap: 3rem;
+    ${respondTo.tabletMini` 
+      grid-template-columns: 1fr;
+    `}
+    .organization-skeleton {
+      ${respondTo.tabletMini` 
+        margin: 0 5%;
+        width: 90%;
+      `}
+    }
+  }
 
   ${respondTo.tabletMini` 
     padding: 0;
@@ -496,7 +512,12 @@ const Project = (props) => {
             </div>
           </ProjectStyles>
         ) : (
-          'Loading..'
+          <ProjectStyles>
+            <div className="skeleton">
+              <Skeleton height={700} className="project-skeleton" />
+              <Skeleton height={700} className="organization-skeleton" />
+            </div>
+          </ProjectStyles>
         );
       }}
     </Query>

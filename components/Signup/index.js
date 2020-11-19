@@ -69,7 +69,7 @@ const Signup = (props) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!type) updateValueManually('type', router.query.user);
+    if (!type && router.query.user) updateValueManually('type', router.query.user);
   });
 
   return (

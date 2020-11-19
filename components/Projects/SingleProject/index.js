@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import Link from 'next/link';
 import Router from 'next/router';
 import { useMutation, useQuery } from 'react-apollo';
@@ -27,7 +28,7 @@ const SingleProject = (props) => {
     totalNumberOfParticipants,
   } = props.project;
 
-  const { handleFormDisplay } = props;
+  const { handleFormDisplay, loading: projectLoading } = props;
   const { loading, error, data } = useQuery(GET_ALL_COUNTRIES_QUERY);
 
   const user = useContext(UserContext);
@@ -45,7 +46,9 @@ const SingleProject = (props) => {
     ? saveProjectData.saveProject.isSaved
     : savedProjectUserIds.find((id) => id === parseInt(currentUserId));
 
-  return (
+  return projectLoading ? (
+    <Skeleton height={350} style={{ marginTop: '2rem' }} />
+  ) : (
     <SingleProjectStyles className={props.className}>
       <Link href={{ pathname: '/project', query: { id } }}>
         <a className="project__title">{title}</a>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
@@ -38,7 +39,7 @@ const ProjectList = styled.div`
 
 export default class Projects extends Component {
   render() {
-    const { projects, userId } = this.props;
+    const { projects, userId, loading } = this.props;
     return (
       <Center>
         <>
@@ -47,7 +48,12 @@ export default class Projects extends Component {
               <h1>Please enter search parameters on the search panel to get results</h1>
             ) : projects.length > 0 ? (
               projects.map((project) => (
-                <SingleProject key={project.id} project={project} userId={userId} />
+                <SingleProject
+                  key={project.id}
+                  project={project}
+                  userId={userId}
+                  loading={loading}
+                />
               ))
             ) : (
               <h1>No results for your parameters</h1>
