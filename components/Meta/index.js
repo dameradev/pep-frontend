@@ -17,10 +17,10 @@ const Meta = (props) => {
         rel="stylesheet"
       />
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-      <script
+      {/* <script
         type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-ufkApsYu5oKF4y4afg5ZCWbaaUyjTYY&libraries=places"
-      ></script>
+      ></script> */}
       {/* <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>  */}
       <title>Platform for Erasmus Projects</title>
     </Head>
