@@ -1,35 +1,33 @@
 import React, { Component } from 'react';
-import Link from 'next/link';
+
 import styled from 'styled-components';
-import User from '../User';
+
 import Singout from '../Signout';
-import { DropDown, DropDownItem } from '../styles/DropDown';
-import gql from 'graphql-tag';
 
-import { SAVE_USER_MUTATION } from '../../lib/mutations';
-
-import { respondTo } from '../../lib/respondTo';
 import MenuLink from './MenuLink';
-import { useMutation } from 'react-apollo';
+
 import { useContext } from 'react';
 import UserContext from '../../lib/auth';
 const Navigation = styled.nav`
   display: flex;
   align-items: center;
   a {
-    padding-left: 2rem;
+    margin-left: 2rem;
     font-size: 1.6rem;
     font-weight: 600;
     color: white;
     text-transform: uppercase;
+    border-bottom: 5px solid transparent;
+    padding-top: 5px;
   }
   a.active {
-    color: ${(props) => props.theme.red};
+    border-bottom: 5px solid ${(props) => props.theme.red};
   }
 `;
 
 const Nav = (props) => {
   const user = useContext(UserContext);
+
   return (
     <Navigation className={`${props.className}`}>
       <MenuLink href="/">Home</MenuLink>

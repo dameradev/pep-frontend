@@ -50,14 +50,26 @@ const theme = {
 
 const StyledPage = styled.div`
   background: #f5f5f5;
-  position: relative;
+  /* position: relative; */
   min-height: 100vh;
   color: ${(props) => props.theme.black};
   padding-top: ${(props) => props.router.route !== '/' && '70px'};
 
+  ${(props) =>
+    props.open &&
+    `&::after {
+    content: '';
+    background: rgba(0, 0, 0, 0.4);
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }`}
   .mobile-nav {
     flex-direction: column;
-    /* align-items: flex-start; */
+    align-items: center;
+    justify-content: center;
     width: 100%;
     /* text-align: left; */
     /* padding: 2rem; */
@@ -68,8 +80,15 @@ const StyledPage = styled.div`
       font-size: 1.6rem;
       text-decoration: none;
       color: grey;
-      /* box-shadow: ${(props) => props.theme.bs}; */
-      /* border-bottom: 1px solid ${(props) => props.theme.colorPrimary}; */
+      margin-left: 0;
+      width: 100%;
+      text-align: center;
+
+      border-bottom: none;
+
+      &.active {
+        color: ${(props) => props.theme.red};
+      }
       &:last-of-type {
         /* margin-bottom: 1rem; */
       }
@@ -148,7 +167,15 @@ const Page = (props) => {
   return (
     <ThemeProvider theme={theme}>
       <MuiThemeProvider theme={MuiTheme}>
-        <StyledPage router={props.router}>
+        <StyledPage
+          router={props.router}
+          open={open}
+          onClick={() => {
+            if (open) {
+              handleDrawerToggle(true);
+            }
+          }}
+        >
           <GlobalStyle />
           <Meta />
           <Header handleDrawerToggle={handleDrawerToggle} drawerOpen={open} />
