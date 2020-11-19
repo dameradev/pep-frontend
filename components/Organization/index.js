@@ -223,7 +223,7 @@ const Organization = ({ id, path, edit, organization, organizationProfile }) => 
               </ul>
             </SectionStyles>
           </TabPanel>
-          <TabPanel className="tab" value={tabValue} index={1}>
+          <TabPanel className="tab projects-tab" value={tabValue} index={1}>
             {projectsByOrganization?.map((project) => (
               <SingleProject key={project.id} project={project} userId={id} />
             ))}

@@ -10,6 +10,12 @@ export const OrganizationStyles = styled.div`
   }
   .tab {
     width: 100%;
+    /* ${(props) => console.log(props)} */
+  }
+  .projects-tab {
+    ${respondTo.tabletMini` 
+      padding: 0 5%;
+    `}
   }
   .organization {
     &__header {
@@ -24,6 +30,7 @@ export const OrganizationStyles = styled.div`
 
       ${respondTo.tabletMini` 
         flex-direction:column;
+        padding: 0;
       `}
     }
 
@@ -33,6 +40,9 @@ export const OrganizationStyles = styled.div`
       `}
     }
     &__sidebar {
+      ${respondTo.tabletMini` 
+        margin:0  5%;
+      `}
     }
     &__similar {
       ${respondTo.laptopSmall` 
@@ -184,9 +194,8 @@ export const SectionStyles = styled.section`
   margin-bottom: 2rem;
 
   background: ${(props) => props.focusedOn && '#F7F7F7'};
-  margin: ${(props) => props.focusedOn && '0 -2rem'};
+  margin: ${(props) => props.focusedOn && '0 -4rem'};
   padding: ${(props) => props.focusedOn && '2rem 6rem'};
-
   h3 {
     padding-bottom: 1rem;
     margin-bottom: 2rem;
@@ -226,9 +235,10 @@ export const SectionStyles = styled.section`
 
   ${respondTo.tabletMini`   
       background: #fff;
-      margin: 0 -2rem;
-      padding: 3rem 4rem;
+      margin: 0 ;
+      padding: 2rem;
       border-radius:0;
+      font-size:1.4rem;
       background: ${(props) => props.focusedOn && '#F7F7F7'};
   `}
 `;
