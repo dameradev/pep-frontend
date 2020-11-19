@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { respondTo } from '../../utils/respondTo';
+import { respondTo } from '../../lib/respondTo';
 
 const loading = keyframes`
   from {

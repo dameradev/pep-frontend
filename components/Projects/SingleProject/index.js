@@ -3,11 +3,11 @@ import Router from 'next/router';
 import { useMutation, useQuery } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-import Icons from '../../../utils/icons';
+import Icons from '../../../lib/icons';
 
-import { GET_ALL_COUNTRIES_QUERY } from '../../../utils/queries';
+import { GET_ALL_COUNTRIES_QUERY } from '../../../lib/queries';
 
-import { respondTo } from '../../../utils/respondTo';
+import { respondTo } from '../../../lib/respondTo';
 import UserContext from '../../../lib/auth';
 import { useContext } from 'react';
 

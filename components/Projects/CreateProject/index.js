@@ -19,11 +19,11 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import { FormWrapper, CountriesStyled } from './styles';
 
-import { respondTo } from '../../../utils/respondTo';
+import { respondTo } from '../../../lib/respondTo';
 
 import ErrorMessage from '../../styles/ErrorMessage';
 
-import { GET_ALL_COUNTRIES_QUERY } from '../../../utils/queries';
+import { GET_ALL_COUNTRIES_QUERY } from '../../../lib/queries';
 
 import * as Yup from 'yup';
 

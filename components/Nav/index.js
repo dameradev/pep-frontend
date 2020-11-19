@@ -6,9 +6,9 @@ import Singout from '../Signout';
 import { DropDown, DropDownItem } from '../styles/DropDown';
 import gql from 'graphql-tag';
 
-import { SAVE_USER_MUTATION } from '../../utils/mutations';
+import { SAVE_USER_MUTATION } from '../../lib/mutations';
 
-import { respondTo } from '../../utils/respondTo';
+import { respondTo } from '../../lib/respondTo';
 import MenuLink from './MenuLink';
 import { useMutation } from 'react-apollo';
 import { useContext } from 'react';

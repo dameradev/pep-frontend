@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Query, Mutation, useLazyQuery, useQuery } from 'react-apollo';
 import Organization from '../components/Organization';
 
-import { SINGLE_ORGANIZATION_QUERY } from '../utils/queries';
+import { SINGLE_ORGANIZATION_QUERY } from '../lib/queries';
 
 const OrganizationPage = (props) => {
   const { loading, error, data } = useQuery(SINGLE_ORGANIZATION_QUERY, {

@@ -15,7 +15,7 @@ Router.onRouteChangeStart = NProgress.start;
 Router.onRouteChangeComplete = NProgress.done;
 Router.onRouteChangeError = NProgress.done;
 
-import { respondTo } from '../../utils/respondTo';
+import { respondTo } from '../../lib/respondTo';
 const LoginNav = styled.header`
   background: ${(props) => props.theme.blue};
   width: 100%;

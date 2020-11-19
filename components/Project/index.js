@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-import { respondTo } from '../../utils/respondTo';
+import { respondTo } from '../../lib/respondTo';
 
 import {
   TextField,
@@ -18,7 +18,7 @@ import {
 import Error from '../styles/ErrorMessage';
 import SingleProject from '../Projects/SingleProject';
 
-import { SINGLE_PROJECT_QUERY } from '../../utils/queries';
+import { SINGLE_PROJECT_QUERY } from '../../lib/queries';
 
 const APPLY_FOR_PROJECT_MUTATION = gql`
   mutation APPLY_FOR_PROJECT_MUTATION(

@@ -5,13 +5,13 @@ import styled from 'styled-components';
 
 import { Dialog, DialogTitle, DialogContent, Typography } from '@material-ui/core';
 
-import Icons from '../utils/icons';
+import Icons from '../lib/icons';
 
 import SearchBox from '../components/SearchBox';
 
 import ButtonStyled from '../components/styles/ButtonStyled';
 
-import { respondTo } from '../utils/respondTo';
+import { respondTo } from '../lib/respondTo';
 
 const Hero = styled.div`
   width: 100%;

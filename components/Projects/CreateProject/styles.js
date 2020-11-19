@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { respondTo } from '../../../utils/respondTo';
+import { respondTo } from '../../../lib/respondTo';
 
 export const FormWrapper = styled.div`
   width: 90%;

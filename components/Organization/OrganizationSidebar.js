@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import icons from '../../utils/icons';
+import icons from '../../lib/icons';
 
 import { SidebarStyled } from './styles';
 

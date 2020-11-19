@@ -9,8 +9,8 @@ import OrganizationSidebar from './OrganizationSidebar';
 import SimilarOrganizations from './SimilarOrganizations';
 import SingleProject from '../Projects/SingleProject';
 
-import { PROJECTS_BY_ORGANIZATION } from '../../utils/queries';
-import { UPDATE_ORGANIZATION } from '../../utils/mutations';
+import { PROJECTS_BY_ORGANIZATION } from '../../lib/queries';
+import { UPDATE_ORGANIZATION } from '../../lib/mutations';
 import useForm from '../../lib/useForm';
 
 import { OrganizationStyles, SectionStyles } from './styles';

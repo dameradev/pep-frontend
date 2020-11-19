@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import Logo from '../Logo';
 import { TextField } from '@material-ui/core';
-import icons from '../../utils/icons';
+import icons from '../../lib/icons';
 
 const FooterStyled = styled.div`
   height: 200px;

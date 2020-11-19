@@ -10,9 +10,9 @@ import SearchPanel from '../components/SearchPanel';
 import styled from 'styled-components';
 
 import { projectTypes } from '../config';
-import { GET_ALL_COUNTRIES_QUERY, SEARCH_PROJECTS_QUERY } from '../utils/queries';
+import { GET_ALL_COUNTRIES_QUERY, SEARCH_PROJECTS_QUERY } from '../lib/queries';
 
-import { respondTo } from '../utils/respondTo';
+import { respondTo } from '../lib/respondTo';
 import UserContext from '../lib/auth';
 
 const ProjectsPage = styled.div`

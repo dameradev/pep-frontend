@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { TextField, MenuItem, Button } from '@material-ui/core';
 
-import { respondTo } from '../../utils/respondTo';
+import { respondTo } from '../../lib/respondTo';
 
 const Panel = styled.div`
   margin-top: 2rem;
