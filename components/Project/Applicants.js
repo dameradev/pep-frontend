@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-apollo';
 
 import { MenuItem, TextField } from '@material-ui/core';
@@ -39,13 +39,33 @@ const Applicants = ({ applicants: propsApplicants, projectId }) => {
     }
   );
 
+  const refs = applicants.reduce((acc, value) => {
+    acc[value.id] = React.createRef();
+    // setRefsState(acc);
+    return acc;
+  }, {});
+  console.log(refs);
   useEffect(() => {
     if (statusChanged) {
       changeApplicantStatus();
     }
   }, [currentStatus, statusChanged]);
 
-  console.log(selectedApplicant);
+  // console.log(selectedApplicant);
+
+  // console.log(refs);
+
+  const handleClick = (id) => {
+    setSelectedApplicant(selectedApplicant === id ? null : id);
+    setStatusChanged(false);
+    console.log(refs[id].current.offsetTop, 'jere');
+    refs[id].current.scrollIntoView({
+      // top: refs[id].current.offsetTop - 600,
+      behavior: 'smooth',
+      block: 'start',
+    });
+    // window.scrollBy(0, -10);
+  };
   return (
     <ApplicantsStyles>
       <div className="applicants__header">
@@ -53,42 +73,44 @@ const Applicants = ({ applicants: propsApplicants, projectId }) => {
         <p>Current applicants {applicants.length}</p>
       </div>
       <ul className="applicants__list">
-        {applicants.map(({ id, status, applicant: { name } }) => (
-          <li>
-            <div
-              className={`applicants__list-item ${status.toLowerCase()} ${
-                selectedApplicant === id && 'selected'
-              }`}
-              onClick={() => {
-                setSelectedApplicant(selectedApplicant === id ? null : id);
-                setStatusChanged(false);
-                console.log('here');
-              }}
-            >
-              {/* <p className="view">View details</p> */}
-              {/* <p className="close"> */}
-              {window.innerWidth < 849 && (
-                <>
-                  <ExpandMoreIcon className="expand expand-more" />
-                  <ExpandLessIcon className="expand expand-less" />
-                </>
-              )}
-              {/* </p> */}
-              <h3>{name}</h3>
-              <p>{status}</p>
-            </div>
+        {applicants.map(({ id, status, applicant: { name } }) => {
+          // const ref = React.createRef();
+          return (
+            <li key={id}>
+              <div
+                ref={refs[id]}
+                className={`applicants__list-item ${status.toLowerCase()} ${
+                  selectedApplicant === id && 'selected'
+                }`}
+                onClick={() => {
+                  handleClick(id);
+                }}
+              >
+                {/* <p className="view">View details</p> */}
+                {/* <p className="close"> */}
+                {window.innerWidth < 849 && (
+                  <>
+                    <ExpandMoreIcon className="expand expand-more" />
+                    <ExpandLessIcon className="expand expand-less" />
+                  </>
+                )}
+                {/* </p> */}
+                <h3>{name}</h3>
+                <p>{status}</p>
+              </div>
 
-            {window.innerWidth < 849 && (
-              <SelectedApplicant
-                isSelected={selectedApplicant === id && 'selected'}
-                selectedApplicant={applicants[selectedApplicant - 1]}
-                setCurrentStatus={setCurrentStatus}
-                setStatusChanged={setStatusChanged}
-                statusLoading={statusLoading}
-              />
-            )}
-          </li>
-        ))}
+              {window.innerWidth < 849 && (
+                <SelectedApplicant
+                  isSelected={selectedApplicant === id && 'selected'}
+                  selectedApplicant={applicants[selectedApplicant - 1]}
+                  setCurrentStatus={setCurrentStatus}
+                  setStatusChanged={setStatusChanged}
+                  statusLoading={statusLoading}
+                />
+              )}
+            </li>
+          );
+        })}
       </ul>
       {window.innerWidth > 849 && (
         <SelectedApplicant
@@ -195,3 +217,33 @@ const SelectedApplicant = ({
 };
 
 export default Applicants;
+
+// ref.current.scrollIntoView({
+//   top: document.getElementById(`applicant-${id}`).offsetTop + 700,
+// });
+
+// console.log(refs);
+// setTimeout(() => ref.current?.scrollIntoView({}), 1000);
+// console.log(listItem.current.getBoundingClientRect());
+// console.log(document.getElementById(`applicant-${id}`).getBoundingClientRect());
+// window.scrollTo(
+//   // ref.current.getBoundingClientRect().y / ref.current.getBoundingClientRect().top,
+//   // ref.current.getBoundingClientRect().y / ref.current.getBoundingClientRect().top
+//   0,
+//   // ref.current.getBoundingClientRect().bottom +
+//   ref.current.getBoundingClientRect().height
+// );
+
+// window.scrollTo(
+//   0,
+//   document.getElementById(`applicant-${id}`).getBoundingClientRect().top +
+//     document.getElementById(`applicant-${id}`).getBoundingClientRect().height
+// );
+
+// console.log(document.getElementById(`applicant-${id}`).offsetTop);
+// window.scrollTo(
+//   0,
+//   document.getElementById(`applicant-${id}`).offsetTop -
+//     ref.current.getBoundingClientRect().height -
+//     ref.current.getBoundingClientRect().top
+// );
