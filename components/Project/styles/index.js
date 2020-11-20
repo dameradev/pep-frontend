@@ -11,6 +11,7 @@ export const ApplicantsStyles = styled.div`
   grid-template-rows: 4rem 1fr;
   ${respondTo.tabletMini`
     grid-template-columns: 1fr;
+    min-height: min-content;
   `}
 
   ${respondTo.mobileSmall`
@@ -59,9 +60,30 @@ export const ApplicantsStyles = styled.div`
         padding: 1rem 2rem;
         border-radius: 10px;
         margin-bottom: 2rem;
+        position: relative;
 
+        ${respondTo.tabletMini`
+          
+          &.selected {
+            margin-bottom: 0;
+            z-index: 10;
+            box-shadow: none !important;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            
+            .expand {
+              &-less {
+                display: block;
+              }
+              &-more {
+                display: none;
+              }
+            }
+          }
+        `};
         h3 {
           font-weight: 400;
+          color: ${(props) => props.theme.blue};
         }
         p {
           text-transform: lowercase;
@@ -71,6 +93,20 @@ export const ApplicantsStyles = styled.div`
             text-transform: capitalize;
           }
         }
+
+        .expand {
+          position: absolute;
+          bottom: 0.5rem;
+          right: 1rem;
+          text-transform: uppercase;
+          /* color: ${(props) => props.theme.blue}; */
+          width: 3rem;
+          height: 3rem;
+          &-less {
+            display: none;
+          }
+        }
+
         &.pending {
           box-shadow: 0px 3px 2px ${(props) => props.theme.orange};
         }
@@ -83,6 +119,9 @@ export const ApplicantsStyles = styled.div`
         &.selected {
           background: ${(props) => props.theme.blue};
           color: #fff;
+          h3 {
+            color: #fff;
+          }
         }
       }
     }
@@ -105,6 +144,13 @@ export const ApplicantsStyles = styled.div`
 
     ${respondTo.tabletMini`
         grid-template-columns: 1fr 1fr;
+        border-top-right-radius: 0;
+        margin-top: -1rem;
+        transform: translateY(-100%);
+        opacity: 0;
+        height: 0;
+        padding: 0;
+        transition: all 0.5s;
     `}
 
     ${respondTo.mobileSmall`
@@ -161,5 +207,14 @@ export const ApplicantsStyles = styled.div`
     &__after {
       grid-column: 1/2;
     }
+
+    &__displayed {
+      transform: translateY(0);
+      opacity: 1;
+      height: 100%;
+      padding: 3rem;
+    }
   }
+  /* .selected {
+  } */
 `;
