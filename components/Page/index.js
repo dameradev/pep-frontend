@@ -33,6 +33,8 @@ const theme = {
   grey: '#3A3A3A',
   blue: '#1565c0',
   red: '#FF5964',
+  orange: '#FFA63E',
+  green: '#89D676',
   borderColorPrimary: '#ccc',
   lightGrey1: '#a0a0a0',
   offWhite: '#EDEDED',
@@ -49,7 +51,7 @@ const theme = {
 };
 
 const StyledPage = styled.div`
-  background: #f5f5f5;
+  /* background: #f5f5f5; */
   /* position: relative; */
   min-height: 100vh;
   color: ${(props) => props.theme.black};

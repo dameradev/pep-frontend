@@ -1,24 +1,5 @@
 import React from 'react';
 
-const CHANGE_APPLICANT_STATUS_MUTATION = gql`
-  mutation CHANGE_APPLICANT_STATUS_MUTATION(
-    $userId: ID!
-    $projectId: ID!
-    $applicantId: ID!
-    $status: String!
-  ) {
-    changeApplicantStatus(
-      userId: $userId
-      projectId: $projectId
-      applicantId: $applicantId
-      status: $status
-    ) {
-      status
-      id
-    }
-  }
-`;
-
 const applicantStatus = ['PENDING', 'ACCEPTED', 'REJECTED'];
 
 class Applicant extends Component {

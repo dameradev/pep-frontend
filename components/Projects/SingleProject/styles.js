@@ -6,7 +6,7 @@ export const SingleProjectStyles = styled.article`
   background: #fff;
   padding: 3rem;
   border-radius: 10px;
-  box-shadow: -1px -1px 3px #ffffff29;
+  box-shadow: 0px 3px 6px #00000029;
   margin-bottom: 2rem;
   position: relative;
   font-size: 1.4rem;

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -20,6 +20,8 @@ import Error from '../styles/ErrorMessage';
 import SingleProject from '../Projects/SingleProject';
 
 import { SINGLE_PROJECT_QUERY } from '../../lib/queries';
+import Applicants from './Applicants';
+import UserContext from '../../lib/auth';
 
 const APPLY_FOR_PROJECT_MUTATION = gql`
   mutation APPLY_FOR_PROJECT_MUTATION(
@@ -286,6 +288,9 @@ const Project = (props) => {
       handleFormDisplay();
     }
   });
+
+  const user = useContext(UserContext);
+
   const { Vegetarian, Vegan, GlutenFree, None } = foodPreference;
   const errorFoodPreference = [Vegetarian, Vegan, GlutenFree, None].filter((v) => v).length > 2;
 
@@ -293,12 +298,12 @@ const Project = (props) => {
 
   const foodProccesed = getKeyFromObject(foodPreference);
 
-  console.log(foodProccesed);
-
   return (
     <Query query={SINGLE_PROJECT_QUERY} variables={{ id: id }}>
       {({ data: { project } = {}, error, loading }) => {
-        const { user: { organizationProfile, name, email } = {}, applicants } = project || {};
+        const { user: { id: userId, organizationProfile, name, email } = {}, applicants } =
+          project || {};
+
         return project ? (
           <ProjectStyles>
             <div className="top">
@@ -334,7 +339,7 @@ const Project = (props) => {
                 </div>
               </div>
             </div>
-            {false && (
+            {user?.id !== userId ? (
               <Mutation
                 mutation={APPLY_FOR_PROJECT_MUTATION}
                 variables={{
@@ -472,44 +477,11 @@ const Project = (props) => {
                   </div>
                 )}
               </Mutation>
+            ) : applicants.length ? (
+              <Applicants applicants={applicants} projectId={id} />
+            ) : (
+              'There are currently no  applicants for this project'
             )}
-            <div>
-              <h2>Applicants for project</h2>
-              <ul>
-                {applicants.length &&
-                  applicants.map(
-                    ({
-                      motivation,
-                      reason,
-                      foodPreference,
-                      status,
-                      afterProject,
-                      applicant: { name, nationality } = {},
-                    }) => (
-                      <li className="applicant">
-                        <h3>Name</h3>
-                        <p>{name}</p>
-                        <h3>Nationality</h3>
-                        <p>{nationality}</p>
-                        <h3>Motivation</h3>
-                        <p>{motivation}</p>
-                        <h3>Status</h3>
-                        <p>{status}</p>
-                        <h3>Motivation</h3>
-                        <p>{motivation}</p>
-                        <h3>Reason</h3>
-                        <p>{reason}</p>
-                        <h3>After project</h3>
-                        <p>{afterProject}</p>
-                        <h3>Food preference</h3>
-                        {foodPreference.map((foodItem) => (
-                          <p>{foodItem}</p>
-                        ))}
-                      </li>
-                    )
-                  )}
-              </ul>
-            </div>
           </ProjectStyles>
         ) : (
           <ProjectStyles>
