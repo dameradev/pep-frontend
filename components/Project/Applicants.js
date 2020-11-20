@@ -15,15 +15,6 @@ const Applicants = ({ applicants: propsApplicants, projectId }) => {
 
   const applicants = propsApplicants.sort((a, b) => a.id - b.id);
 
-  // const {
-  // motivation,
-  // reason,
-  // foodPreference,
-  // status,
-  // afterProject,
-  // id,
-  // applicant: { name, nationality, id: userId },
-  // } = applicants[selectedApplicant - 1];
   const [currentStatus, setCurrentStatus] = useState(status);
   const [statusChanged, setStatusChanged] = useState(false);
 
@@ -38,33 +29,19 @@ const Applicants = ({ applicants: propsApplicants, projectId }) => {
       },
     }
   );
-
-  const refs = applicants.reduce((acc, value) => {
-    acc[value.id] = React.createRef();
-    // setRefsState(acc);
-    return acc;
-  }, {});
-  console.log(refs);
   useEffect(() => {
     if (statusChanged) {
       changeApplicantStatus();
     }
   }, [currentStatus, statusChanged]);
 
-  // console.log(selectedApplicant);
-
-  // console.log(refs);
-
   const handleClick = (id) => {
     setSelectedApplicant(selectedApplicant === id ? null : id);
     setStatusChanged(false);
-    console.log(refs[id].current.offsetTop, 'jere');
-    refs[id].current.scrollIntoView({
-      // top: refs[id].current.offsetTop - 600,
-      behavior: 'smooth',
-      block: 'start',
-    });
-    // window.scrollBy(0, -10);
+
+    setTimeout(() => {
+      window.scrollTo(0, document.getElementById(`applicant-${id}`).offsetTop - 100);
+    }, 600);
   };
   return (
     <ApplicantsStyles>
@@ -74,11 +51,9 @@ const Applicants = ({ applicants: propsApplicants, projectId }) => {
       </div>
       <ul className="applicants__list">
         {applicants.map(({ id, status, applicant: { name } }) => {
-          // const ref = React.createRef();
           return (
-            <li key={id}>
+            <li key={id} id={`applicant-${id}`}>
               <div
-                ref={refs[id]}
                 className={`applicants__list-item ${status.toLowerCase()} ${
                   selectedApplicant === id && 'selected'
                 }`}
@@ -86,8 +61,6 @@ const Applicants = ({ applicants: propsApplicants, projectId }) => {
                   handleClick(id);
                 }}
               >
-                {/* <p className="view">View details</p> */}
-                {/* <p className="close"> */}
                 {window.innerWidth < 849 && (
                   <>
                     <ExpandMoreIcon className="expand expand-more" />
@@ -217,33 +190,3 @@ const SelectedApplicant = ({
 };
 
 export default Applicants;
-
-// ref.current.scrollIntoView({
-//   top: document.getElementById(`applicant-${id}`).offsetTop + 700,
-// });
-
-// console.log(refs);
-// setTimeout(() => ref.current?.scrollIntoView({}), 1000);
-// console.log(listItem.current.getBoundingClientRect());
-// console.log(document.getElementById(`applicant-${id}`).getBoundingClientRect());
-// window.scrollTo(
-//   // ref.current.getBoundingClientRect().y / ref.current.getBoundingClientRect().top,
-//   // ref.current.getBoundingClientRect().y / ref.current.getBoundingClientRect().top
-//   0,
-//   // ref.current.getBoundingClientRect().bottom +
-//   ref.current.getBoundingClientRect().height
-// );
-
-// window.scrollTo(
-//   0,
-//   document.getElementById(`applicant-${id}`).getBoundingClientRect().top +
-//     document.getElementById(`applicant-${id}`).getBoundingClientRect().height
-// );
-
-// console.log(document.getElementById(`applicant-${id}`).offsetTop);
-// window.scrollTo(
-//   0,
-//   document.getElementById(`applicant-${id}`).offsetTop -
-//     ref.current.getBoundingClientRect().height -
-//     ref.current.getBoundingClientRect().top
-// );
