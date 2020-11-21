@@ -24,16 +24,20 @@ const Hero = styled.div`
     height: 100%;
     width: 100%;
 
+    min-height: 65vh;
+
     padding: 10rem 10% 0 10%;
     display: flex;
     justify-content: space-between;
 
     ${respondTo.tablet` 
       flex-direction: column;
+      min-height: unset;
     `}
 
     .searchbox-container {
       height: fit-content;
+      align-self: flex-end;
       max-width: 40rem;
       padding: 3rem;
       color: white;
@@ -102,10 +106,19 @@ const Hero = styled.div`
       h1 {
         color: #fff;
         text-transform: capitalize;
-        font-size: 3rem;
+        font-size: 4rem;
         font-weight: 400;
+        ${respondTo.tablet`
+          justify-self: center;
+        `}
+        ${respondTo.laptopSmall`
+          font-size: 3rem;
+        `}
       }
       .buttons-container {
+        /* ${respondTo.tablet`
+          display: none;
+        `} */
         ${respondTo.tabletMini`
           display: none;
         `}
