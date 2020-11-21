@@ -19,6 +19,10 @@ const Navigation = styled.nav`
     text-transform: uppercase;
     border-bottom: 5px solid transparent;
     padding-top: 5px;
+    transition: all 0.5s;
+    &:hover {
+      color: ${(props) => props.theme.red};
+    }
   }
   a.active {
     border-bottom: 5px solid ${(props) => props.theme.red};

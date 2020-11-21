@@ -22,54 +22,105 @@ const Hero = styled.div`
   .hero-inner {
     width: ${(props) => props.theme.maxWidth};
     height: 100%;
-    margin: 0 auto;
-    padding-top: 100px;
+    width: 100%;
+
+    padding: 10rem 10% 0 10%;
     display: flex;
     justify-content: space-between;
 
     ${respondTo.tablet` 
       flex-direction: column;
-      height: 80vh;
     `}
-
-    .buttons-container {
-      /* padding-top: 5rem; */
-      a {
-        display: flex;
-        flex-direction: column;
-        button {
-          width: 100%;
-        }
-      }
-      padding-bottom: 5rem;
-      ${respondTo.mobilePortrait` 
-        display: none;
-      `}
-    }
 
     .searchbox-container {
       height: fit-content;
-      width: 60%;
-      padding: 20px;
+      max-width: 40rem;
+      padding: 3rem;
       color: white;
       background: rgba(47, 93, 168, 0.5);
       text-align: center;
       overflow: hidden;
+
+      display: flex;
+      flex-direction: column;
+      /* align-items: flex-start; */
       ${respondTo.tablet` 
         width: 100%;
-      `} select {
+        align-self: center;
+      `};
+
+      h2 {
+        align-self: flex-start;
+        font-weight: 300;
+        padding: 1rem 0;
+      }
+      select {
         display: block;
         width: 100%;
         height: 4rem;
         margin-bottom: 1rem;
         font-size: 1.5rem;
+        border-radius: 10px;
+        border: none;
+        color: ${(props) => props.theme.darkgrey1};
+        padding: 0.5rem 1rem;
+        box-shadow: 0px 3px 6px #00000029;
+
+        -moz-appearance: none; /* Firefox */
+        -webkit-appearance: none; /* Safari and Chrome */
+        appearance: none;
       }
       button {
-        width: 50%;
-        margin: 1rem auto;
+        align-self: flex-end;
+        width: max-content;
+        height: max-content;
+        padding: 1.2rem 2rem;
+        /* margin: 1rem auto;x */
         background: ${(props) => props.theme.red};
         border: 3px solid ${(props) => props.theme.red};
+        ${respondTo.tabletMini`
+          width: max-content;
+        `}
       }
+    }
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3rem;
+      ${respondTo.tablet`
+          flex-direction: row;
+        `}
+      ${respondTo.tabletMini`
+          align-items: center;
+          justify-content:center;
+          h1 {
+            text-align:center;
+          }
+        `}
+      h1 {
+        color: #fff;
+        text-transform: capitalize;
+        font-size: 3rem;
+        font-weight: 400;
+      }
+      .buttons-container {
+        ${respondTo.tabletMini`
+          display: none;
+        `}
+      }
+      a {
+        display: flex;
+        flex-direction: column;
+        button {
+          width: 30rem;
+        }
+      }
+
+      padding-bottom: 5rem;
+      ${respondTo.mobilePortrait` 
+        // display: none;
+      `}
     }
   }
 `;
@@ -85,8 +136,7 @@ const BubblesStyled = styled.div`
   .bubbles-list {
     width: ${(props) => props.theme.maxWidth};
 
-    padding: 5rem 0 10rem 0;
-    margin: 0 auto;
+    margin: 10rem auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -217,44 +267,48 @@ const Home = (props) => {
     setFaq(false);
   };
   return (
-    <div>
+    <>
       <Hero>
         <div className="hero-inner">
-          <SearchBox />
-          <div className="buttons-container">
-            <Link
-              href={{
-                pathname: '/auth',
-                query: { path: 'register', user: 'organization' },
-              }}
-            >
-              <a>
-                <ButtonStyled
-                  className="button"
-                  btnColor={(props) => props.theme.blue}
-                  hover={(props) => props.theme.hoverBlue}
-                >
-                  Sign up as an Organization
-                </ButtonStyled>
-              </a>
-            </Link>
-            <Link
-              href={{
-                pathname: '/auth',
-                query: { path: 'register', user: 'participant' },
-              }}
-            >
-              <a>
-                <ButtonStyled
-                  className="button"
-                  btnColor={(props) => props.theme.red}
-                  hover={(props) => props.theme.hoverRed}
-                >
-                  Sign up as a Participant
-                </ButtonStyled>
-              </a>
-            </Link>
+          <div className="left-panel">
+            <h1>Platoform for erasmus Projects</h1>
+            <div className="buttons-container">
+              <Link
+                href={{
+                  pathname: '/auth',
+                  query: { path: 'register', user: 'organization' },
+                }}
+              >
+                <a>
+                  <ButtonStyled
+                    className="button"
+                    btnColor={(props) => props.theme.blue}
+                    hover={(props) => props.theme.hoverBlue}
+                  >
+                    Sign up as an Organization
+                  </ButtonStyled>
+                </a>
+              </Link>
+              <Link
+                href={{
+                  pathname: '/auth',
+                  query: { path: 'register', user: 'participant' },
+                }}
+              >
+                <a>
+                  <ButtonStyled
+                    className="button"
+                    btnColor={(props) => props.theme.red}
+                    hover={(props) => props.theme.hoverRed}
+                  >
+                    Sign up as a Participant
+                  </ButtonStyled>
+                </a>
+              </Link>
+            </div>
           </div>
+
+          <SearchBox />
         </div>
       </Hero>
       {/* <Inner> */}
@@ -264,7 +318,7 @@ const Home = (props) => {
             <div>
               <span className="bubbles-icon">{Icons.whatAbout}</span>
             </div>
-            <p>What is Youth Network about?</p>
+            <p>What is PEP about?</p>
           </li>
           <li onClick={() => handleClickOpen('how')}>
             <div>
@@ -276,7 +330,7 @@ const Home = (props) => {
             <div>
               <span className="bubbles-icon">{Icons.questionMark}</span>
             </div>
-            <p>Frequently Asked Questions</p>
+            <p>FAQ</p>
           </li>
         </ul>
         <Dialog
@@ -363,7 +417,7 @@ const Home = (props) => {
         </div>
       </Testamonials>
       {/* </Inner> */}
-    </div>
+    </>
   );
 };
 
