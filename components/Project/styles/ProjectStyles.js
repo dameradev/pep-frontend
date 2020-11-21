@@ -10,6 +10,7 @@ const ProjectStyles = styled.div`
   justify-content: space-between;
 
   ${respondTo.tabletMini` 
+      padding: 0;
       .project-organization {
         order: 3;
       }
@@ -38,6 +39,7 @@ const ProjectStyles = styled.div`
     gap: 3rem;
     ${respondTo.tabletMini` 
       flex-direction:column;
+      gap:0;
       
     `}
   }
@@ -45,10 +47,6 @@ const ProjectStyles = styled.div`
     &__details {
       width: 100%;
       height: max-content;
-      ${respondTo.tabletMini` 
-        margin: 2rem 5%;
-        width: auto;
-      `}
     }
     &__organization {
       width: 50rem;

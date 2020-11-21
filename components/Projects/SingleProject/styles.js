@@ -12,9 +12,16 @@ export const SingleProjectStyles = styled.article`
   font-size: 1.4rem;
   /* min-height: 40vh; */
 
+  ${respondTo.tabletMini` 
+    border-radius: 0;
+    box-shadow: unset;
+    // border-bottom: 1px solid grey;
+    margin-bottom: 0;
+  `}
   ${respondTo.mobilePortrait` 
-  padding: 2rem;
-`}
+    padding: 2rem;
+  `}
+
   .project {
     &__title {
       color: ${(props) => props.theme.blue};
@@ -38,6 +45,7 @@ export const SingleProjectStyles = styled.article`
     &__details {
       display: flex;
       justify-content: space-between;
+
       h3 {
         span {
           font-weight: 100;
@@ -92,6 +100,9 @@ export const SingleProjectStyles = styled.article`
       font-weight: bold;
       border-bottom-left-radius: 10px;
       border-top-right-radius: 10px;
+      ${respondTo.tabletMini` 
+        border-radius: 0;
+      `}
     }
 
     &__costs {
@@ -111,6 +122,7 @@ export const SingleProjectStyles = styled.article`
       text-transform: uppercase;
       color: #fff;
       outline: none;
+
       &-apply {
         background: ${(props) => props.theme.blue};
         font-size: 1.6rem;
@@ -133,11 +145,15 @@ export const SingleProjectStyles = styled.article`
         padding: 1.2rem;
         border-bottom-left-radius: 10px;
         border-top-right-radius: 10px;
+
         svg {
           width: 2rem;
           height: 2rem;
         }
       }
+      ${respondTo.tabletMini` 
+        border-radius: 0;
+      `}
     }
   }
   .section-title {
