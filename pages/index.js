@@ -65,6 +65,7 @@ const Hero = styled.div`
         color: ${(props) => props.theme.darkgrey1};
         padding: 0.5rem 1rem;
         box-shadow: 0px 3px 6px #00000029;
+        background: #fff;
 
         -moz-appearance: none; /* Firefox */
         -webkit-appearance: none; /* Safari and Chrome */
