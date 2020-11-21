@@ -35,6 +35,7 @@ const FooterStyled = styled.div`
 
   ${respondTo.tabletMini`
     flex-direction: column;
+    padding: 2rem 5rem;
   `}
   color: #fff;
 
@@ -47,13 +48,25 @@ const FooterStyled = styled.div`
       flex-direction: column;
       align-items:center !important;
       width: 100%;
-      margin-bottom: 3rem;
+      margin-bottom: 3rem; 
     `}
   }
 
   .logo {
     color: #fff;
     line-height: 5rem;
+    font-weight: 400;
+    font-size: 2.4rem;
+    text-transform: capitalize;
+    ${respondTo.tabletMini`
+      border-bottom: 1px solid #fff;
+      margin: 0 -5rem;
+      padding: 2rem 1rem;
+    `}
+
+    ${respondTo.mobileSmall`
+      font-size: 2.2rem;
+    `}
   }
 
   nav {
@@ -64,6 +77,9 @@ const FooterStyled = styled.div`
     text-align: left;
     ${respondTo.tabletMini`
       text-align: center;
+      ul {
+        padding-top: 2rem;
+      }
     `}
     width: 100%;
     a {
@@ -73,6 +89,16 @@ const FooterStyled = styled.div`
   }
 
   .social-media {
+    ${respondTo.tabletMini`
+      display: flex;
+    
+      span {
+        display: none;
+      }
+      li {
+        padding: 0 1rem;
+      }
+    `}
     li {
       display: flex;
 
@@ -102,30 +128,42 @@ export default class Footer extends Component {
     return (
       <FooterStyled>
         <div className="nav-social">
-          <Logo className="logo" />
           <nav>
+            <h3 className="logo">Platform for erasmus projects</h3>
             <ul>
-              <li>
-                <Link href="/">
-                  <a>About us</a>
-                </Link>
-              </li>
-              <li>
-                <Link href="/">
-                  <a>Contact</a>
-                </Link>
-              </li>
               <li>
                 <Link href="/organization">
                   <a>Terms & Conditions</a>
                 </Link>
               </li>
+              <li>
+                <Link href="/">
+                  <a>About us</a>
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/">
+                  <a>FAQ</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/">
+                  <a>How it works</a>
+                </Link>
+              </li>
             </ul>
           </nav>
           <ul className="social-media">
-            <li>{icons.facebook} Facebook</li>
-            <li>{icons.instagram} Instagram</li>
-            <li>{icons.twitter} Twitter</li>
+            <li>
+              {icons.facebook} <span>Facebook</span>
+            </li>
+            <li>
+              {icons.instagram} <span>Instagram</span>
+            </li>
+            <li>
+              {icons.twitter} <span>Twitter</span>
+            </li>
           </ul>
         </div>
 
