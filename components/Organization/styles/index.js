@@ -248,7 +248,7 @@ export const SidebarStyled = styled.div`
 
   background: #fff;
   border-radius: 10px;
-  box-shadow: -1px -1px 3px #ffffff29;
+  box-shadow: 0px 3px 6px #00000029;
 
   padding: 1.5rem 3rem;
 

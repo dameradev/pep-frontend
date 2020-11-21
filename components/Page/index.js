@@ -194,7 +194,7 @@ const Page = (props) => {
             </List>
           </Drawer>
           {props.children}
-          {/* <Footer /> */}
+          <Footer />
         </StyledPage>
       </MuiThemeProvider>
     </ThemeProvider>

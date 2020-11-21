@@ -17,6 +17,8 @@ const OrganizationHeader = (props) => {
     userId,
   } = props;
 
+  console.log(userId, id);
+
   return (
     <HeaderStyled className={props.className}>
       <div className="header__profile">
