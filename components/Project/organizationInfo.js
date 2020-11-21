@@ -1,12 +1,13 @@
 import React from 'react';
 
-const OrganizationInfo = ({ project }) => {
+const OrganizationInfo = ({ name, email, organizationProfile }) => {
   return (
     <div className="project__organization">
       <div className="header">
+        <p className="header__hint">Project made by</p>
         <img src="https://www.logogenie.net/download/preview/medium/5319421" />
-        <h2>{project.user?.name}</h2>
-        <p className="slogan">{project.user.organizationProfile?.slogan}</p>
+        <h2>{name}</h2>
+        <p className="slogan">{organizationProfile.slogan}</p>
       </div>
       <div className="buttons-container">
         <button>Our Projects</button>
