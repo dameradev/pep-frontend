@@ -131,28 +131,20 @@ const ProjectStyles = styled.div`
         margin-top: 2rem;
         width: 100%;
         padding: 0;
+        display: flex;
 
-        button {
+        a {
+          display: inline-block;
           width: 50%;
-          padding: 1rem 3.5rem;
+          padding: 1rem 2rem;
           font-size: 1.6rem;
-          outline: none;
-          border: none;
+          text-align: center;
           color: #fff;
           cursor: pointer;
 
-          ${respondTo.tabletMini` 
-
-            border-radius: 0;
-          `};
           background: ${(props) => props.theme.red};
           &:not(:first-of-type) {
             background: ${(props) => props.theme.blue};
-            /* border-bottom-left-radius: 0;
-            border-bottom-right-radius: 5px;
-            ${respondTo.tabletMini`   
-              border-radius: 0;
-            `}; */
           }
         }
       }

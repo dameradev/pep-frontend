@@ -1,6 +1,7 @@
 import React from 'react';
+import MenuLink from '../Nav/MenuLink';
 
-const OrganizationInfo = ({ name, email, organizationProfile }) => {
+const OrganizationInfo = ({ name, email, organizationProfile, userId }) => {
   return (
     <div className="project__organization">
       <div className="header">
@@ -10,8 +11,22 @@ const OrganizationInfo = ({ name, email, organizationProfile }) => {
         <p className="slogan">{organizationProfile.slogan}</p>
       </div>
       <div className="buttons-container">
-        <button>Our Projects</button>
-        <button>View Profile</button>
+        <MenuLink
+          href={{
+            pathname: 'organization',
+            query: { id: userId, edit: false, tab: 1 },
+          }}
+        >
+          Our projects
+        </MenuLink>
+        <MenuLink
+          href={{
+            pathname: 'organization',
+            query: { id: userId, edit: false, tab: 0 },
+          }}
+        >
+          View profile
+        </MenuLink>
       </div>
       <div className="contact">
         <div className="contact__responsible-person">

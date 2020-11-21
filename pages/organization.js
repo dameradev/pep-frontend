@@ -28,9 +28,7 @@ const OrganizationPage = (props) => {
 
   return !loading ? (
     <Organization
-      id={props.query.id}
-      path={props.query.path}
-      edit={props.query.edit}
+      query={props.query}
       organization={data.organization}
       organizationProfile={data.organization?.organizationProfile}
     />

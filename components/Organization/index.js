@@ -34,8 +34,8 @@ const TabPanel = (props) => {
   );
 };
 
-const Organization = ({ id, path, edit, organization, organizationProfile }) => {
-  const [tabValue, setTabValue] = useState(0);
+const Organization = ({ query: { id, edit, tab } = {}, organization, organizationProfile }) => {
+  const [tabValue, setTabValue] = useState(parseInt(tab) || 0);
   const {
     values: {
       name,

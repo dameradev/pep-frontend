@@ -52,6 +52,7 @@ const Project = (props) => {
               <OrganizationInfo
                 name={name}
                 email={email}
+                userId={userId}
                 organizationProfile={organizationProfile}
               />
             </div>
