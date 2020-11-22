@@ -41,17 +41,10 @@ const Organization = ({
 }) => {
   const id = parseInt(queryId);
   const [tabValue, setTabValue] = useState(parseInt(tab) || 0);
+  const [focusedOn, setFocusedOn] = useState(organizationProfile.focusedOn);
+  const [interestedIn, setInterestedIn] = useState(organizationProfile.interestedIn);
   const {
-    values: {
-      name,
-      slogan,
-      summary,
-      responsiblePerson,
-      phoneNumber,
-      website,
-      focusedOn,
-      interestedIn,
-    } = {},
+    values: { name, slogan, summary, responsiblePerson, phoneNumber, website } = {},
     values,
     updateValue,
   } = useForm({
@@ -61,8 +54,6 @@ const Organization = ({
     responsiblePerson: organizationProfile.responsiblePerson,
     phoneNumber: organizationProfile.phoneNumber,
     website: organizationProfile.website,
-    focusedOn: organizationProfile.focusedOn,
-    interestedIn: organizationProfile.interestedIn,
   });
 
   const [updateOrganization] = useMutation(UPDATE_ORGANIZATION);
@@ -87,11 +78,16 @@ const Organization = ({
       case 'focusedOn':
         setFocusedOn(newArray);
         break;
+      case 'interestedIn':
+        setInterestedIn(newArray);
+        break;
     }
   };
 
   const addArrayElement = (name) => {
+    console.log(interestedIn);
     let newArray = name === 'focusedOn' ? focusedOn : interestedIn;
+    console.log(newArray);
     newArray = [...newArray];
     newArray.push('');
 
@@ -129,6 +125,7 @@ const Organization = ({
               phoneNumber,
               website,
               focusedOn,
+              interestedIn,
             },
           });
 
@@ -171,8 +168,10 @@ const Organization = ({
                 />
               )}
             </SectionStyles>
-            <SectionStyles className="focused-on" focusedOn>
+
+            <SectionStyles className="focused-on" edit={edit === 'true' ? true : false}>
               <h3>Focused on</h3>
+
               <ul>
                 {focusedOn?.length ? (
                   focusedOn.map((item, index) => (
@@ -180,7 +179,7 @@ const Organization = ({
                       {edit === 'false' ? (
                         <p>{item}</p>
                       ) : (
-                        <div className="form__list-input">
+                        <div className="form__group">
                           <TextField
                             className="form__input"
                             type="text"
@@ -212,20 +211,47 @@ const Organization = ({
                 </Icon>
               )}
             </SectionStyles>
-            <SectionStyles>
+            <SectionStyles className="interested-in" edit={edit === 'true' ? true : false}>
               <h3>Interested in</h3>
-
               <ul>
-                <li>
-                  <p>Democracy/Active citizenship</p>
-                </li>
-                <li>
-                  <p>European citizenship</p>
-                </li>
-                <li>
-                  <p>Intercultural dialogue</p>
-                </li>
+                {interestedIn?.length ? (
+                  interestedIn.map((item, index) => (
+                    <li>
+                      {console.log(interestedIn)}
+                      {edit === 'false' ? (
+                        <p>{item}</p>
+                      ) : (
+                        <div className="form__group">
+                          <TextField
+                            className="form__input"
+                            type="text"
+                            onChange={(e) => handleArrayChange(e, index, interestedIn)}
+                            value={item}
+                            name="interestedIn"
+                            placeholder="Enter interested in item"
+                            variant="outlined"
+                          />
+
+                          <Icon
+                            onClick={() => removeArrayElement('interestedIn', index)}
+                            color="primary"
+                          >
+                            remove_circle
+                          </Icon>
+                        </div>
+                      )}
+                    </li>
+                  ))
+                ) : (
+                  <p>Please add a what you're interested in by clicking on the plus icon below.</p>
+                )}
               </ul>
+
+              {edit !== 'false' && (
+                <Icon onClick={() => addArrayElement('interestedIn')} color="primary">
+                  add_circle
+                </Icon>
+              )}
             </SectionStyles>
           </TabPanel>
           <TabPanel className="tab projects-tab" value={tabValue} index={1}>

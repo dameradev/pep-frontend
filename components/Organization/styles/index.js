@@ -196,9 +196,45 @@ export const SectionStyles = styled.section`
   background: ${(props) => props.focusedOn && '#F7F7F7'};
   margin: ${(props) => props.focusedOn && '0 -4rem'};
   padding: ${(props) => props.focusedOn && '2rem 6rem'};
+
+  &.focused-on,
+  &.interested-in {
+    h3 {
+      padding: 0;
+    }
+    ul {
+      /* list-style: upper-alpha;
+      list-style: square;
+      list-style: none; */
+      li {
+        &::before {
+          content: '-';
+          /* display: inline; */
+          display: ${(props) => (props.edit ? 'none' : 'inline')};
+        }
+        p {
+          display: inline;
+          line-height: 2rem;
+          text-transform: capitalize;
+          padding: 0 1rem;
+        }
+        .form {
+          &__group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+          }
+          &__input {
+            width: 100%;
+          }
+        }
+        margin-bottom: 1rem;
+      }
+    }
+  }
   h3 {
-    padding-bottom: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 
     font-weight: 500;
     font-size: 4rem;
@@ -318,71 +354,6 @@ export const SimilarOrganizationStyled = styled.aside`
         line-height: 1.8rem;
         font-size: 1.6rem;
         color: ${(props) => props.theme.lightGrey1};
-      }
-    }
-  }
-`;
-
-const ApplicantStyles = styled.li`
-  padding: 1rem;
-  margin: 1rem 0;
-
-  .applicant-status {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    span {
-      color: ${({ status }) =>
-        status === 'ACCEPTED' ? 'green' : status === 'REJECTED' ? 'red' : 'orange'};
-    }
-  }
-  .applicant-footer {
-    padding-top: 2rem;
-    display: flex;
-    justify-content: space-between;
-    img {
-      width: 12rem;
-    }
-    .read-more {
-      text-align: right;
-      color: ${(props) => props.theme.blue};
-    }
-  }
-`;
-
-const ParticipantStyles = styled.li`
-  padding: 1rem;
-  margin: 1rem 0;
-`;
-
-const ParticipatingCountires = styled.ul`
-  margin: 1.5rem 0;
-  padding: 20px;
-  /* border: 1px solid #ccc; */
-  width: fit-content;
-
-  .participating-countries {
-    &__title {
-      color: ${(props) => props.theme.blue};
-      font-size: 1.5rem;
-      padding-bottom: 1rem;
-    }
-
-    &__country {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 250px;
-      font-size: 1.3rem;
-      /* vertical-align: center; */
-      span {
-        margin-right: 1rem;
-        margin-top: 5px;
-
-        svg {
-          border: 0.3px solid ${(props) => props.theme.borderColorPrimary};
-          width: 40px;
-        }
       }
     }
   }
