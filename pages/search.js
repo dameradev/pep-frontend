@@ -23,6 +23,7 @@ const ProjectsPage = styled.div`
   padding: 0 5%;
 
   ${respondTo.tabletMini` 
+    padding: 0;
     display: flex;
     flex-direction: column;
   `}

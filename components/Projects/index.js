@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import SingleProject from './SingleProject';
 
+import { respondTo } from '../../lib/respondTo';
+
 const Center = styled.div`
   margin-top: 2rem;
   h1 {
     font-weight: 300;
+
+    ${respondTo.tabletMini`
+      padding: 2rem 2rem 10rem 2rem;
+    `}
   }
 `;
 

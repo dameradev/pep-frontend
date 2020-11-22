@@ -14,9 +14,11 @@ export const SingleProjectStyles = styled.article`
 
   ${respondTo.tabletMini` 
     border-radius: 0;
-    box-shadow: unset;
-    // border-bottom: 1px solid grey;
-    margin-bottom: 0;
+    box-shadow: 0px 3px 6px 4px #00000029;
+    border-bottom: 2px solid #00000029;
+    // border-top: 2px solid #00000029;
+    margin-bottom: 2rem;
+    
   `}
   ${respondTo.mobilePortrait` 
     padding: 2rem;

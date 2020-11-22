@@ -11,8 +11,9 @@ export const Panel = styled.div`
 
   ${respondTo.tabletMini` 
   // height: 20rem !important;
-  min-height: unset;
-`}
+    margin-top: 0;
+    min-height: unset;
+  `}
 
   .Header {
     border-bottom: 1px solid ${(props) => props.theme.borderColorPrimary};
