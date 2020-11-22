@@ -17,8 +17,9 @@ const Project = (props) => {
 
   const handleFormDisplay = () => {
     setFormDisplay(true);
-    console.log(formRef.current);
-    window.scrollTo(0, formRef?.current?.offsetTop);
+    setTimeout(() => {
+      window.scrollTo(0, formRef?.current?.offsetTop - 40);
+    }, 100);
   };
 
   const {

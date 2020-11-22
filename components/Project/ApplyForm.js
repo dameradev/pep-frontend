@@ -56,7 +56,7 @@ const ApplyForm = ({ projectId, formDisplay, formRef }) => {
       }}
     >
       {(applyForProject, { error, loading }) => (
-        <div className="form-wrapper">
+        <div className={`form-wrapper ${formDisplay && 'form-wrapper__dispalyed'}`}>
           <form
             ref={formRef}
             id="application-form"

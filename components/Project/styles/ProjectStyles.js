@@ -47,6 +47,9 @@ const ProjectStyles = styled.div`
     &__details {
       width: 100%;
       height: max-content;
+      ${respondTo.tabletMini` 
+        border-bottom: 2px solid #00000029;
+      `}
     }
     &__organization {
       width: 50rem;
@@ -58,6 +61,8 @@ const ProjectStyles = styled.div`
       height: max-content;
       ${respondTo.tabletMini` 
         width: 100%;
+        margin-top: 2rem;
+        border-top: 2px solid #00000029;
         border-radius: 0;
 
       `}
@@ -151,13 +156,17 @@ const ProjectStyles = styled.div`
   .form-wrapper {
     display: flex;
     gap: 3rem;
+    display: none;
+    &__dispalyed {
+      display: block;
+    }
   }
 
   .placeholder {
     width: 50rem;
     ${respondTo.tabletMini` 
-        display: none;
-      `}
+      display: none;
+    `}
   }
 
   .applicant {
@@ -170,6 +179,8 @@ const ProjectStyles = styled.div`
     padding: 3rem;
     width: 100%;
     box-shadow: 0px 3px 6px #00000029;
+    display: flex;
+    flex-direction: column;
 
     border-radius: 5px;
     background: #fff;
@@ -178,21 +189,32 @@ const ProjectStyles = styled.div`
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
     ${respondTo.tabletMini` 
-      margin: 2rem 5%;
+      // margin: 2rem 5%;
+      margin-top: 2rem;
+      border-top: 2px solid #00000029;
       width: auto;
     `}
 
     h2 {
       padding-bottom: 1.8rem;
       color: ${(props) => props.theme.blue};
-      font-weight: bold;
+      font-weight: 400;
+      ${respondTo.tabletMini` 
+
+        font-size: 1.6rem;
+      `}
     }
 
     h3 {
       font-weight: 300;
     }
 
+    button {
+      align-self: flex-end;
+    }
+
     .textarea-input {
+      padding: 2rem 0;
       width: 100%;
       padding-bottom: 3rem;
     }

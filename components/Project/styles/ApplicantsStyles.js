@@ -54,6 +54,7 @@ const ApplicantsStyles = styled.div`
 
       ${respondTo.tabletMini`
         padding: 2rem 2rem;
+        box-shadow: none;
       `}
 
       &-item {

@@ -36,6 +36,7 @@ const FooterStyled = styled.div`
   ${respondTo.tabletMini`
     flex-direction: column;
     padding: 2rem 5rem;
+    margin-top: 0;
   `}
   color: #fff;
 
