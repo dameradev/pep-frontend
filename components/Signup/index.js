@@ -81,7 +81,7 @@ const Signup = (props) => {
             onSubmit={async (e) => {
               e.preventDefault();
               await signup();
-              Router.push('/');
+              Router.push('/successful-registration');
               // this.setState({ email: '', name: '', password: '', age: '' });
             }}
           >
