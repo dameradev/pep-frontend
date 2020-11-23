@@ -47,9 +47,6 @@ const ProjectStyles = styled.div`
     &__details {
       width: 100%;
       height: max-content;
-      ${respondTo.tabletMini` 
-        border-bottom: 2px solid #00000029;
-      `}
     }
     &__organization {
       width: 50rem;

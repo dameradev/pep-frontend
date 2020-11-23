@@ -34,11 +34,14 @@ const Nav = (props) => {
 
   return (
     <Navigation className={`${props.className}`}>
+      {user.permissions.includes('ADMIN') && <MenuLink href="/dashboard">Dashboard</MenuLink>}
       <MenuLink href="/">Home</MenuLink>
       <MenuLink href="/search">Search</MenuLink>
       {user && (
         <>
-          <MenuLink href="/create-project">Create a project</MenuLink>
+          {user.permissions.includes('ORGANIZATION') && (
+            <MenuLink href="/create-project">Create a project</MenuLink>
+          )}
 
           <MenuLink
             href={{
@@ -48,10 +51,9 @@ const Nav = (props) => {
               query: { id: user.id, edit: false },
             }}
           >
-            Profile
+            {user.name}
           </MenuLink>
 
-          {user.permissions.includes('ADMIN') && <MenuLink href="/dashboard">Dashboard</MenuLink>}
           <Singout />
         </>
       )}
