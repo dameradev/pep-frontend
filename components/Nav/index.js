@@ -34,7 +34,7 @@ const Nav = (props) => {
 
   return (
     <Navigation className={`${props.className}`}>
-      {user.permissions.includes('ADMIN') && <MenuLink href="/dashboard">Dashboard</MenuLink>}
+      {user?.permissions.includes('ADMIN') && <MenuLink href="/dashboard">Dashboard</MenuLink>}
       <MenuLink href="/">Home</MenuLink>
       <MenuLink href="/search">Search</MenuLink>
       {user && (
