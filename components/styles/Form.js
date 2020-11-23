@@ -16,7 +16,7 @@ const loading = keyframes`
 const Form = styled.form`
   width: 50vw;
   margin: 0 auto;
-  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 3px 6px #00000029;
   /* background: rgba(0, 0, 0, 0.02); */
   border: 5px solid white;
   padding: 5rem;
