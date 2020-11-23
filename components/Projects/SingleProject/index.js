@@ -26,6 +26,7 @@ const SingleProject = (props) => {
     savedProjectUserIds,
     description,
     totalNumberOfParticipants,
+    address,
   } = props.project;
 
   const { handleFormDisplay, loading: projectLoading } = props;
@@ -101,7 +102,7 @@ const SingleProject = (props) => {
       )}
 
       <p className="project__location">
-        {Icons.Location} Location: {location && location.address}
+        {Icons.Location} Location: {address}
       </p>
       <div className="project__date">
         {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}

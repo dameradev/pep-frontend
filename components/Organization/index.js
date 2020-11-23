@@ -41,8 +41,8 @@ const Organization = ({
 }) => {
   const id = parseInt(queryId);
   const [tabValue, setTabValue] = useState(parseInt(tab) || 0);
-  const [focusedOn, setFocusedOn] = useState(organizationProfile.focusedOn);
-  const [interestedIn, setInterestedIn] = useState(organizationProfile.interestedIn);
+  const [focusedOn, setFocusedOn] = useState(organizationProfile?.focusedOn);
+  const [interestedIn, setInterestedIn] = useState(organizationProfile?.interestedIn);
   const {
     values: { name, slogan, summary, responsiblePerson, phoneNumber, website } = {},
     values,

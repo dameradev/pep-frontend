@@ -1,10 +1,10 @@
-import CreateProject from "../components/Projects/CreateProject"
+import CreateProject from '../components/CreateProject';
 
 const Organization = (props) => {
   return (
     <div>
-      <CreateProject />  
+      <CreateProject />
     </div>
-  )
-}
+  );
+};
 export default Organization;

@@ -19,20 +19,12 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import { FormWrapper, CountriesStyled } from './styles';
 
-import { respondTo } from '../../../lib/respondTo';
-
-import ErrorMessage from '../../styles/ErrorMessage';
-
-import { GET_ALL_COUNTRIES_QUERY } from '../../../lib/queries';
+import { respondTo } from '../../lib/respondTo';
+import { GET_ALL_COUNTRIES_QUERY } from '../../lib/queries';
 
 import * as Yup from 'yup';
 
-import Geosuggest from 'react-geosuggest';
 import styled from 'styled-components';
-
-const LocationPicker = dynamic(() => import('react-location-picker'), {
-  ssr: false,
-});
 
 const numberOfParticipants = [
   { value: 0, label: '0 Spots left' },
@@ -59,10 +51,10 @@ const CREATE_PROJECT_MUTATION = gql`
     $totalNumberOfParticipants: Int
     $projectType: ProjectType
     $activity: specificActivity
-    $location: LocationCreateInput
     $nations: [NationCreateWithoutProjectInput!]! # $objectives: [String!]! # $date: Date
     $startDate: DateTime
     $endDate: DateTime
+    $address: String
   ) {
     createProject(
       title: $title
@@ -72,12 +64,11 @@ const CREATE_PROJECT_MUTATION = gql`
       projectType: $projectType
       activity: $activity
       # objectives: $objectives
-      # date: $date
-
+      # date: $dat
       nations: $nations
-      location: $location
       startDate: $startDate
       endDate: $endDate
+      address: $address
     ) {
       id
     }
@@ -265,17 +256,6 @@ const ProjectFormWrapper = styled.div`
   }
 `;
 
-// title: '',
-//                 description: '',
-//                 costs: '',
-//                 totalNumberOfParticipants: '',
-//                 projectType: '',
-//                 activity: '',
-//                 nations: [],
-//                 location: location,
-//                 startDate: new Date(),
-//                 endDate: new Date(),
-
 const ProjectSchema = Yup.object().shape({
   title: Yup.string()
     .min(20, 'Title is too short!')
@@ -342,12 +322,7 @@ class CreateProject extends Component {
   }
 
   render() {
-    const {
-      countriesSelected,
-      locationSelected,
-      location: { address } = {},
-      location,
-    } = this.state;
+    const { countriesSelected, locationSelected, location } = this.state;
     // console.log(this.state.countriesSelected)
     return (
       <Mutation mutation={CREATE_PROJECT_MUTATION}>
@@ -378,14 +353,14 @@ class CreateProject extends Component {
             <Formik
               disabled={loading}
               initialValues={{
-                title: 'fdafaksjdfbakljfnakjfnka',
+                title: '',
                 description: '',
                 costs: '',
-                totalNumberOfParticipants: 22,
+                totalNumberOfParticipants: 0,
                 projectType: 'ESC',
                 activity: 'ESC',
                 nations: [],
-                location: location,
+                address: '',
                 startDate: new Date(),
                 endDate: new Date(),
               }}
@@ -398,10 +373,10 @@ class CreateProject extends Component {
                   totalNumberOfParticipants,
                   projectType,
                   activity,
-                  nations,
                   location,
                   startDate,
                   endDate,
+                  address,
                 } = values;
 
                 let newCountries = [];
@@ -426,6 +401,7 @@ class CreateProject extends Component {
                     location,
                     startDate,
                     endDate,
+                    address,
                   },
                 })
                   .then(({ data }) => {
@@ -670,37 +646,25 @@ class CreateProject extends Component {
                           );
                         }}
                       </Query>
-                      <div className="form__input-group project-window__form-item project-window__location">
-                        <div className="project-window__location-search-wrapper">
-                          <div>
-                            <label>Location of the project</label>
-                            <Geosuggest
-                              onChange={() => this.setState({ locationSelected: false })}
-                              className={
-                                locationSelected
-                                  ? 'project-window__location-selected project-window__location-search'
-                                  : 'project-window__location-search'
-                              }
-                              inputClassName="project-window__location-search-input"
-                              placeholder="Search for location of the project"
-                              onSuggestSelect={({ location, gmaps }) => {
-                                values.location.lng = location && location.lng;
-                                values.location.lat = location && location.lat;
-                                values.location.address = location && gmaps.formatted_address;
-                                this.onLocationSelect(location);
-                              }}
-                            />
-                          </div>
-                          <p className="project-window__location-address">{address}</p>
-                        </div>
 
-                        <LocationPicker
-                          containerElement={<div style={{ height: '100%', width: '60%' }} />}
-                          mapElement={<div style={{ height: '400px', width: 'auto' }} />}
-                          defaultPosition={this.state.location}
+                      <div className="form__input-group">
+                        <TextField
+                          className="form__input"
+                          type="text"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.address}
+                          name="address"
+                          placeholder="Please enter full address with zipcode and city/town"
+                          id="standard-basic"
+                          label="Location of the project"
+                          variant="standard"
+                          required
                         />
+                        {errors.address && touched.address ? (
+                          <ErrorValidationMessage>{errors.address}</ErrorValidationMessage>
+                        ) : null}
                       </div>
-
                       <button
                         className="publish"
                         type="submit"
