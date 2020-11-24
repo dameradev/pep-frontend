@@ -1,6 +1,187 @@
 import styled from 'styled-components';
 import { respondTo } from '../../lib/respondTo';
 
+export const ProjectFormWrapper = styled.div`
+  /* background: black; */
+  .guidelines {
+    ${respondTo.tabletMini` 
+      display: none;
+    `}
+  }
+  .form {
+    padding: 2rem;
+    background: #eee;
+    text-align: start;
+    color: #505050;
+    /* width: 100%; */
+    /* height: 100vh; */
+    ${respondTo.tabletMini` 
+      background: unset;
+    `}
+    form {
+      /* grid-column: full-start/ full-end; */
+      width: 100%;
+      display: grid;
+
+      grid-template-columns:
+        [full-start]
+        minmax(6rem, 1fr) [center-start]repeat(8, [col-start] minmax(min-content, 18rem) [col-end])
+        [center-end] minmax(6rem, 1fr) [full-end];
+
+      ${respondTo.tabletMini` 
+        display: flex;
+        flex-direction: column;
+      `}
+    }
+    h1 {
+      grid-column: full-start / full-end;
+    }
+
+    label {
+      text-transform: uppercase;
+      color: ${(props) => props.theme.blue};
+      font-weight: 600;
+    }
+
+    input,
+    textarea,
+    select {
+      /* background: #eee;
+      color: #050505; */
+      /* transition: all 0.4s; */
+
+      &::placeholder {
+        /* color: currentColor; */
+      }
+
+      :focus {
+        /* border: 1px solid #2f5db7; */
+      }
+    }
+
+    &__input {
+      width: 100%;
+      padding-bottom: 2rem;
+
+      label,
+      input {
+        font-size: 1.6rem;
+      }
+    }
+
+    &__select {
+      width: 100%;
+
+      label {
+        font-size: 1.4rem;
+        margin-right: 1rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+
+      .MuiInput-input {
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    &__description,
+    &__costs {
+      width: 100%;
+    }
+
+    &__input-group {
+      grid-column: col-start 4 / full-end;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      /* box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1); */
+      background: #fff;
+      border-radius: 5px;
+    }
+
+    .basic-details {
+      display: grid;
+      /* grid-template-columns: minmax(30rem, 1fr) minmax(15rem, max-content); */
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-flow: column;
+      grid-gap: 2rem;
+      justify-items: top;
+      /* align-content: start; */
+
+      ${respondTo.tabletMini` 
+        display: flex;
+        flex-direction: column;
+      `}
+
+      &__title {
+        /* color: blue; */
+        width: 100%;
+        grid-column: 1 / 3;
+      }
+
+      &__dates {
+        display: flex;
+        flex-direction: row;
+        grid-column: 1 / 3;
+        gap: 2rem;
+        ${respondTo.tabletMini` 
+        
+        gap: 2rem;
+      `}
+      }
+
+      &__start-date {
+        grid-row: 2 / 3;
+        grid-column: 1 / 2;
+
+        width: 100%;
+        margin: 0;
+      }
+
+      &__end-date {
+        grid-row: 2 / 3;
+        grid-column: 2 / 3;
+
+        width: 100%;
+        margin: 0;
+      }
+
+      &__type {
+        grid-column: 3 / 4;
+        width: 100%;
+      }
+
+      &__activity {
+        width: 100%;
+        grid-column: 3 / 4;
+        grid-row: 2 / 3;
+      }
+    }
+  }
+
+  .publish {
+    padding: 2rem 3rem;
+    font-size: 2rem;
+    width: 100%;
+    border: none;
+    background-color: ${(props) => props.theme.blue};
+    color: #fff;
+    outline: none;
+    grid-column: full-start / full-end;
+    transition: all 0.2s;
+
+    &:hover {
+      background: #2f5db7;
+    }
+
+    &:active {
+      transform: translateY(3px);
+    }
+  }
+`;
+
 export const FormWrapper = styled.div`
   width: 90%;
   margin: 0 auto;
@@ -27,6 +208,10 @@ export const FormWrapper = styled.div`
 
     .form-input__group {
       text-align: left;
+    }
+    .location-input {
+      display: flex;
+      gap: 2rem;
     }
 
     .type-participants {
@@ -198,4 +383,8 @@ export const CountriesStyled = styled.div`
       }
     }
   } */
+`;
+
+export const ErrorValidationMessageStyles = styled.p`
+  color: ${(props) => props.theme.red};
 `;

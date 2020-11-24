@@ -1,260 +1,32 @@
-import React, { Component } from 'react';
+import React, { Component, useContext, useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
-import gql from 'graphql-tag';
-import { Form, Formik, Field } from 'formik';
+
+import { Form, Formik } from 'formik';
 import Select from 'react-select';
 import Router from 'next/router';
-import dynamic from 'next/dynamic';
 
-import {
-  TextField,
-  MenuItem,
-  DialogContent,
-  DialogTitle,
-  Dialog,
-  Typography,
-} from '@material-ui/core';
+import { TextField, MenuItem, DialogTitle, Dialog } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
-import { FormWrapper, CountriesStyled } from './styles';
+import {
+  ProjectFormWrapper,
+  FormWrapper,
+  CountriesStyled,
+  ErrorValidationMessageStyles,
+} from './styles';
 
-import { respondTo } from '../../lib/respondTo';
-import { GET_ALL_COUNTRIES_QUERY } from '../../lib/queries';
+import CountriesContext from '../../contexts/CountriesContext';
+
+import { CREATE_PROJECT_MUTATION } from '../../lib/mutations';
 
 import * as Yup from 'yup';
-
-import styled from 'styled-components';
-
-const numberOfParticipants = [
-  { value: 0, label: '0 Spots left' },
-  { value: 1, label: '1 Spots left' },
-  { value: 2, label: '2 Spots left' },
-  { value: 3, label: '3 Spots left' },
-  { value: 4, label: '4 Spots left' },
-  { value: 5, label: '5 Spots left' },
-  { value: 6, label: '6 Spots left' },
-  { value: 7, label: '7 Spots left' },
-];
 
 const options = [
   { value: 'ESC', label: 'ESC' },
   { value: 'Training_Course', label: 'Training_Course' },
   { value: 'Youth_Exchange', label: 'Youth_Exchange' },
 ];
-
-const CREATE_PROJECT_MUTATION = gql`
-  mutation CREATE_PROJECT_MUTATION(
-    $title: String
-    $description: String
-    $costs: String
-    $totalNumberOfParticipants: Int
-    $projectType: ProjectType
-    $activity: specificActivity
-    $nations: [NationCreateWithoutProjectInput!]! # $objectives: [String!]! # $date: Date
-    $startDate: DateTime
-    $endDate: DateTime
-    $address: String
-  ) {
-    createProject(
-      title: $title
-      description: $description
-      costs: $costs
-      totalNumberOfParticipants: $totalNumberOfParticipants
-      projectType: $projectType
-      activity: $activity
-      # objectives: $objectives
-      # date: $dat
-      nations: $nations
-      startDate: $startDate
-      endDate: $endDate
-      address: $address
-    ) {
-      id
-    }
-  }
-`;
-
-const ProjectFormWrapper = styled.div`
-  /* background: black; */
-  .guidelines {
-    ${respondTo.tabletMini` 
-      display: none;
-    `}
-  }
-  .form {
-    padding: 2rem;
-    background: #eee;
-    text-align: start;
-    color: #505050;
-    /* width: 100%; */
-    /* height: 100vh; */
-    ${respondTo.tabletMini` 
-      background: unset;
-    `}
-    form {
-      /* grid-column: full-start/ full-end; */
-      width: 100%;
-      display: grid;
-
-      grid-template-columns:
-        [full-start]
-        minmax(6rem, 1fr) [center-start]repeat(8, [col-start] minmax(min-content, 18rem) [col-end])
-        [center-end] minmax(6rem, 1fr) [full-end];
-
-      ${respondTo.tabletMini` 
-        display: flex;
-        flex-direction: column;
-      `}
-    }
-    h1 {
-      grid-column: full-start / full-end;
-    }
-
-    label {
-      text-transform: uppercase;
-      color: ${(props) => props.theme.blue};
-      font-weight: 600;
-    }
-
-    input,
-    textarea,
-    select {
-      /* background: #eee;
-      color: #050505; */
-      /* transition: all 0.4s; */
-
-      &::placeholder {
-        /* color: currentColor; */
-      }
-
-      :focus {
-        /* border: 1px solid #2f5db7; */
-      }
-    }
-
-    &__input {
-      width: 100%;
-      padding-bottom: 2rem;
-
-      label,
-      input {
-        font-size: 1.6rem;
-      }
-    }
-
-    &__select {
-      width: 100%;
-
-      label {
-        font-size: 1.4rem;
-        margin-right: 1rem;
-      }
-      p {
-        font-size: 1rem;
-      }
-
-      .MuiInput-input {
-        font-size: 1.4rem;
-        display: flex;
-        align-items: center;
-      }
-    }
-
-    &__description,
-    &__costs {
-      width: 100%;
-    }
-
-    &__input-group {
-      grid-column: col-start 4 / full-end;
-      padding: 2rem;
-      margin-bottom: 3rem;
-      /* box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1); */
-      background: #fff;
-      border-radius: 5px;
-    }
-
-    .basic-details {
-      display: grid;
-      /* grid-template-columns: minmax(30rem, 1fr) minmax(15rem, max-content); */
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-flow: column;
-      grid-gap: 2rem;
-      justify-items: top;
-      /* align-content: start; */
-
-      ${respondTo.tabletMini` 
-        display: flex;
-        flex-direction: column;
-      `}
-
-      &__title {
-        /* color: blue; */
-        width: 100%;
-        grid-column: 1 / 3;
-      }
-
-      &__dates {
-        display: flex;
-        flex-direction: row;
-        grid-column: 1 / 3;
-        gap: 2rem;
-        ${respondTo.tabletMini` 
-        
-        gap: 2rem;
-      `}
-      }
-
-      &__start-date {
-        grid-row: 2 / 3;
-        grid-column: 1 / 2;
-
-        width: 100%;
-        margin: 0;
-      }
-
-      &__end-date {
-        grid-row: 2 / 3;
-        grid-column: 2 / 3;
-
-        width: 100%;
-        margin: 0;
-      }
-
-      &__type {
-        grid-column: 3 / 4;
-        width: 100%;
-      }
-
-      &__activity {
-        width: 100%;
-        grid-column: 3 / 4;
-        grid-row: 2 / 3;
-      }
-    }
-  }
-
-  .publish {
-    padding: 2rem 3rem;
-    font-size: 2rem;
-    width: 100%;
-    border: none;
-    background-color: ${(props) => props.theme.blue};
-    color: #fff;
-    outline: none;
-    grid-column: full-start / full-end;
-    transition: all 0.2s;
-
-    &:hover {
-      background: #2f5db7;
-    }
-
-    &:active {
-      transform: translateY(3px);
-    }
-  }
-`;
 
 const ProjectSchema = Yup.object().shape({
   title: Yup.string()
@@ -268,9 +40,6 @@ const ProjectSchema = Yup.object().shape({
   activity: Yup.string().required('Activity is required'),
 });
 
-const ErrorValidationMessageStyles = styled.p`
-  color: ${(props) => props.theme.red};
-`;
 const ErrorValidationMessage = (props) => {
   return (
     <ErrorValidationMessageStyles>
@@ -280,415 +49,404 @@ const ErrorValidationMessage = (props) => {
   );
 };
 
-class CreateProject extends Component {
-  state = {
-    countriesSelected: [],
-    location: {
-      address: 'Rue de la Loi 41, 1000 Bruxelles, Belgium',
-      lat: 50.8,
-      lng: 3.9,
-    },
-    locationSelected: false,
-    dialogOpen: false,
-    errors: [],
-    error: false,
+const CreateProject = () => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [serverError, setServerError] = useState(false);
+  const [countriesSelected, setCountriesSelected] = useState([]);
+  const [errors, setErrors] = useState([]);
+
+  const { countries } = useContext(CountriesContext);
+
+  const handleClose = () => {
+    setDialogOpen(false);
+    setServerError(false);
   };
 
-  handleClose = () => {
-    this.setState({ dialogOpen: false });
+  const countriesOptions = countries?.map((country) => {
+    return { label: country.name, value: country.name };
+  });
 
-    this.setState({ error: false });
-  };
+  return (
+    <Mutation mutation={CREATE_PROJECT_MUTATION}>
+      {(createProject, { loading, error }) => (
+        <ProjectFormWrapper>
+          <Dialog
+            className="dialog"
+            onClose={handleClose}
+            aria-labelledby="customized-dialog-title"
+            open={dialogOpen}
+          >
+            <DialogTitle>We are creating your project please wait!</DialogTitle>
+          </Dialog>
 
-  onLocationSelect = (locationData) => {
-    try {
-      const { location, gmaps: { formatted_address } = {} } = locationData;
+          <Dialog
+            className="dialog"
+            onClose={handleClose}
+            aria-labelledby="customized-dialog-title"
+            open={serverError}
+          >
+            <DialogTitle>
+              <ErrorValidationMessage serverError>{errors[0]}</ErrorValidationMessage>
+            </DialogTitle>
+          </Dialog>
 
-      this.setState({
-        location: { position: location, address: formatted_address },
-
-        locationSelected: true,
-      });
-    } catch (e) {
-      this.setState({
-        location: { position: { lat: 50.8, lng: 3.9 } },
-        locationSelected: false,
-      });
-    }
-  };
-
-  handleLocationChange({ position, address, places }) {
-    this.setState({ location: { position, address } });
-  }
-
-  render() {
-    const { countriesSelected, locationSelected, location } = this.state;
-    // console.log(this.state.countriesSelected)
-    return (
-      <Mutation mutation={CREATE_PROJECT_MUTATION}>
-        {(createProject, { loading, error }) => (
-          <ProjectFormWrapper>
-            <Dialog
-              className="dialog"
-              onClose={this.handleClose}
-              aria-labelledby="customized-dialog-title"
-              open={this.state.dialogOpen}
-            >
-              <DialogTitle>We are creating your project please wait!</DialogTitle>
-            </Dialog>
-
-            <Dialog
-              className="dialog"
-              onClose={this.handleClose}
-              aria-labelledby="customized-dialog-title"
-              open={this.state.error}
-            >
-              <DialogTitle>
-                <ErrorValidationMessage serverError>{this.state.errors[0]}</ErrorValidationMessage>
-              </DialogTitle>
-            </Dialog>
-
-            {/* <p>{this.state.errors[0]}</p>
+          {/* <p>{this.state.errors[0]}</p>
             {this.state.errors.length && <ErrorMessage error={this.state.errors[0]} />} */}
-            <Formik
-              disabled={loading}
-              initialValues={{
-                title: '',
-                description: '',
-                costs: '',
-                totalNumberOfParticipants: 0,
-                projectType: 'ESC',
-                activity: 'ESC',
-                nations: [],
-                address: '',
-                startDate: new Date(),
-                endDate: new Date(),
-              }}
-              validationSchema={ProjectSchema}
-              onSubmit={async (values, actions) => {
-                const {
+          <Formik
+            disabled={loading}
+            initialValues={{
+              title: '',
+              description: '',
+              costs: '',
+              totalNumberOfParticipants: 0,
+              projectType: 'ESC',
+              activity: 'ESC',
+              nations: [],
+              address: '',
+              startDate: new Date(),
+              endDate: new Date(),
+              country: '',
+            }}
+            validationSchema={ProjectSchema}
+            onSubmit={async (values, actions) => {
+              const {
+                title,
+                description,
+                costs,
+                totalNumberOfParticipants,
+                projectType,
+                activity,
+                location,
+                startDate,
+                endDate,
+                country,
+                address,
+              } = values;
+
+              let newCountries = [];
+              countriesSelected.forEach((country) =>
+                newCountries.push({
+                  name: country.country,
+                  numberOfParticipants: country.numberOfParticipants,
+                })
+              );
+
+              setDialogOpen(true);
+
+              createProject({
+                variables: {
                   title,
                   description,
                   costs,
                   totalNumberOfParticipants,
                   projectType,
                   activity,
+                  nations: newCountries,
                   location,
                   startDate,
                   endDate,
                   address,
-                } = values;
-
-                let newCountries = [];
-                this.state.countriesSelected.forEach((country) =>
-                  newCountries.push({
-                    name: country.country,
-                    numberOfParticipants: country.numberOfParticipants,
-                  })
-                );
-
-                this.setState({ dialogOpen: true });
-
-                createProject({
-                  variables: {
-                    title,
-                    description,
-                    costs,
-                    totalNumberOfParticipants,
-                    projectType,
-                    activity,
-                    nations: newCountries,
-                    location,
-                    startDate,
-                    endDate,
-                    address,
-                  },
+                  country,
+                },
+              })
+                .then(({ data }) => {
+                  Router.push(`/project?id=${data.createProject.id}`);
                 })
-                  .then(({ data }) => {
-                    Router.push(`/project?id=${data.createProject.id}`);
-                  })
-                  .catch((res) => {
-                    if (res.graphQLErrors) {
-                      const errors = res.graphQLErrors.map((error) => {
-                        return error.message;
-                      });
+                .catch((res) => {
+                  if (res.graphQLErrors) {
+                    const errors = res.graphQLErrors.map((error) => {
+                      return error.message;
+                    });
 
-                      this.setState({ errors, dialogOpen: false, error: true });
-                    }
-                  });
-              }}
-            >
-              {({
-                handleChange,
-                handleSubmit,
-                handleBlur,
-                values,
-                setFieldValue,
-                errors,
-                touched,
-              }) => {
-                return (
-                  <FormWrapper onSubmit={handleSubmit} className="form">
-                    {/* <h1>Please fill in the required information to publish your project!</h1> */}
-                    <div className="guidelines">
-                      <h2>Guidelines</h2>
-                    </div>
-                    <Form>
-                      {/* <Error error={error} /> */}
+                    setServerError(true);
+                    setDialogOpen(false);
+                    setErrors(errors);
+                  }
+                });
+            }}
+          >
+            {({
+              handleChange,
+              handleSubmit,
+              handleBlur,
+              values,
+              setFieldValue,
+              errors,
+              touched,
+            }) => {
+              return (
+                <FormWrapper onSubmit={handleSubmit} className="form">
+                  <div className="guidelines">
+                    <h2>Guidelines</h2>
+                  </div>
+                  <Form>
+                    {/* <Error error={error} /> */}
 
-                      <div className="form__input-group basic-details">
-                        <div className="basic-details__title">
-                          <TextField
-                            className="form__input"
-                            type="text"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.title}
-                            name="title"
-                            placeholder="Title"
-                            id="standard-basic"
-                            label="Project Title"
-                            variant="standard"
-                            required
-                          />
-                          {errors.title && touched.title ? (
-                            <ErrorValidationMessage>{errors.title}</ErrorValidationMessage>
-                          ) : null}
-                        </div>
-                        <div className="basic-details__dates">
-                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            {/* <div className="basic-details__start-date"> */}
-                            <KeyboardDatePicker
-                              className="basic-details__start-date"
-                              format="MM/dd/yyyy"
-                              margin="normal"
-                              id="date-picker-inline"
-                              label="Start date"
-                              name="startDate"
-                              inputProps={{ className: 'input' }}
-                              value={values.startDate}
-                              onChange={(value) => setFieldValue('startDate', value)}
-                              KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                              }}
-                            />
-                            {/* </div> */}
-
-                            <KeyboardDatePicker
-                              className="basic-details__end-date"
-                              format="MM/dd/yyyy"
-                              margin="normal"
-                              id="date-picker-inline"
-                              label="Date picker inline"
-                              label="End date"
-                              name="endDate"
-                              value={values.endDate}
-                              onChange={(value) => setFieldValue('endDate', value)}
-                            />
-                          </MuiPickersUtilsProvider>
-                        </div>
-
-                        <div className="basic-details__type">
-                          <TextField
-                            className="form__select"
-                            id="input"
-                            select
-                            label="Project Type"
-                            required
-                            name="projectType"
-                            value={values.projectType}
-                            onChange={handleChange}
-                            helperText="Please select type of project"
-                          >
-                            {options.map((option) => (
-                              <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-
-                          {errors.projectType && touched.projectType ? (
-                            <ErrorValidationMessage>{errors.projectType}</ErrorValidationMessage>
-                          ) : null}
-                        </div>
-                        <div className="basic-details__activity">
-                          <TextField
-                            className="form__select"
-                            id="input"
-                            select
-                            label="Specific activity"
-                            name="activity"
-                            required
-                            value={values.activity}
-                            onChange={handleChange}
-                            helperText="Please select type of project"
-                          >
-                            {options.map((option) => (
-                              <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-                          {errors.activity && touched.activity ? (
-                            <ErrorValidationMessage>{errors.activity}</ErrorValidationMessage>
-                          ) : null}
-                        </div>
-                      </div>
-
-                      <div className="form__input-group">
-                        <TextField
-                          className="form__description"
-                          id="outlined-multiline-flexible"
-                          label="Detailed description of project"
-                          multiline
-                          name="description"
-                          rows={8}
-                          value={values.description}
-                          onChange={handleChange}
-                        />
-                      </div>
-
-                      <div className="form__input-group">
-                        <TextField
-                          className="form__costs"
-                          id="outlined-multiline-flexible"
-                          label="Costs covered by erasmus+"
-                          multiline
-                          name="costs"
-                          rows={8}
-                          value={values.costs}
-                          onChange={handleChange}
-                        />
-                      </div>
-
-                      {/* <div className="form__input-group type-participants"></div> */}
-                      <Query query={GET_ALL_COUNTRIES_QUERY}>
-                        {({ data }) => {
-                          const options = [];
-                          data &&
-                            data.countries.forEach((country) => {
-                              options.push({
-                                label: country.name,
-                                value: country.name,
-                              });
-                            });
-
-                          return (
-                            <CountriesStyled className="form__input-group">
-                              <div className="total-participants">
-                                <label>Total number of participants</label>
-                                <TextField
-                                  className="total-participants__input"
-                                  id="outlined-multiline-flexible"
-                                  required
-                                  // type="number"
-                                  name="totalNumberOfParticipants"
-                                  value={values.totalNumberOfParticipants}
-                                  onChange={handleChange}
-                                  variant="outlined"
-                                />
-                                {errors.totalNumberOfParticipants &&
-                                touched.totalNumberOfParticipants ? (
-                                  <ErrorValidationMessage>
-                                    {errors.totalNumberOfParticipants}
-                                  </ErrorValidationMessage>
-                                ) : null}
-                              </div>
-
-                              <div className="wrapper">
-                                <label>Participating Countries</label>
-                                <Select
-                                  className="select-box"
-                                  options={options && options}
-                                  isMulti
-                                  isSearchable
-                                  required
-                                  onChange={(options, option) => {
-                                    const countriesSelected = [...this.state.countriesSelected];
-                                    console.log(countriesSelected);
-                                    countriesSelected.push({
-                                      country: option.option?.value,
-                                      numberOfParticipants: '',
-                                    });
-                                    this.setState({ countriesSelected });
-                                  }}
-                                  placeholder="0 countries selected"
-                                />
-                              </div>
-
-                              {countriesSelected.length > 0 &&
-                                countriesSelected.map((countryParent) => (
-                                  <div className="country-block">
-                                    {console.log(countryParent)}
-                                    <label>{countryParent.country}</label>
-                                    <TextField
-                                      className="country"
-                                      id="standard-basic"
-                                      required
-                                      type="number"
-                                      value={countryParent.numberOfParticipants}
-                                      onChange={(e) => {
-                                        const newCountries = [...this.state.countriesSelected];
-                                        const currentIndex = newCountries.findIndex(
-                                          (countryItem) =>
-                                            countryItem.country === countryParent.country
-                                        );
-                                        newCountries[currentIndex].numberOfParticipants = parseInt(
-                                          e.target.value
-                                        );
-                                        this.setState({ countriesSelected: newCountries });
-                                      }}
-                                      variant="outlined"
-                                    />
-                                  </div>
-                                ))}
-                            </CountriesStyled>
-                          );
-                        }}
-                      </Query>
-
-                      <div className="form__input-group">
+                    <div className="form__input-group basic-details">
+                      <div className="basic-details__title">
                         <TextField
                           className="form__input"
                           type="text"
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          value={values.address}
-                          name="address"
-                          placeholder="Please enter full address with zipcode and city/town"
+                          value={values.title}
+                          name="title"
+                          placeholder="Title"
                           id="standard-basic"
-                          label="Location of the project"
+                          label="Project Title"
                           variant="standard"
                           required
                         />
-                        {errors.address && touched.address ? (
-                          <ErrorValidationMessage>{errors.address}</ErrorValidationMessage>
+                        {errors.title && touched.title ? (
+                          <ErrorValidationMessage>{errors.title}</ErrorValidationMessage>
                         ) : null}
                       </div>
-                      <button
-                        className="publish"
-                        type="submit"
-                        disabled={loading}
-                        btnColor={(props) => props.theme.blue}
-                        onClick={() => {
-                          if (errors) {
-                            window.scrollTo(0, 0);
-                          }
-                        }}
+                      <div className="basic-details__dates">
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                          {/* <div className="basic-details__start-date"> */}
+                          <KeyboardDatePicker
+                            className="basic-details__start-date"
+                            format="MM/dd/yyyy"
+                            margin="normal"
+                            id="date-picker-inline"
+                            label="Start date"
+                            name="startDate"
+                            inputProps={{ className: 'input' }}
+                            value={values.startDate}
+                            onChange={(value) => setFieldValue('startDate', value)}
+                            KeyboardButtonProps={{
+                              'aria-label': 'change date',
+                            }}
+                          />
+                          {/* </div> */}
+
+                          <KeyboardDatePicker
+                            className="basic-details__end-date"
+                            format="MM/dd/yyyy"
+                            margin="normal"
+                            id="date-picker-inline"
+                            label="Date picker inline"
+                            label="End date"
+                            name="endDate"
+                            value={values.endDate}
+                            onChange={(value) => setFieldValue('endDate', value)}
+                          />
+                        </MuiPickersUtilsProvider>
+                      </div>
+
+                      <div className="basic-details__type">
+                        <TextField
+                          children={options}
+                          className="form__select"
+                          id="input"
+                          select
+                          label="Project Type"
+                          required
+                          name="projectType"
+                          value={values.projectType}
+                          onChange={handleChange}
+                          helperText="Please select type of project"
+                        >
+                          {options.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                              {option.label}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+
+                        {errors.projectType && touched.projectType ? (
+                          <ErrorValidationMessage>{errors.projectType}</ErrorValidationMessage>
+                        ) : null}
+                      </div>
+                      <div className="basic-details__activity">
+                        <TextField
+                          children={options}
+                          className="form__select"
+                          id="input"
+                          select
+                          label="Specific activity"
+                          name="activity"
+                          required
+                          value={values.activity}
+                          onChange={handleChange}
+                          helperText="Please select type of project"
+                        >
+                          {options.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                              {option.label}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                        {errors.activity && touched.activity ? (
+                          <ErrorValidationMessage>{errors.activity}</ErrorValidationMessage>
+                        ) : null}
+                      </div>
+                    </div>
+
+                    <div className="form__input-group">
+                      <TextField
+                        className="form__description"
+                        id="outlined-multiline-flexible"
+                        label="Detailed description of project"
+                        multiline
+                        name="description"
+                        rows={8}
+                        value={values.description}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div className="form__input-group">
+                      <TextField
+                        className="form__costs"
+                        id="outlined-multiline-flexible"
+                        label="Costs covered by erasmus+"
+                        multiline
+                        name="costs"
+                        rows={8}
+                        value={values.costs}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <CountriesStyled className="form__input-group">
+                      <div className="total-participants">
+                        <label>Total number of participants</label>
+                        <TextField
+                          className="total-participants__input"
+                          id="outlined-multiline-flexible"
+                          required
+                          // type="number"
+                          name="totalNumberOfParticipants"
+                          value={values.totalNumberOfParticipants}
+                          onChange={handleChange}
+                          variant="outlined"
+                        />
+                        {errors.totalNumberOfParticipants && touched.totalNumberOfParticipants ? (
+                          <ErrorValidationMessage>
+                            {errors.totalNumberOfParticipants}
+                          </ErrorValidationMessage>
+                        ) : null}
+                      </div>
+
+                      <div className="wrapper">
+                        <label>Participating Countries</label>
+                        <Select
+                          className="select-box"
+                          options={countriesOptions}
+                          isMulti
+                          isSearchable
+                          required
+                          onChange={(options, option) => {
+                            let newCountriesSelected = countriesSelected?.length
+                              ? [...countriesSelected]
+                              : [];
+                            if (option.option) {
+                              newCountriesSelected.push({
+                                country: option.option.value,
+                                numberOfParticipants: '',
+                              });
+                            } else {
+                              const index = newCountriesSelected.findIndex(
+                                (countryItem) => countryItem.country === option.removedValue.label
+                              );
+                              newCountriesSelected.splice(index, 1);
+                            }
+
+                            setCountriesSelected(newCountriesSelected);
+                          }}
+                          placeholder="0 countries selected"
+                        />
+                      </div>
+
+                      {countriesSelected?.length > 0 &&
+                        countriesSelected.map((countryParent) => (
+                          <div className="country-block">
+                            <label>{countryParent.country}</label>
+                            <TextField
+                              className="country"
+                              id="standard-basic"
+                              required
+                              type="number"
+                              value={countryParent.numberOfParticipants}
+                              onChange={(e) => {
+                                const newCountries = [...countriesSelected];
+                                const currentIndex = newCountries.findIndex(
+                                  (countryItem) => countryItem.country === countryParent.country
+                                );
+                                newCountries[currentIndex].numberOfParticipants = parseInt(
+                                  e.target.value
+                                );
+                                setCountriesSelected(newCountries);
+                              }}
+                              variant="outlined"
+                            />
+                          </div>
+                        ))}
+                    </CountriesStyled>
+
+                    <div className="form__input-group location-input">
+                      <TextField
+                        className="form__input"
+                        type="text"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.address}
+                        name="address"
+                        placeholder="Please enter full address with zipcode and city/town"
+                        id="standard-basic"
+                        label="Full address of project"
+                        variant="standard"
+                        required
+                      />
+                      {errors.address && touched.address ? (
+                        <ErrorValidationMessage>{errors.address}</ErrorValidationMessage>
+                      ) : null}
+
+                      <TextField
+                        children={countriesOptions}
+                        select
+                        className="form__input"
+                        onChange={handleChange}
+                        value={values.country}
+                        name="country"
+                        placeholder="Please select country of project"
+                        id="standard-basic"
+                        label="Based in country"
+                        variant="standard"
+                        required
                       >
-                        Publish Project
-                      </button>
-                    </Form>
-                  </FormWrapper>
-                );
-              }}
-            </Formik>
-          </ProjectFormWrapper>
-        )}
-      </Mutation>
-    );
-  }
-}
+                        {countriesOptions?.map((countryItem) => (
+                          <MenuItem key={countryItem.value} value={countryItem.value}>
+                            {countryItem.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                      {errors.address && touched.address ? (
+                        <ErrorValidationMessage>{errors.address}</ErrorValidationMessage>
+                      ) : null}
+                    </div>
+                    <button
+                      className="publish"
+                      type="submit"
+                      disabled={loading}
+                      onClick={() => {
+                        if (errors) {
+                          window.scrollTo(0, 0);
+                        }
+                      }}
+                    >
+                      Publish Project
+                    </button>
+                  </Form>
+                </FormWrapper>
+              );
+            }}
+          </Formik>
+        </ProjectFormWrapper>
+      )}
+    </Mutation>
+  );
+};
 
 export default CreateProject;
-export { CREATE_PROJECT_MUTATION };
