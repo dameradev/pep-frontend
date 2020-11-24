@@ -68,12 +68,16 @@ const StyledPage = styled.div`
     top: 0;
     left: 0;
   }`}
+
+  .drawer {
+    overflow: hidden !important;
+  }
   .mobile-nav {
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-width: 20vw;
+    min-width: 15rem;
 
     a {
       padding: 0 2rem;
@@ -107,14 +111,16 @@ const StyledPage = styled.div`
       }
     }
     .signout-button {
-      position: absolute;
+      /* position: absolute; */
       margin: 0;
-      bottom: 0;
-      left: 0;
+      margin-top: 2rem;
+      /* bottom: 0; */
+      /* left: 0; */
       width: 100%;
       height: max-content;
       text-transform: uppercase;
       border-radius: 0 !important;
+      overflow: hidden;
     }
   }
 `;
