@@ -45,6 +45,7 @@ const FooterStyled = styled.div`
     align-items: flex-start;
     gap: 3rem;
     width: 60%;
+
     ${respondTo.tabletMini`
       flex-direction: column;
       align-items:center !important;
@@ -85,12 +86,15 @@ const FooterStyled = styled.div`
     width: 100%;
     a {
       color: #fff;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
     }
   }
 
   .social-media {
+    align-self: flex-end;
+
     ${respondTo.tabletMini`
+      align-self: center;
       display: flex;
     
       span {
@@ -115,6 +119,7 @@ const FooterStyled = styled.div`
   }
 
   .contact {
+    align-self: flex-end;
     text-align: right;
     width: 40%;
     ${respondTo.tabletMini`
