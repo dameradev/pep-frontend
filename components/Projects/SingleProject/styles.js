@@ -48,6 +48,10 @@ export const SingleProjectStyles = styled.article`
       display: flex;
       justify-content: space-between;
 
+      ${respondTo.mobileSmall`
+      flex-direction: column
+      `};
+
       h3 {
         span {
           font-weight: 100;
@@ -60,7 +64,7 @@ export const SingleProjectStyles = styled.article`
     }
     &__nations {
       background: #f7f7f7;
-      margin: 2rem -3rem;
+      margin: 2rem -2rem;
       padding: 1.5rem 3rem !important;
 
       &__list {
@@ -109,7 +113,7 @@ export const SingleProjectStyles = styled.article`
 
     &__costs {
       background: #f7f7f7;
-      margin: 2rem -3rem;
+      margin: 2rem -2rem;
       padding: 1.5rem 3rem !important;
     }
     &__total-participants {

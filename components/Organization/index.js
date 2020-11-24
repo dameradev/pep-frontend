@@ -169,7 +169,7 @@ const Organization = ({
               )}
             </SectionStyles>
 
-            <SectionStyles className="focused-on" edit={edit === 'true' ? true : false}>
+            <SectionStyles focusedOn className="focused-on" edit={edit === 'true' ? true : false}>
               <h3>Focused on</h3>
 
               <ul>

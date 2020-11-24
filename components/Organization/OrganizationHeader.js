@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { HeaderStyled } from './styles';
 import { Tabs, Tab, TextField } from '@material-ui/core';
+import { Edit as EditIcon, Save as SaveIcon } from '@material-ui/icons';
 
 const OrganizationHeader = (props) => {
   const {
@@ -65,10 +66,16 @@ const OrganizationHeader = (props) => {
                 query: { id, edit: editValue === 'false' ? true : false },
               }}
             >
-              <a className="header__edit">{editValue === 'true' ? 'Save' : 'Edit'}</a>
+              <a className="header__edit">
+                <EditIcon color="primary" />
+                <span>Edit</span>
+              </a>
             </Link>
           ) : (
-            <button className="header__edit">Save</button>
+            <button className="header__edit">
+              <SaveIcon color="primary" />
+              <span>Save</span>
+            </button>
           ))}
       </div>
 

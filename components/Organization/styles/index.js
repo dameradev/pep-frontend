@@ -11,10 +11,14 @@ export const OrganizationStyles = styled.div`
   .tab {
     width: 100%;
     /* ${(props) => console.log(props)} */
+    ${respondTo.tabletMini` 
+      padding: 0;
+      margin-top: 2rem;
+    `}
   }
   .projects-tab {
     ${respondTo.tabletMini` 
-      padding: 0 5%;
+      padding: 0;
     `}
   }
   .organization {
@@ -31,6 +35,8 @@ export const OrganizationStyles = styled.div`
       ${respondTo.tabletMini` 
         flex-direction:column;
         padding: 0;
+        margin-top: 0;
+        margin-bottom:0;
       `}
     }
 
@@ -41,7 +47,7 @@ export const OrganizationStyles = styled.div`
     }
     &__sidebar {
       ${respondTo.tabletMini` 
-        margin:0  5%;
+        margin:0;
       `}
     }
     &__similar {
@@ -66,7 +72,7 @@ export const OrganizationStyles = styled.div`
 
       ${respondTo.tabletMini` 
         padding: 0;
-        box-shadow:none;
+        
       `}
     }
   }
@@ -151,18 +157,37 @@ export const HeaderStyled = styled.div`
     }
 
     &__edit {
-      width: 5rem;
+      width: 8rem;
+      height: 8rem;
+      padding: 0.5rem;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       font-size: 1.2rem;
-      border: 2px solid #fff;
+      border: none;
+      border: 1px solid #dbdbdb;
+      box-shadow: 0px 3px 6px #00000029;
       background: #fff;
-      border-radius: 5px;
+      border-radius: 50%;
       transition: all 0.2s;
-      position: absolute;
-      top: 1rem;
+      position: fixed;
+      bottom: 1rem;
       right: 2rem;
+      z-index: 100;
+      text-transform: uppercase;
+      outline: none;
+      span {
+        line-height: 2rem;
+        font-size: 1.4rem;
+      }
+      svg {
+        width: 3rem;
+        height: 3rem;
+      }
+      button {
+        outline: none !important;
+      }
       &:active {
         transform: translateY(2px);
       }
@@ -199,13 +224,7 @@ export const SectionStyles = styled.section`
 
   &.focused-on,
   &.interested-in {
-    h3 {
-      padding: 0;
-    }
     ul {
-      /* list-style: upper-alpha;
-      list-style: square;
-      list-style: none; */
       li {
         &::before {
           content: '-';
@@ -242,13 +261,18 @@ export const SectionStyles = styled.section`
     position: relative;
     z-index: 1;
     display: inline-block;
+    ${respondTo.tabletMini`   
+      font-size: 2.4rem;
+      
+    `}
     &::before {
       content: '-';
       position: absolute;
       left: -3rem;
       ${respondTo.tabletMini`   
-      left: 0;
-    `}
+        left: 0;
+        font-size: 2.4rem;
+      `}
     }
     &::after {
       content: '';
@@ -259,7 +283,13 @@ export const SectionStyles = styled.section`
       right: -1rem;
       height: 2rem;
       width: 10rem;
-      opacity: 0.8;
+      opacity: 0.7;
+      ${respondTo.tabletMini`   
+        height: 1rem;
+        bottom: 1.2rem;
+        width: 5rem;
+        right: 1.5rem;
+      `}
     }
     ${respondTo.tabletMini`   
       padding:0 3rem;
@@ -287,6 +317,11 @@ export const SidebarStyled = styled.div`
   box-shadow: 0px 3px 6px #00000029;
 
   padding: 1.5rem 3rem;
+
+  ${respondTo.tabletMini`   
+    box-shadow: 0px 3px 6px  3px #00000029;
+    border-radius:0;
+  `}
 
   h1 {
     padding: 1rem 0 2rem 0;
