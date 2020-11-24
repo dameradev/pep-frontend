@@ -73,32 +73,48 @@ const StyledPage = styled.div`
     align-items: center;
     justify-content: center;
     width: 100%;
-    /* text-align: left; */
-    /* padding: 2rem; */
+    min-width: 20vw;
 
     a {
-      padding: 1rem 3rem;
+      padding: 0 2rem;
       text-transform: uppercase;
       font-size: 1.6rem;
       text-decoration: none;
       color: grey;
       margin-left: 0;
       width: 100%;
-      text-align: center;
+      text-align: left;
 
+      display: flex;
+      align-items: center;
+
+      height: 4rem;
       border-bottom: none;
+      position: relative;
 
       &.active {
         color: ${(props) => props.theme.red};
-      }
-      &:last-of-type {
-        /* margin-bottom: 1rem; */
+        &:after {
+          content: '';
+          height: 4rem;
+          width: 1.5rem;
+          background: ${(props) => props.theme.red};
+          opacity: 0.6;
+          position: absolute;
+          right: 0;
+          top: 0;
+        }
       }
     }
-    button {
+    .signout-button {
+      position: absolute;
       margin: 0;
-      border-radius: 0;
-      height: 5rem;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: max-content;
+      text-transform: uppercase;
+      border-radius: 0 !important;
     }
   }
 `;
@@ -189,9 +205,8 @@ const Page = (props) => {
             </div>
 
             <Divider />
-            <List>
-              <Nav className="mobile-nav" />
-            </List>
+
+            <Nav className="mobile-nav" />
           </Drawer>
           {props.children}
           <Footer />

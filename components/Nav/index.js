@@ -54,7 +54,7 @@ const Nav = (props) => {
             {user.name}
           </MenuLink>
 
-          <Singout />
+          <Singout className="signout-button" />
         </>
       )}
 

@@ -29,6 +29,7 @@ const Signout = (props) => (
   <Mutation mutation={SIGNOUT_MUTATION}>
     {(signout) => (
       <SignoutButton
+        className={props.className}
         onClick={() => {
           localStorage.removeItem('token');
           Router.push('/');
