@@ -16,7 +16,7 @@ import useForm from '../../lib/useForm';
 import { OrganizationStyles, SectionStyles } from './styles';
 import { Box, Typography, TextField, Icon } from '@material-ui/core';
 
-import UserContext from '../../lib/auth';
+import UserContext from '../../contexts/userContext';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;

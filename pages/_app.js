@@ -3,7 +3,7 @@ import { ApolloProvider } from 'react-apollo';
 import withData from '../lib/withData';
 import Page from '../components/Page';
 
-import { UserProvider } from '../lib/auth';
+import { UserProvider } from '../contexts/userContext';
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx, pathname }) {

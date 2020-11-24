@@ -13,7 +13,7 @@ import { projectTypes } from '../config';
 import { GET_ALL_COUNTRIES_QUERY, SEARCH_PROJECTS_QUERY } from '../lib/queries';
 
 import { respondTo } from '../lib/respondTo';
-import UserContext from '../lib/auth';
+import UserContext from '../contexts/userContext';
 
 const ProjectsPage = styled.div`
   display: grid;

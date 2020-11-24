@@ -7,7 +7,7 @@ import Singout from '../Signout';
 import MenuLink from './MenuLink';
 
 import { useContext } from 'react';
-import UserContext from '../../lib/auth';
+import UserContext from '../../contexts/userContext';
 const Navigation = styled.nav`
   display: flex;
   align-items: center;

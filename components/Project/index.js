@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 
 import SingleProject from '../Projects/SingleProject';
 import Applicants from './Applicants';
-import UserContext from '../../lib/auth';
+import UserContext from '../../contexts/userContext';
 import ApplyForm from './ApplyForm';
 
 import { ProjectStyles } from './styles';

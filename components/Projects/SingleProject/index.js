@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 import Icons from '../../../lib/icons';
 import { GET_ALL_COUNTRIES_QUERY } from '../../../lib/queries';
 import { SAVE_PROJECT_MUTATION } from '../../../lib/mutations';
-import UserContext from '../../../lib/auth';
+import UserContext from '../../../contexts/userContext';
 
 import { SingleProjectStyles } from './styles';
 
