@@ -6,7 +6,6 @@ import { TextField, MenuItem, Button } from '@material-ui/core';
 import { Panel } from './styles';
 
 const SearchPanel = (props) => {
-  console.log(props.loading);
   return props.loading ? (
     <Skeleton height={800} style={{ marginTop: '3.5rem' }} />
   ) : (
@@ -33,12 +32,12 @@ const SearchPanel = (props) => {
         <TextField
           select
           label="Select"
-          value={props?.nation}
-          onChange={(e) => props.setNation(e.target.value)}
+          value={props?.country}
+          onChange={(e) => props.setCountry(e.target.value)}
           helperText="Select type of project"
-          children={props.nations}
+          children={props.countries}
         >
-          {props.nations?.map((option) => (
+          {props.countries?.map((option) => (
             <MenuItem key={option.name} value={option.name}>
               {option.name}
             </MenuItem>

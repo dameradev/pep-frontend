@@ -4,6 +4,7 @@ import withData from '../lib/withData';
 import Page from '../components/Page';
 
 import { UserProvider } from '../contexts/userContext';
+import { CountriesProvider } from '../contexts/CountriesContext';
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx, pathname }) {
@@ -21,9 +22,11 @@ class MyApp extends App {
     return (
       <ApolloProvider client={apollo}>
         <UserProvider>
-          <Page>
-            <Component {...pageProps} />
-          </Page>
+          <CountriesProvider>
+            <Page>
+              <Component {...pageProps} />
+            </Page>
+          </CountriesProvider>
         </UserProvider>
       </ApolloProvider>
     );

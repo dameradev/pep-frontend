@@ -11,6 +11,7 @@ import { SAVE_PROJECT_MUTATION } from '../../../lib/mutations';
 import UserContext from '../../../contexts/userContext';
 
 import { SingleProjectStyles } from './styles';
+import CountriesContext from '../../../contexts/CountriesContext';
 
 const SingleProject = (props) => {
   const {
@@ -30,9 +31,9 @@ const SingleProject = (props) => {
   } = props.project;
 
   const { handleFormDisplay, loading: projectLoading } = props;
-  const { loading, error, data } = useQuery(GET_ALL_COUNTRIES_QUERY);
 
   const user = useContext(UserContext);
+  const { countries } = useContext(CountriesContext);
 
   const currentUserId = user?.id;
 
@@ -72,8 +73,7 @@ const SingleProject = (props) => {
             return (
               <p key={name}>
                 <span>
-                  <img src={data?.countries.find((country) => country.name === name).image} />{' '}
-                  {name}
+                  <img src={countries?.find((country) => country.name === name).image} /> {name}
                 </span>
                 <span>{numberOfParticipants} spots</span>
               </p>

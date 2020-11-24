@@ -1,19 +1,17 @@
 import { useState, useContext } from 'react';
-import { adopt } from 'react-adopt';
 import ProjectsList from '../components/Projects';
 
-import { Query, useLazyQuery, useMutation, useQuery } from 'react-apollo';
-
-import gql from 'graphql-tag';
+import { useLazyQuery } from 'react-apollo';
 
 import SearchPanel from '../components/SearchPanel';
 import styled from 'styled-components';
 
 import { projectTypes } from '../config';
-import { GET_ALL_COUNTRIES_QUERY, SEARCH_PROJECTS_QUERY } from '../lib/queries';
+import { SEARCH_PROJECTS_QUERY } from '../lib/queries';
 
 import { respondTo } from '../lib/respondTo';
 import UserContext from '../contexts/userContext';
+import CountriesContext from '../contexts/CountriesContext';
 
 const ProjectsPage = styled.div`
   display: grid;
@@ -29,45 +27,32 @@ const ProjectsPage = styled.div`
   `}
 `;
 
-const Composed = adopt({
-  localState: ({ render }) => <Query query={GET_ALL_COUNTRIES_QUERY}>{render}</Query>,
-});
-
 const Projects = () => {
   const [projectType, setProjectType] = useState('ESC');
-  const [nation, setNation] = useState('North Macedonia');
+  const [country, setCountry] = useState('North Macedonia');
 
   const user = useContext(UserContext);
+  const { countries, countriesLoading } = useContext(CountriesContext);
 
   const [searchProjects, { loading, error, data }] = useLazyQuery(SEARCH_PROJECTS_QUERY, {
     variables: {
       projectType,
-      nation: nation,
+      country: country,
     },
   });
   return (
     <ProjectsPage>
-      <Composed>
-        {({ localState }) => {
-          const nations = localState.data?.countries;
-
-          return (
-            <>
-              <SearchPanel
-                projectTypes={projectTypes}
-                projectType={projectType}
-                setProjectType={setProjectType}
-                nations={nations}
-                nation={nation}
-                setNation={setNation}
-                submit={searchProjects}
-                loading={localState.loading}
-              />
-              <ProjectsList projects={data?.searchProjects} userId={user?.id} loading={loading} />
-            </>
-          );
-        }}
-      </Composed>
+      <SearchPanel
+        projectTypes={projectTypes}
+        projectType={projectType}
+        setProjectType={setProjectType}
+        countries={countries}
+        country={country}
+        setCountry={setCountry}
+        submit={searchProjects}
+        loading={countriesLoading}
+      />
+      <ProjectsList projects={data?.searchProjects} userId={user?.id} loading={loading} />
     </ProjectsPage>
   );
 };
