@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import icons from '../lib/icons';
 
+import { respondTo } from '../lib/respondTo';
+
 const SuccessfulRegistrationStyles = styled.div`
   padding: 5rem 5%;
   display: flex;
@@ -16,10 +18,20 @@ const SuccessfulRegistrationStyles = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     h3 {
       font-size: 2.4rem;
     }
-    padding: 5rem 0;
+    padding: 3rem 0;
+
+    svg {
+      width: 15rem;
+      height: 15rem;
+      ${respondTo.mobileSmall`
+        width: 10rem;
+        height: 10rem
+       `}
+    }
   }
   .description {
     text-align: center;
