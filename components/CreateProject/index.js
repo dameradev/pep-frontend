@@ -1,5 +1,5 @@
 import React, { Component, useContext, useState } from 'react';
-import { Mutation, Query } from 'react-apollo';
+import { Mutation, Query, useQuery } from 'react-apollo';
 
 import { Form, Formik } from 'formik';
 import Select from 'react-select';
@@ -21,6 +21,7 @@ import CountriesContext from '../../contexts/CountriesContext';
 import { CREATE_PROJECT_MUTATION } from '../../lib/mutations';
 
 import * as Yup from 'yup';
+import { GET_ALL_TAGS_QUERY } from '../../lib/queries';
 
 const options = [
   { value: 'ESC', label: 'ESC' },
@@ -57,6 +58,8 @@ const CreateProject = () => {
 
   const { countries } = useContext(CountriesContext);
 
+  const { loading, data } = useQuery(GET_ALL_TAGS_QUERY);
+  // console.log(tags);
   const handleClose = () => {
     setDialogOpen(false);
     setServerError(false);
@@ -99,8 +102,8 @@ const CreateProject = () => {
               description: '',
               costs: '',
               totalNumberOfParticipants: 0,
-              projectType: 'ESC',
-              activity: 'ESC',
+              projectType: '',
+              activity: '',
               nations: [],
               address: '',
               startDate: new Date(),
@@ -247,11 +250,14 @@ const CreateProject = () => {
                           onChange={handleChange}
                           helperText="Please select type of project"
                         >
-                          {options.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                              {option.label}
-                            </MenuItem>
-                          ))}
+                          {data?.tags.map(
+                            (option) =>
+                              option.type === 'projectType' && (
+                                <MenuItem key={option.name} value={option.name}>
+                                  {option.name}
+                                </MenuItem>
+                              )
+                          )}
                         </TextField>
 
                         {errors.projectType && touched.projectType ? (
@@ -271,11 +277,14 @@ const CreateProject = () => {
                           onChange={handleChange}
                           helperText="Please select type of project"
                         >
-                          {options.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                              {option.label}
-                            </MenuItem>
-                          ))}
+                          {data?.tags.map(
+                            (option) =>
+                              option.type === 'activity' && (
+                                <MenuItem key={option.name} value={option.name}>
+                                  {option.name}
+                                </MenuItem>
+                              )
+                          )}
                         </TextField>
                         {errors.activity && touched.activity ? (
                           <ErrorValidationMessage>{errors.activity}</ErrorValidationMessage>
