@@ -98,17 +98,17 @@ const CreateProject = () => {
           <Formik
             disabled={loading}
             initialValues={{
-              title: '',
+              title: 'Title of project testinggg',
               description: '',
               costs: '',
-              totalNumberOfParticipants: 0,
-              projectType: '',
-              activity: '',
+              totalNumberOfParticipants: 15,
+              projectType: 'ESC',
+              activity: 'Cultural awareness',
               nations: [],
-              address: '',
+              address: 'fdakjsnfasndj',
               startDate: new Date(),
               endDate: new Date(),
-              country: '',
+              country: 'Germany',
             }}
             validationSchema={ProjectSchema}
             onSubmit={async (values, actions) => {

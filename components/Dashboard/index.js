@@ -165,7 +165,7 @@ const OrganizationList = styled.ul`
 `;
 
 const permissionsList = ['ADMIN', 'USER', 'ORGANIZATION'];
-const tagTypes = ['projectType', 'activity'];
+const tagTypes = ['projectType', 'activity', 'question'];
 
 const Dashboard = () => {
   const {
