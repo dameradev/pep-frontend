@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-import { TextField, Button, Checkbox } from '@material-ui/core';
+import { TextField, Button, Checkbox, MenuItem, FormControlLabel } from '@material-ui/core';
 
 import Error from '../styles/ErrorMessage';
+
+import useForm from '../../lib/useForm';
 
 const ALL_ORGANIZATIONS_QUERY = gql`
   query {
@@ -39,13 +41,23 @@ const CREATE_COUNTRY_MUTATION = gql`
   }
 `;
 
-const DashboardStyled = styled.div`
-  display: grid;
+const CREATE_TAG_MUTATION = gql`
+  mutation CREATE_TAG_MUTATION($name: String, $type: String, $approved: Boolean) {
+    createTag(name: $name, type: $type, approved: $approved) {
+      id
+      name
+      type
+    }
+  }
+`;
 
-  grid-template-columns:
+const DashboardStyled = styled.div`
+  display: flex;
+
+  /* grid-template-columns:
     [full-start]
     minmax(6rem, 1fr) [center-start]repeat(8, [col-start] minmax(min-content, 18rem) [col-end])
-    [center-end] minmax(6rem, 1fr) [full-end];
+    [center-end] minmax(6rem, 1fr) [full-end]; */
   grid-gap: 2rem;
   align-items: start;
 
@@ -60,7 +72,8 @@ const DashboardStyled = styled.div`
       }
     }
 
-    &__country-form {
+    &__country-form,
+    &__tag-form {
       padding: 2rem;
       background: #fff;
       grid-column: center-start / col-end 1;
@@ -73,6 +86,14 @@ const DashboardStyled = styled.div`
       .image {
         display: flex;
         flex-direction: column;
+      }
+    }
+  }
+
+  .form {
+    &__input {
+      &.checkbox {
+        width: max-content;
       }
     }
   }
@@ -144,15 +165,28 @@ const OrganizationList = styled.ul`
 `;
 
 const permissionsList = ['ADMIN', 'USER', 'ORGANIZATION'];
+const tagTypes = ['projectType', 'activity'];
 
-class Dashboard extends Component {
-  state = { countryName: '', image: '' };
-  handleChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  };
+const Dashboard = () => {
+  const {
+    values: { countryName, image, tagName, tagType, approved } = {},
+    values,
+    updateValue,
+    updateValueManually,
+  } = useForm({
+    countryName: '',
+    image: '',
+    tagName: '',
+    tagType: '',
+    approved: false,
+  });
 
-  uploadFile = async (e) => {
+  // handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   this.setState({ [name]: value });
+  // };
+
+  const uploadFile = async (e) => {
     // console.log('uploading file');
     const files = e.target.files;
     console.log(files);
@@ -165,76 +199,138 @@ class Dashboard extends Component {
     });
     const file = await response.json();
     // console.log(file);
-    this.setState({
-      image: file.secure_url,
-    });
+    updateValueManually('image', file.secure_url);
   };
 
-  render() {
-    const { countryName: name, image } = this.state;
-    return (
-      <DashboardStyled>
-        <Query query={ALL_ORGANIZATIONS_QUERY}>
-          {({ data: { organizations } = {}, loading, error }) => {
-            return organizations ? (
-              <OrganizationList className="dashboard__organizations">
-                <h2 className="dashboard__organizations__title">List of organizations</h2>
-                {organizations.map((organization) => (
-                  <UserPermission user={organization} key={organization.id} />
-                ))}
-              </OrganizationList>
-            ) : (
-              'Loading..'
-            );
-          }}
-        </Query>
-        <Mutation mutation={CREATE_COUNTRY_MUTATION} variables={{ name, image }}>
-          {(createCountry, { loading, error }) => (
-            <form
-              className="dashboard__country-form"
-              onSubmit={async (e) => {
-                e.preventDefault();
-                await createCountry();
-                // Router.push('/');
-                this.setState({ countryName: '', image: '' });
-              }}
-            >
-              <h2>Add new country</h2>
-              {loading && <p>Loading...</p>}
-              <TextField
-                className="form__input"
-                type="text"
-                onChange={this.handleChange}
-                value={name}
-                name="countryName"
-                id="standard-basic"
-                label="Name of country"
-                variant="standard"
-              />
+  // const { countryName: name, image } = this.state;
+  return (
+    <DashboardStyled>
+      <Query query={ALL_ORGANIZATIONS_QUERY}>
+        {({ data: { organizations } = {}, loading, error }) => {
+          return organizations ? (
+            <OrganizationList className="dashboard__organizations">
+              <h2 className="dashboard__organizations__title">List of organizations</h2>
+              {organizations.map((organization) => (
+                <UserPermission user={organization} key={organization.id} />
+              ))}
+            </OrganizationList>
+          ) : (
+            'Loading..'
+          );
+        }}
+      </Query>
+      <Mutation mutation={CREATE_COUNTRY_MUTATION} variables={{ name: countryName, image }}>
+        {(createCountry, { loading, error }) => (
+          <form
+            className="dashboard__country-form"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              await createCountry();
+              // Router.push('/');
+              this.setState({ countryName: '', image: '' });
+            }}
+          >
+            <h2>Add new country</h2>
+            {loading && <p>Loading...</p>}
+            <TextField
+              className="form__input"
+              type="text"
+              onChange={updateValue}
+              value={countryName}
+              name="countryName"
+              id="standard-basic"
+              label="Name of country"
+              variant="standard"
+            />
 
-              <label htmlFor="file" className="image">
-                <span>Image</span>
-                <input
-                  type="file"
-                  name="file"
-                  id="file"
-                  placeholder="Upload an image"
-                  required
-                  //value={this.state.image}
-                  onChange={this.uploadFile}
+            <label htmlFor="file" className="image">
+              <span>Image</span>
+              <input
+                type="file"
+                name="file"
+                id="file"
+                placeholder="Upload an image"
+                required
+                //value={this.state.image}
+                onChange={uploadFile}
+              />
+              {image && <img src={image} alt="Upload image" width="200" />}
+            </label>
+            <Button variant="contained" color="primary" type="submit">
+              Submit
+            </Button>
+          </form>
+        )}
+      </Mutation>
+
+      <Mutation
+        mutation={CREATE_TAG_MUTATION}
+        variables={{ name: tagName, type: tagType, approved }}
+      >
+        {(createCountry, { loading, error }) => (
+          <form
+            className="dashboard__tag-form"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              await createCountry();
+              // Router.push('/');
+              // this.setState({ countryName: '', image: '' });
+            }}
+          >
+            <h2>Add new tag</h2>
+            {loading && <p>Loading...</p>}
+            <TextField
+              className="form__input"
+              type="text"
+              onChange={updateValue}
+              value={tagName}
+              name="tagName"
+              id="standard-basic"
+              label="Name of tag"
+              variant="standard"
+            />
+
+            <TextField
+              select
+              children={tagTypes}
+              className="form__input"
+              type="text"
+              onChange={updateValue}
+              value={tagType}
+              name="tagType"
+              id="standard-basic"
+              label="Type of tag"
+              variant="standard"
+            >
+              {tagTypes.map((tagType) => (
+                <MenuItem key={tagType} value={tagType}>
+                  {tagType}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  className="form__input checkbox"
+                  checked={approved}
+                  onChange={(e) => updateValueManually('approved', e.target.checked)}
+                  name="approved"
+                  color="primary"
                 />
-                {this.state.image && <img src={this.state.image} alt="Upload image" width="200" />}
-              </label>
-              <Button variant="contained" color="primary" type="submit">
-                Submit
-              </Button>
-            </form>
-          )}
-        </Mutation>
-      </DashboardStyled>
-    );
-  }
-}
+              }
+              label="Approve tag"
+            />
+
+            <Button variant="contained" color="primary" type="submit">
+              Submit
+            </Button>
+          </form>
+        )}
+      </Mutation>
+    </DashboardStyled>
+  );
+};
 
 class UserPermission extends Component {
   state = {
