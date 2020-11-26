@@ -199,14 +199,13 @@ const ApplicantsStyles = styled.div`
       }
     }
 
-    &__motivation {
-      grid-column: 1/2;
-    }
-    &__reason {
-      grid-column: 1/2;
-    }
+    &__question,
+    &__reason,
     &__after {
-      grid-column: 1/2;
+      grid-column: 1/3;
+      ${respondTo.tabletMini`
+        grid-column: 1/2;
+      `}
     }
 
     &__displayed {

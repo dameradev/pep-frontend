@@ -12,7 +12,8 @@ import { ProjectStyles } from './styles';
 import { SINGLE_PROJECT_QUERY } from '../../lib/queries';
 import { UPDATE_APPLICANT_FORM_MUTATION } from '../../lib/mutations';
 import OrganizationInfo from './organizationInfo';
-import { Icon, TextField } from '@material-ui/core';
+
+import FormConfig from './FormConfig';
 
 const Project = (props) => {
   const {
@@ -26,61 +27,26 @@ const Project = (props) => {
   const { user: { id: userId, organizationProfile, name, email } = {}, applicants, applicantForm } =
     project || {};
 
-  const [questions, setQuestions] = useState(applicantForm?.questions);
-
-  console.log(questions);
-  const addArrayElement = (name) => {
-    let newArray = questions;
-    newArray = [...newArray];
-    newArray.push('');
-
-    setQuestions(newArray);
-  };
-
-  const removeArrayElement = (index) => {
-    let newArray = questions;
-    newArray = [...newArray];
-    newArray.splice(index, 1);
-
-    setQuestions(newArray);
-  };
-
-  const handleArrayChange = (e, index, array) => {
-    const newArray = [...array];
-    newArray[index] = e.target.value;
-
-    setQuestions(newArray);
-  };
-
   const handleFormDisplay = () => {
     setFormDisplay(true);
     setTimeout(() => {
-      window.scrollTo(0, formRef?.current?.offsetTop - 40);
+      window.scrollTo(0, formRef?.current?.offsetTop - 70);
     }, 100);
   };
 
-  console.log(applicantForm);
-  const [updateApplicantForm, { data, loading: formLoading }] = useMutation(
-    UPDATE_APPLICANT_FORM_MUTATION,
-    {
-      variables: {
-        id: applicantForm?.id,
-        questions: questions,
-      },
-    }
-  );
+  // const handleFormDisplay = () => {
+
+  // }
 
   useEffect(() => {
     if (apply === 'true') {
       handleFormDisplay();
     }
-    if (questions === undefined) {
-      setQuestions(applicantForm?.questions);
-    }
   });
 
   const user = useContext(UserContext);
   const formRef = useRef(null);
+  const configFormRef = useRef(null);
 
   return project ? (
     <ProjectStyles>
@@ -96,69 +62,37 @@ const Project = (props) => {
           email={email}
           userId={userId}
           organizationProfile={organizationProfile}
+          configFormRef={configFormRef}
         />
       </div>
-      {user?.id !== userId ? (
+      {/* {user?.id !== userId ? (
         <ApplyForm projectId={id} formDisplay={formDisplay} formRef={formRef} />
-      ) : applicants.length ? (
-        <Applicants applicants={applicants} projectId={id} />
+      ) : */}
+      {user?.id === userId && applicants.length ? (
+        <Applicants applicants={applicants} projectId={id} questions={applicantForm?.questions} />
       ) : (
-        'There are currently no  applicants for this project'
+        user?.id === userId && (
+          <h3 className="no-applicants-message">
+            There are currently no applicants for this project
+          </h3>
+        )
       )}
 
       {user?.id === userId && (
-        <div>
-          <h3>Applicant form configuration</h3>
-
-          <div>
-            <p>Food preference options</p>
-            <ul>
-              <li>Vegan</li>
-              <li>Vegetarian</li>
-              <li>Gluten free</li>
-              <li>none</li>
-            </ul>
-          </div>
-          <div>
-            Questions
-            <ul>
-              {questions?.length ? (
-                questions?.map((item, index) => (
-                  <li>
-                    {edit === 'false' ? (
-                      <p>{item}</p>
-                    ) : (
-                      <div className="form__group">
-                        <TextField
-                          className="form__input"
-                          type="text"
-                          onChange={(e) => handleArrayChange(e, index, questions)}
-                          value={item}
-                          name="question"
-                          placeholder="Enter focused on item"
-                          variant="outlined"
-                        />
-
-                        <Icon onClick={() => removeArrayElement(index)} color="primary">
-                          remove_circle
-                        </Icon>
-                      </div>
-                    )}
-                  </li>
-                ))
-              ) : (
-                <p>Please add a what you're focused on by clicking on the plus icon below.</p>
-              )}
-            </ul>
-            {edit !== 'false' && (
-              <Icon onClick={() => addArrayElement('focusedOn')} color="primary">
-                add_circle
-              </Icon>
-            )}
-          </div>
-          <button onClick={() => updateApplicantForm()}>Save changes</button>
-        </div>
+        <FormConfig
+          formRef={configFormRef}
+          questions={applicantForm?.questions}
+          applicantFormId={applicantForm?.id}
+          handleFormDisplay={handleFormDisplay}
+        />
       )}
+
+      <ApplyForm
+        projectId={id}
+        formDisplay={formDisplay}
+        formRef={formRef}
+        applicantForm={applicantForm}
+      />
     </ProjectStyles>
   ) : (
     <ProjectStyles>

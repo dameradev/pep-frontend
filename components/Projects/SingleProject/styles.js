@@ -49,7 +49,7 @@ export const SingleProjectStyles = styled.article`
       justify-content: space-between;
 
       ${respondTo.mobileSmall`
-      flex-direction: column
+        flex-direction: column
       `};
 
       h3 {
@@ -64,8 +64,12 @@ export const SingleProjectStyles = styled.article`
     }
     &__nations {
       background: #f7f7f7;
-      margin: 2rem -2rem;
+      margin: 2rem -3rem;
       padding: 1.5rem 3rem !important;
+
+      ${respondTo.tabletMini`
+        margin: 2rem -2rem;
+      `};
 
       &__list {
         max-height: 10rem;
@@ -86,8 +90,8 @@ export const SingleProjectStyles = styled.article`
         ${respondTo.mobilePortrait` 
         width: 25rem;
       `}
-        /* padding-left: 1.5rem; */
-      display: flex;
+
+        display: flex;
         justify-content: space-between;
         span {
           display: flex;
@@ -113,8 +117,12 @@ export const SingleProjectStyles = styled.article`
 
     &__costs {
       background: #f7f7f7;
-      margin: 2rem -2rem;
+      margin: 2rem -3rem;
       padding: 1.5rem 3rem !important;
+
+      ${respondTo.tabletMini`
+        margin: 2rem -2rem;
+      `};
     }
     &__total-participants {
       padding: 0 0 2rem 0;

@@ -53,6 +53,10 @@ const ProjectStyles = styled.div`
       border-radius: 5px;
       background: #fff;
       box-shadow: 0px 3px 6px #00000029;
+      position: relative;
+
+      display: flex;
+      flex-direction: column;
 
       color: ${(props) => props.theme.darkGrey1};
       height: max-content;
@@ -61,8 +65,28 @@ const ProjectStyles = styled.div`
         margin-top: 2rem;
         border-top: 2px solid #00000029;
         border-radius: 0;
+        margin-bottom: 6rem;
 
       `}
+
+      .configure-form-button {
+        position: absolute;
+        bottom: -5rem;
+        height: max-content;
+        width: 100%;
+        font-size: 1.6rem;
+        text-transform: uppercase;
+        padding: 1rem 2.5rem;
+        background: ${(props) => props.theme.blue};
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        outline: none;
+        ${respondTo.tabletMini` 
+          width: 80%;
+          align-self: center;
+        `}
+      }
 
       .header {
         padding: 4rem 2rem 1rem 2rem;
@@ -151,6 +175,7 @@ const ProjectStyles = styled.div`
     }
   }
   .form-wrapper {
+    margin-top: 2rem;
     display: flex;
     gap: 3rem;
     display: none;
@@ -166,6 +191,13 @@ const ProjectStyles = styled.div`
     `}
   }
 
+  .no-applicants-message {
+    font-weight: 400;
+    color: ${(props) => props.theme.red};
+    ${respondTo.tabletMini` 
+      padding: 0 2rem;
+    `}
+  }
   .applicant {
     box-shadow: 0px 3px 6px #00000029;
     padding: 2rem;

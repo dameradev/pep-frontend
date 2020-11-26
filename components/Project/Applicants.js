@@ -10,21 +10,22 @@ import { CHANGE_APPLICANT_STATUS_MUTATION } from '../../lib/mutations';
 
 const statuses = ['pending', 'accepted', 'rejected'];
 
-const Applicants = ({ applicants: propsApplicants, projectId }) => {
-  const [selectedApplicant, setSelectedApplicant] = useState(window.innerWidth > 849 ? 1 : 0);
-
+const Applicants = ({ applicants: propsApplicants, projectId, questions }) => {
   const applicants = propsApplicants.sort((a, b) => a.id - b.id);
 
+  const [selectedApplicant, setSelectedApplicant] = useState(applicants[0]?.id);
   const [currentStatus, setCurrentStatus] = useState(status);
   const [statusChanged, setStatusChanged] = useState(false);
+
+  console.log(applicants);
 
   const [changeApplicantStatus, { data, loading: statusLoading }] = useMutation(
     CHANGE_APPLICANT_STATUS_MUTATION,
     {
       variables: {
         projectId: projectId,
-        applicantId: applicants[selectedApplicant - 1]?.id,
-        userId: applicants[selectedApplicant - 1]?.applicant.id,
+        applicantId: applicants.find((item) => item.id === selectedApplicant)?.id,
+        userId: applicants.find((item) => item.id === selectedApplicant)?.applicant.id,
         status: currentStatus.toUpperCase(),
       },
     }
@@ -51,6 +52,7 @@ const Applicants = ({ applicants: propsApplicants, projectId }) => {
       </div>
       <ul className="applicants__list">
         {applicants.map(({ id, status, applicant: { name } }) => {
+          // console.log(status,);
           return (
             <li key={id} id={`applicant-${id}`}>
               <div
@@ -75,10 +77,11 @@ const Applicants = ({ applicants: propsApplicants, projectId }) => {
               {window.innerWidth < 849 && (
                 <SelectedApplicant
                   isSelected={selectedApplicant === id && 'selected'}
-                  selectedApplicant={applicants[selectedApplicant - 1]}
+                  selectedApplicant={applicants.find((item) => item.id === selectedApplicant)}
                   setCurrentStatus={setCurrentStatus}
                   setStatusChanged={setStatusChanged}
                   statusLoading={statusLoading}
+                  questions={questions}
                 />
               )}
             </li>
@@ -87,10 +90,11 @@ const Applicants = ({ applicants: propsApplicants, projectId }) => {
       </ul>
       {window.innerWidth > 849 && (
         <SelectedApplicant
-          selectedApplicant={applicants[selectedApplicant - 1]}
+          selectedApplicant={applicants.find((item) => item.id === selectedApplicant)}
           setCurrentStatus={setCurrentStatus}
           setStatusChanged={setStatusChanged}
           statusLoading={statusLoading}
+          questions={questions}
         />
       )}
     </ApplicantsStyles>
@@ -102,10 +106,12 @@ const SelectedApplicant = ({
     applicant: { name, nationality } = {},
     foodPreference,
     status,
-    motivation,
-    reason,
-    afterProject,
+    answers,
+    // motivation,
+    // reason,
+    // afterProject,
   } = {},
+  questions,
   setCurrentStatus,
   setStatusChanged,
   isSelected,
@@ -173,7 +179,15 @@ const SelectedApplicant = ({
           </TextField>
         )}
       </div>
-      <div className="selected-applicant__motivation">
+      {console.log(questions)}
+      {questions?.map((question, index) => (
+        <div className="selected-applicant__question">
+          <h3>{question}</h3>
+          <p>{answers?.[index]}</p>
+        </div>
+      ))}
+
+      {/* <div className="selected-applicant__motivation">
         <h3>Motivation</h3>
         <p>{motivation}</p>
       </div>
@@ -184,7 +198,7 @@ const SelectedApplicant = ({
       <div className="selected-applicant__after">
         <h3>After project</h3>
         <p>{afterProject}</p>
-      </div>
+      </div> */}
     </div>
   );
 };

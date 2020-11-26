@@ -24,10 +24,8 @@ const getKeyFromObject = (obj) => {
   return filtered;
 };
 
-const ApplyForm = ({ projectId, formDisplay, formRef }) => {
-  const [motivation, setMotivation] = useState('');
-  const [reason, setReason] = useState('');
-  const [afterProject, setAfterProject] = useState('');
+const ApplyForm = ({ projectId, formDisplay, formRef, applicantForm: { questions } = {} }) => {
+  const [answers, setAnswers] = useState(Array.from(questions || [], (item) => ''));
   const [foodPreference, setFoodPreference] = useState({
     Vegetarian: false,
     Vegan: false,
@@ -39,6 +37,8 @@ const ApplyForm = ({ projectId, formDisplay, formRef }) => {
     setFoodPreference({ ...foodPreference, [event.target.name]: event.target.checked });
   };
 
+  // console.log(answersArr);
+
   const foodProccesed = getKeyFromObject(foodPreference);
 
   const { Vegetarian, Vegan, GlutenFree, None } = foodPreference;
@@ -48,9 +48,10 @@ const ApplyForm = ({ projectId, formDisplay, formRef }) => {
     <Mutation
       mutation={APPLY_FOR_PROJECT_MUTATION}
       variables={{
-        motivation,
-        reason,
-        afterProject,
+        // motivation,
+        // reason,
+        // afterProject,
+        answers: answers,
         foodPreference: foodProccesed,
         projectId,
       }}
@@ -127,7 +128,24 @@ const ApplyForm = ({ projectId, formDisplay, formRef }) => {
               </FormControl>
               <FormLabel component="legend">* Pick one or two</FormLabel>
             </div>
-            <TextField
+            {questions?.map((question, index) => (
+              <TextField
+                className="textarea-input"
+                id="filled-multiline-flexible"
+                label={question}
+                placeholder={question}
+                multiline
+                rowsMax={10}
+                rows={5}
+                value={answers[index]}
+                onChange={(e) => {
+                  const newAnswers = [...answers];
+                  newAnswers[index] = e.target.value;
+                  setAnswers(newAnswers);
+                }}
+              />
+            ))}
+            {/* <TextField
               className="textarea-input"
               id="filled-multiline-flexible"
               label="What's your main motivation for this project"
@@ -161,7 +179,7 @@ const ApplyForm = ({ projectId, formDisplay, formRef }) => {
               rowsMax={10}
               value={afterProject}
               onChange={(e) => setAfterProject(e.target.value)}
-            />
+            /> */}
 
             <Button type="submit" variant="outlined" color="primary">
               Submit Application
