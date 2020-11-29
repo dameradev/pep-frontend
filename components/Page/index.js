@@ -23,6 +23,9 @@ const MuiTheme = createMuiTheme({
     primary: {
       main: colors.blue[800],
     },
+    secondary: {
+      main: '#fff',
+    },
     // secondary: green,
   },
 });

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { respondTo } from '../../lib/respondTo';
 
-export const Panel = styled.div`
+export const SearchPanelStyles = styled.div`
   margin-top: 2rem;
   box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.1);
   background-color: #fff;
@@ -10,7 +10,6 @@ export const Panel = styled.div`
   /* padding: 20px; */
 
   ${respondTo.tabletMini` 
-  // height: 20rem !important;
     margin-top: 0;
     min-height: unset;
   `}
@@ -25,12 +24,17 @@ export const Panel = styled.div`
       font-weight: 300;
     }
   }
+  .form-input {
+    label {
+      font-size: 2rem;
+    }
+    .MuiSelect-select {
+      margin-top: 1rem;
+    }
+  }
   .filters {
     padding: 2rem;
     display: grid;
     grid-gap: 2rem;
-    &__location {
-      min-width: 20rem;
-    }
   }
 `;

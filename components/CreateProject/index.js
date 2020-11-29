@@ -59,7 +59,6 @@ const CreateProject = () => {
   const { countries } = useContext(CountriesContext);
 
   const { loading, data } = useQuery(GET_ALL_TAGS_QUERY);
-  // console.log(tags);
   const handleClose = () => {
     setDialogOpen(false);
     setServerError(false);

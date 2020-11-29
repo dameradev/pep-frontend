@@ -48,6 +48,23 @@ const Hero = styled.div`
 
       display: flex;
       flex-direction: column;
+      .form-input {
+        margin: 0.5rem 0;
+        border-color: #fff;
+        text-align: left;
+        label,
+        svg,
+        .MuiInputBase-input {
+          color: #fff;
+        }
+        p {
+          color: #8a8a8a;
+        }
+        .MuiInput-underline:before {
+          color: #fff;
+          border-color: #fff;
+        }
+      }
       /* align-items: flex-start; */
       ${respondTo.tablet` 
         width: 100%;

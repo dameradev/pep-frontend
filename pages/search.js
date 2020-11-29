@@ -1,17 +1,18 @@
 import { useState, useContext } from 'react';
 import ProjectsList from '../components/Projects';
 
-import { useLazyQuery } from 'react-apollo';
+import { useLazyQuery, useMutation, useQuery } from 'react-apollo';
 
 import SearchPanel from '../components/SearchPanel';
 import styled from 'styled-components';
 
-import { projectTypes } from '../config';
-import { SEARCH_PROJECTS_QUERY } from '../lib/queries';
+import { SEARCH_PROJECTS_QUERY, LOCAL_STATE_QUERY } from '../lib/queries';
+import { SAVE_SEARCH_DATA_MUTAITON } from '../lib/mutations';
 
 import { respondTo } from '../lib/respondTo';
+import useForm from '../lib/useForm';
 import UserContext from '../contexts/userContext';
-import CountriesContext from '../contexts/CountriesContext';
+import { useEffect } from 'react';
 
 const ProjectsPage = styled.div`
   display: grid;
@@ -27,31 +28,35 @@ const ProjectsPage = styled.div`
   `}
 `;
 
-const Projects = () => {
-  const [projectType, setProjectType] = useState('ESC');
-  const [country, setCountry] = useState('North Macedonia');
+const Projects = ({ query: { search } }) => {
+  const { data: localData } = useQuery(LOCAL_STATE_QUERY);
+  const {
+    values: { projectType, activity, nationality, destination } = {},
+    values,
+    updateValue,
+  } = useForm({
+    ...localData.searchData,
+  });
 
+  useEffect(() => {
+    if (search === 'true') {
+      searchProjects();
+    }
+  }, {});
+
+  // console.log(query);
   const user = useContext(UserContext);
-  const { countries, countriesLoading } = useContext(CountriesContext);
-
   const [searchProjects, { loading, error, data }] = useLazyQuery(SEARCH_PROJECTS_QUERY, {
     variables: {
       projectType,
-      country: country,
+      activity,
+      nationality,
+      destination,
     },
   });
   return (
     <ProjectsPage>
-      <SearchPanel
-        projectTypes={projectTypes}
-        projectType={projectType}
-        setProjectType={setProjectType}
-        countries={countries}
-        country={country}
-        setCountry={setCountry}
-        submit={searchProjects}
-        loading={countriesLoading}
-      />
+      <SearchPanel values={values} updateValue={updateValue} submit={searchProjects} />
       <ProjectsList projects={data?.searchProjects} userId={user?.id} loading={loading} />
     </ProjectsPage>
   );

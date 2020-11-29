@@ -1,12 +1,26 @@
+import Router from 'next/router';
 import React, { Component } from 'react';
+import { useQuery } from 'react-apollo';
+import { LOCAL_STATE_QUERY } from '../../lib/queries';
+import useForm from '../../lib/useForm';
+import Filters from '../SearchPanel/filters';
 import ButtonStyled from '../styles/ButtonStyled';
 
-class SearchBox extends Component {
-  render() {
-    return (
-      <div className="searchbox-container">
-        <h2>Find the perfect project</h2>
-        <select>
+const SearchBox = () => {
+  const { data: localData } = useQuery(LOCAL_STATE_QUERY);
+  const {
+    values: { projectType, activity, nationality, destination } = {},
+    values,
+    updateValue,
+  } = useForm({
+    ...localData.searchData,
+  });
+
+  return (
+    <div className="searchbox-container">
+      <h2>Find the perfect project</h2>
+      <Filters values={values} updateValue={updateValue} variant={'outlined'} />
+      {/* <select>
           <option label="Type of project" />
         </select>
         <select>
@@ -17,11 +31,19 @@ class SearchBox extends Component {
         </select>
         <select>
           <option label="Your Nationality" />
-        </select>
-        <ButtonStyled>Search</ButtonStyled>
-      </div>
-    );
-  }
-}
+        </select> */}
+      <ButtonStyled
+        onClick={() => {
+          Router.push({
+            pathname: '/search',
+            query: { search: true },
+          });
+        }}
+      >
+        Search
+      </ButtonStyled>
+    </div>
+  );
+};
 
 export default SearchBox;
