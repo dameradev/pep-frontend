@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
 import { SearchPanelStyles } from './styles';
-import Filters from './filters';
+import Filters from './Filters';
 import { Button } from '@material-ui/core';
 
 const SearchPanel = ({ values, updateValue, submit }) => {
