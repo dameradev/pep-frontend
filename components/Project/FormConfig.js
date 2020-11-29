@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ApplicationFormConfigStyles } from './styles';
 import { Icon, TextField } from '@material-ui/core';
 import { useMutation } from 'react-apollo';
-import { UPDATE_APPLICANT_FORM_MUTATION } from '../../lib/mutations';
+import { SET_POPUP_MUTAITON, UPDATE_APPLICANT_FORM_MUTATION } from '../../lib/mutations';
 
 const FormConfig = ({ questions: questionsProps, applicantFormId, handleFormDisplay, formRef }) => {
   const [questions, setQuestions] = useState(questionsProps);
@@ -39,6 +39,16 @@ const FormConfig = ({ questions: questionsProps, applicantFormId, handleFormDisp
       },
     }
   );
+
+  const [setPopup, { popupData }] = useMutation(SET_POPUP_MUTAITON, {
+    variables: {
+      isPopupOpen: true,
+      title: 'Form Saved',
+      messages: [
+        "Applicant form questions saved, please keep in mind that after first application from any participant, you won't be able to add or remove any questions",
+      ],
+    },
+  });
 
   return (
     <ApplicationFormConfigStyles ref={formRef}>
@@ -87,7 +97,13 @@ const FormConfig = ({ questions: questionsProps, applicantFormId, handleFormDisp
         <button className="button button-view" onClick={() => handleFormDisplay()}>
           View form
         </button>
-        <button className="button" onClick={() => updateApplicantForm()}>
+        <button
+          className="button"
+          onClick={() => {
+            updateApplicantForm();
+            setPopup();
+          }}
+        >
           Save changes
         </button>
       </div>

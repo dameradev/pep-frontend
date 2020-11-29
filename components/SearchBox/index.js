@@ -20,18 +20,6 @@ const SearchBox = () => {
     <div className="searchbox-container">
       <h2>Find the perfect project</h2>
       <Filters values={values} updateValue={updateValue} variant={'outlined'} />
-      {/* <select>
-          <option label="Type of project" />
-        </select>
-        <select>
-          <option label="Activity" />
-        </select>
-        <select>
-          <option label="Location" />
-        </select>
-        <select>
-          <option label="Your Nationality" />
-        </select> */}
       <ButtonStyled
         onClick={() => {
           Router.push({

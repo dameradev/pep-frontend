@@ -8,6 +8,10 @@ import {
   Divider,
   List,
   IconButton,
+  Dialog,
+  DialogTitle,
+  Typography,
+  DialogContent,
 } from '@material-ui/core';
 import { Cancel } from '@material-ui/icons';
 import Meta from '../Meta';
@@ -15,6 +19,10 @@ import Header from '../Header';
 import Footer from '../Footer';
 import { withRouter } from 'next/router';
 import Nav from '../Nav';
+import { useMutation, useQuery } from 'react-apollo';
+import { LOCAL_STATE_QUERY } from '../../lib/queries';
+import ButtonStyled from '../styles/ButtonStyled';
+import { SET_POPUP_MUTAITON } from '../../lib/mutations';
 const MuiTheme = createMuiTheme({
   typography: {
     htmlFontSize: 10,
@@ -187,9 +195,20 @@ const GlobalStyle = createGlobalStyle`
 const Page = (props) => {
   const [open, setOpen] = React.useState(false);
 
+  const [setPopup, { popupData }] = useMutation(SET_POPUP_MUTAITON, {
+    variables: {
+      isPopupOpen: false,
+    },
+  });
+
   const handleDrawerToggle = (open) => {
     setOpen(!open);
+    setPopup();
   };
+
+  const { data: { popup: { isPopupOpen, title, messages, button } = {}, popup } = {} } = useQuery(
+    LOCAL_STATE_QUERY
+  );
 
   return (
     <ThemeProvider theme={theme}>
@@ -204,6 +223,24 @@ const Page = (props) => {
           }}
         >
           <GlobalStyle />
+          <Dialog
+            onClose={handleDrawerToggle}
+            aria-labelledby="customized-dialog-title"
+            open={isPopupOpen}
+          >
+            <DialogTitle
+              id="customized-dialog-title"
+              // onClose={handleClose}
+            >
+              {title}
+            </DialogTitle>
+            <DialogContent dividers>
+              {messages.map((message) => (
+                <Typography gutterBottom>{message}</Typography>
+              ))}
+            </DialogContent>
+            {button && <ButtonStyled bgColor="blue">{button}</ButtonStyled>}
+          </Dialog>
           <Meta />
           <Header handleDrawerToggle={handleDrawerToggle} drawerOpen={open} />
           <Drawer className="drawer" variant="persistent" anchor="right" open={open}>
