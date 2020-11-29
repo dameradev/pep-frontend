@@ -13,6 +13,8 @@ import UserContext from '../../../contexts/userContext';
 import { SingleProjectStyles } from './styles';
 import CountriesContext from '../../../contexts/CountriesContext';
 
+import { Tooltip } from '@material-ui/core';
+
 const SingleProject = (props) => {
   const {
     title,
@@ -108,13 +110,20 @@ const SingleProject = (props) => {
         {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}
       </div>
 
-      <button
-        className="project__btn project__btn-save"
-        onClick={() => saveProject()}
-        disabled={saveProjectLoading}
+      <Tooltip
+        title={<p style={{ fontSize: '1.6rem', padding: '1rem' }}>Save to collection</p>}
+        arrow
+        placement="top-start"
       >
-        {isProjectSaved ? Icons.SaveProjectFilled : Icons.SaveProject}
-      </button>
+        <button
+          className="project__btn project__btn-save"
+          onClick={() => saveProject()}
+          disabled={saveProjectLoading}
+        >
+          {isProjectSaved ? Icons.SaveProjectFilled : Icons.SaveProject}
+        </button>
+      </Tooltip>
+
       <button
         className="project__btn project__btn-apply"
         onClick={() => {
