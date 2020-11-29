@@ -57,7 +57,7 @@ const ProjectStyles = styled.div`
         ${respondTo.tabletMini` 
           width: 100%;
           margin-top: 2rem;
-          border-top: 2px solid #00000029;
+          
           border-radius: 0;
           margin-bottom: 6rem;
         `}
@@ -223,7 +223,7 @@ const ProjectStyles = styled.div`
     ${respondTo.tabletMini` 
       // margin: 2rem 5%;
       margin-top: 2rem;
-      border-top: 2px solid #00000029;
+      
       width: auto;
     `}
 

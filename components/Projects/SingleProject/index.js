@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import Link from 'next/link';
 import Router from 'next/router';
@@ -32,6 +32,11 @@ const SingleProject = (props) => {
     address,
   } = props.project;
 
+  const [tooltipIsOpen, setTooltipIsOpen] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setTooltipIsOpen(false), 2000);
+  }, [tooltipIsOpen === true]);
   const { handleFormDisplay, loading: projectLoading } = props;
 
   const user = useContext(UserContext);
@@ -111,13 +116,21 @@ const SingleProject = (props) => {
       </div>
 
       <Tooltip
-        title={<p style={{ fontSize: '1.6rem', padding: '1rem' }}>Save to collection</p>}
+        title={<p style={{ fontSize: '1.6rem', padding: '1rem' }}>Saved to collection</p>}
         arrow
+        open={tooltipIsOpen}
+        onClose={() => setTooltipIsOpen(false)}
+        disableFocusListener
+        disableHoverListener
+        disableTouchListener
         placement="top-start"
       >
         <button
           className="project__btn project__btn-save"
-          onClick={() => saveProject()}
+          onClick={() => {
+            saveProject();
+            setTooltipIsOpen(true);
+          }}
           disabled={saveProjectLoading}
         >
           {isProjectSaved ? Icons.SaveProjectFilled : Icons.SaveProject}
