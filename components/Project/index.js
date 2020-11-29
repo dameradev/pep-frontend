@@ -10,18 +10,29 @@ import ApplyForm from './ApplyForm';
 import { ProjectStyles } from './styles';
 
 import { SINGLE_PROJECT_QUERY } from '../../lib/queries';
-import { UPDATE_APPLICANT_FORM_MUTATION } from '../../lib/mutations';
+import { SET_POPUP_MUTAITON, UPDATE_APPLICANT_FORM_MUTATION } from '../../lib/mutations';
 import OrganizationInfo from './organizationInfo';
 
 import FormConfig from './FormConfig';
 
 const Project = (props) => {
   const {
-    query: { id, apply },
+    query: { id, apply, newProject },
   } = props;
 
   const [formDisplay, setFormDisplay] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [popupDisplayed, setPopupDisplayed] = useState(false);
+
+  const [setPopup, { popupData }] = useMutation(SET_POPUP_MUTAITON, {
+    variables: {
+      isPopupOpen: true,
+      title: 'New project created',
+      messages: [
+        'New project created, click on view participant form button to configure the application form, the potencial participant will need to fill up this form to join your project',
+      ],
+    },
+  });
 
   const { loading, data: { project } = {} } = useQuery(SINGLE_PROJECT_QUERY, { variables: { id } });
   const { user: { id: userId, organizationProfile, name, email } = {}, applicants, applicantForm } =
@@ -38,9 +49,15 @@ const Project = (props) => {
 
   // }
 
+  console.log(newProject);
+
   useEffect(() => {
     if (apply === 'true') {
       handleFormDisplay();
+    }
+    if (newProject === 'true' && !popupDisplayed) {
+      setPopup();
+      setPopupDisplayed(true);
     }
   });
 

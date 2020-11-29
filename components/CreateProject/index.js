@@ -152,7 +152,10 @@ const CreateProject = () => {
                 },
               })
                 .then(({ data }) => {
-                  Router.push(`/project?id=${data.createProject.id}`);
+                  Router.push({
+                    pathname: `/project`,
+                    query: { id: data.createProject.id, newProject: true },
+                  });
                 })
                 .catch((res) => {
                   if (res.graphQLErrors) {
