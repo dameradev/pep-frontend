@@ -3,7 +3,7 @@ import MenuLink from '../Nav/MenuLink';
 
 const OrganizationInfo = ({ name, email, organizationProfile, userId, configFormRef }) => {
   return (
-    <>
+    <div className="project__organization-wrapper">
       <div className="project__organization">
         <div className="header">
           <p className="header__hint">Project made by</p>
@@ -43,14 +43,14 @@ const OrganizationInfo = ({ name, email, organizationProfile, userId, configForm
             <p>{organizationProfile.phoneNumber}</p>
           </div>
         </div>
-        <button
-          className="configure-form-button"
-          onClick={() => window.scrollTo(0, configFormRef?.current?.offsetTop - 70)}
-        >
-          View Participant form
-        </button>
       </div>
-    </>
+      <button
+        className="configure-form-button"
+        onClick={() => window.scrollTo(0, configFormRef?.current?.offsetTop - 70)}
+      >
+        View Participant form
+      </button>
+    </div>
   );
 };
 

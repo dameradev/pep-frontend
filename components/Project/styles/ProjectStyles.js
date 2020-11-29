@@ -49,7 +49,37 @@ const ProjectStyles = styled.div`
       height: max-content;
     }
     &__organization {
-      width: 50rem;
+      &-wrapper {
+        width: 50rem;
+
+        display: flex;
+        flex-direction: column;
+        ${respondTo.tabletMini` 
+          width: 100%;
+          margin-top: 2rem;
+          border-top: 2px solid #00000029;
+          border-radius: 0;
+          margin-bottom: 6rem;
+        `}
+        .configure-form-button {
+          margin-top: 1rem;
+          height: max-content;
+          width: 100%;
+          font-size: 1.6rem;
+          text-transform: uppercase;
+          padding: 1rem 2.5rem;
+          background: ${(props) => props.theme.blue};
+          color: #fff;
+          border: none;
+          border-radius: 10px;
+          outline: none;
+          ${respondTo.tabletMini` 
+          width: 80%;
+          align-self: center;
+        `}
+        }
+      }
+
       border-radius: 5px;
       background: #fff;
       box-shadow: 0px 3px 6px #00000029;
@@ -60,33 +90,6 @@ const ProjectStyles = styled.div`
 
       color: ${(props) => props.theme.darkGrey1};
       height: max-content;
-      ${respondTo.tabletMini` 
-        width: 100%;
-        margin-top: 2rem;
-        border-top: 2px solid #00000029;
-        border-radius: 0;
-        margin-bottom: 6rem;
-
-      `}
-
-      .configure-form-button {
-        position: absolute;
-        bottom: -5rem;
-        height: max-content;
-        width: 100%;
-        font-size: 1.6rem;
-        text-transform: uppercase;
-        padding: 1rem 2.5rem;
-        background: ${(props) => props.theme.blue};
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        outline: none;
-        ${respondTo.tabletMini` 
-          width: 80%;
-          align-self: center;
-        `}
-      }
 
       .header {
         padding: 4rem 2rem 1rem 2rem;
