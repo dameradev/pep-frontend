@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { useQuery } from 'react-apollo';
 import { LOCAL_STATE_QUERY } from '../../lib/queries';
 import useForm from '../../lib/useForm';
-import Filters from '../SearchPanel/filters';
+import Filters from '../SearchPanel/Filters';
 import ButtonStyled from '../styles/ButtonStyled';
 
 const SearchBox = () => {
