@@ -7,6 +7,7 @@ export const SearchPanelStyles = styled.div`
   background-color: #fff;
   border-radius: 7px;
   min-height: 80vh;
+  position: relative;
   /* padding: 20px; */
 
   ${respondTo.tabletMini` 
@@ -33,8 +34,15 @@ export const SearchPanelStyles = styled.div`
     }
   }
   .filters {
+    margin-top: 2rem;
     padding: 2rem;
     display: grid;
     grid-gap: 2rem;
+    position: fixed;
+    min-width: 25rem;
+
+    ${respondTo.tabletMini`
+      position: static
+    `}
   }
 `;
