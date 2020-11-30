@@ -36,6 +36,11 @@ const Hero = styled.div`
       min-height: unset;
     `}
 
+    ${respondTo.mobilePortrait` 
+        padding: 10rem 0 0 0;
+        
+      `};
+
     .searchbox-container {
       height: fit-content;
       align-self: flex-end;
