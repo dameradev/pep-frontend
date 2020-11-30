@@ -5,7 +5,7 @@ import Signin from '../components/Signin';
 import { respondTo } from '../lib/respondTo';
 
 const Auth = styled.div`
-  padding: 2rem 0;
+  padding: 5rem 0;
   ${respondTo.tabletMini`
     padding: 0;
   `}
