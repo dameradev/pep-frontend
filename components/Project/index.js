@@ -35,8 +35,11 @@ const Project = (props) => {
   });
 
   const { loading, data: { project } = {} } = useQuery(SINGLE_PROJECT_QUERY, { variables: { id } });
-  const { user: { id: userId, organizationProfile, name, email } = {}, applicants, applicantForm } =
-    project || {};
+  const {
+    user: { id: organizationId, organizationProfile, name, email } = {},
+    applicants,
+    applicantForm,
+  } = project || {};
 
   const handleFormDisplay = () => {
     setFormDisplay(true);
@@ -77,25 +80,26 @@ const Project = (props) => {
         <OrganizationInfo
           name={name}
           email={email}
-          userId={userId}
+          userId={user?.id}
+          organizationId={organizationId}
           organizationProfile={organizationProfile}
           configFormRef={configFormRef}
         />
       </div>
-      {/* {user?.id !== userId ? (
+      {/* {user?.id !== organizationId ? (
         <ApplyForm projectId={id} formDisplay={formDisplay} formRef={formRef} />
       ) : */}
-      {user?.id === userId && applicants.length ? (
+      {user?.id === organizationId && applicants.length ? (
         <Applicants applicants={applicants} projectId={id} questions={applicantForm?.questions} />
       ) : (
-        user?.id === userId && (
+        user?.id === organizationId && (
           <h3 className="no-applicants-message">
             There are currently no applicants for this project
           </h3>
         )
       )}
 
-      {user?.id === userId && (
+      {user?.id === organizationId && (
         <FormConfig
           formRef={configFormRef}
           questions={applicantForm?.questions}

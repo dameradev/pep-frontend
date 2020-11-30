@@ -59,7 +59,6 @@ const ProjectStyles = styled.div`
           margin-top: 2rem;
           
           border-radius: 0;
-          margin-bottom: 6rem;
         `}
         .configure-form-button {
           margin-top: 1rem;

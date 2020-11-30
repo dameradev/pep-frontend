@@ -1,7 +1,14 @@
 import React from 'react';
 import MenuLink from '../Nav/MenuLink';
 
-const OrganizationInfo = ({ name, email, organizationProfile, userId, configFormRef }) => {
+const OrganizationInfo = ({
+  name,
+  email,
+  organizationProfile,
+  userId,
+  organizationId,
+  configFormRef,
+}) => {
   return (
     <div className="project__organization-wrapper">
       <div className="project__organization">
@@ -15,7 +22,7 @@ const OrganizationInfo = ({ name, email, organizationProfile, userId, configForm
           <MenuLink
             href={{
               pathname: 'organization',
-              query: { id: userId, edit: false, tab: 1 },
+              query: { id: organizationId, edit: false, tab: 1 },
             }}
           >
             Our projects
@@ -23,7 +30,7 @@ const OrganizationInfo = ({ name, email, organizationProfile, userId, configForm
           <MenuLink
             href={{
               pathname: 'organization',
-              query: { id: userId, edit: false, tab: 0 },
+              query: { id: organizationId, edit: false, tab: 0 },
             }}
           >
             View profile
@@ -44,12 +51,14 @@ const OrganizationInfo = ({ name, email, organizationProfile, userId, configForm
           </div>
         </div>
       </div>
-      <button
-        className="configure-form-button"
-        onClick={() => window.scrollTo(0, configFormRef?.current?.offsetTop - 70)}
-      >
-        View Participant form
-      </button>
+      {userId === organizationId && (
+        <button
+          className="configure-form-button"
+          onClick={() => window.scrollTo(0, configFormRef?.current?.offsetTop - 70)}
+        >
+          View Participant form
+        </button>
+      )}
     </div>
   );
 };
