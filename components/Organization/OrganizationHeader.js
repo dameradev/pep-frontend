@@ -20,6 +20,8 @@ const OrganizationHeader = (props) => {
 
   console.log(userId, id);
 
+  const isOwner = userId && userId === id;
+
   return (
     <HeaderStyled className={props.className}>
       <div className="header__profile">
@@ -57,8 +59,7 @@ const OrganizationHeader = (props) => {
             />
           )}
         </div>
-        {userId &&
-          userId === id &&
+        {!isOwner &&
           (editValue === 'false' ? (
             <Link
               href={{
@@ -72,7 +73,7 @@ const OrganizationHeader = (props) => {
               </a>
             </Link>
           ) : (
-            <button className="header__edit">
+            <button type="submit" className="header__edit">
               <SaveIcon color="primary" />
               <span>Save</span>
             </button>

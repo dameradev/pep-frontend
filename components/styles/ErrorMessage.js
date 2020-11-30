@@ -40,6 +40,19 @@ const DisplayError = ({ error }) => {
   );
 };
 
+export const useErrorMessage = (error) => {
+  let errorMessage = null;
+  if (!error || !error.message) return null;
+
+  if (error.networkError && error.networkError.result && error.networkError.result.errors.length) {
+    errorMessage = error.networkError.result.errors.map((error, i) =>
+      error.message.replace('GraphQL error: ', '')
+    );
+  }
+  errorMessage = error.message.replace('GraphQL error: ', '');
+  return errorMessage;
+};
+
 DisplayError.defaultProps = {
   error: {},
 };

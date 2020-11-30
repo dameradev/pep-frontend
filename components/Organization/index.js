@@ -10,13 +10,14 @@ import SimilarOrganizations from './SimilarOrganizations';
 import SingleProject from '../Projects/SingleProject';
 
 import { PROJECTS_BY_ORGANIZATION } from '../../lib/queries';
-import { UPDATE_ORGANIZATION } from '../../lib/mutations';
+import { SET_POPUP_MUTAITON, UPDATE_ORGANIZATION } from '../../lib/mutations';
 import useForm from '../../lib/useForm';
 
 import { OrganizationStyles, SectionStyles } from './styles';
 import { Box, Typography, TextField, Icon } from '@material-ui/core';
 
 import UserContext from '../../contexts/userContext';
+import { useErrorMessage } from '../styles/ErrorMessage';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -43,6 +44,7 @@ const Organization = ({
   const [tabValue, setTabValue] = useState(parseInt(tab) || 0);
   const [focusedOn, setFocusedOn] = useState(organizationProfile?.focusedOn);
   const [interestedIn, setInterestedIn] = useState(organizationProfile?.interestedIn);
+  const [errorMessage, setErrorMessage] = useState('');
   const {
     values: { name, slogan, summary, responsiblePerson, phoneNumber, website } = {},
     values,
@@ -56,13 +58,30 @@ const Organization = ({
     website: organizationProfile.website,
   });
 
-  const [updateOrganization] = useMutation(UPDATE_ORGANIZATION);
+  const [updateOrganization, { error: updateOrganizationError }] = useMutation(UPDATE_ORGANIZATION);
   const { loading, error, data: { projectsByOrganization } = {} } = useQuery(
     PROJECTS_BY_ORGANIZATION,
     {
       variables: { id: id },
     }
   );
+
+  console.log(updateOrganizationError);
+  const [setPopup] = useMutation(SET_POPUP_MUTAITON, {
+    variables: {
+      isPopupOpen: !!errorMessage,
+      title: 'Oops!',
+      messages: [errorMessage],
+    },
+  });
+
+  useEffect(() => {
+    if (updateOrganizationError) {
+      const error = useErrorMessage(updateOrganizationError);
+      setErrorMessage(error);
+      setPopup();
+    }
+  }, [updateOrganizationError]);
 
   const user = useContext(UserContext);
 
