@@ -22,6 +22,7 @@ import { CREATE_PROJECT_MUTATION } from '../../lib/mutations';
 
 import * as Yup from 'yup';
 import { GET_ALL_TAGS_QUERY } from '../../lib/queries';
+import ButtonStyled from '../styles/ButtonStyled';
 
 const options = [
   { value: 'ESC', label: 'ESC' },
@@ -437,7 +438,8 @@ const CreateProject = () => {
                         <ErrorValidationMessage>{errors.address}</ErrorValidationMessage>
                       ) : null}
                     </div>
-                    <button
+                    <ButtonStyled
+                      bgColor="blue"
                       className="publish"
                       type="submit"
                       disabled={loading}
@@ -448,7 +450,7 @@ const CreateProject = () => {
                       }}
                     >
                       Publish Project
-                    </button>
+                    </ButtonStyled>
                   </Form>
                 </FormWrapper>
               );

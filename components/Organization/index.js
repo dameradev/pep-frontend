@@ -151,7 +151,7 @@ const Organization = ({
         <section className={`organization__main ${tabValue === 0 && 'organization__about-us'}`}>
           <TabPanel className="tab organization__info" value={tabValue} index={0}>
             <SectionStyles>
-              <h3>Summary</h3>
+              <h2>Summary</h2>
               {edit === 'false' ? (
                 <p>{summary ? summary : 'Edit your page to enter summary'}</p>
               ) : (
@@ -170,7 +170,7 @@ const Organization = ({
             </SectionStyles>
 
             <SectionStyles focusedOn className="focused-on" edit={edit === 'true' ? true : false}>
-              <h3>Focused on</h3>
+              <h2>Focused on</h2>
 
               <ul>
                 {focusedOn?.length ? (
@@ -212,7 +212,7 @@ const Organization = ({
               )}
             </SectionStyles>
             <SectionStyles className="interested-in" edit={edit === 'true' ? true : false}>
-              <h3>Interested in</h3>
+              <h2>Interested in</h2>
               <ul>
                 {interestedIn?.length ? (
                   interestedIn.map((item, index) => (

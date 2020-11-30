@@ -252,11 +252,11 @@ export const SectionStyles = styled.section`
       }
     }
   }
-  h3 {
+  h2 {
     margin-bottom: 1rem;
 
     font-weight: 500;
-    font-size: 4rem;
+    font-size: 3.2rem;
     color: #585858;
     position: relative;
     z-index: 1;
@@ -278,10 +278,10 @@ export const SectionStyles = styled.section`
       content: '';
       background: ${(props) => props.theme.red};
       position: absolute;
-      bottom: 2.2rem;
+      bottom: 1.5rem;
       z-index: -1;
       right: -1rem;
-      height: 2rem;
+      height: 1.5rem;
       width: 10rem;
       opacity: 0.7;
       ${respondTo.tabletMini`   

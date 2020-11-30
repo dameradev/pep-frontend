@@ -6,7 +6,6 @@ import gql from 'graphql-tag';
 
 import Form from '../styles/Form';
 import ButtonStyled from '../styles/ButtonStyled';
-import Center from '../styles/Center';
 
 import ErrorMessage from '../styles/ErrorMessage';
 import useForm from '../../lib/useForm';
@@ -175,7 +174,9 @@ const Signup = (props) => {
             </Link>
           </div>
 
-          <button type="submit">Sign Up</button>
+          <ButtonStyled bgColor="blue" type="submit">
+            Sign Up
+          </ButtonStyled>
         </Form>
       )}
     </Mutation>

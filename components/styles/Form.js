@@ -89,15 +89,6 @@ const Form = styled.form`
       }
     }
   }
-  button {
-    border: none;
-    border-radius: 20px;
-
-    font-size: 2rem;
-    padding: 1.25rem 2rem;
-    background-color: #549bf0;
-    color: #fff;
-  }
 
   .links-container {
     display: flex;

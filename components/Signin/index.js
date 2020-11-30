@@ -4,12 +4,13 @@ import Router from 'next/router';
 import { Mutation } from 'react-apollo';
 
 import Form from '../styles/Form';
-import Center from '../styles/Center';
+
 import ErrorMessage from '../styles/ErrorMessage';
 
 import { CURRENT_USER_QUERY } from '../../lib/queries';
 import { SIGNIN_MUTATION } from '../../lib/mutations';
 import useForm from '../../lib/useForm';
+import ButtonStyled from '../styles/ButtonStyled';
 
 const Signin = () => {
   const { values: { email, password } = {}, values, updateValue } = useForm({
@@ -72,7 +73,7 @@ const Signin = () => {
             </Link>
           </div>
 
-          <button type="submit">Log in</button>
+          <ButtonStyled bgColor="blue">Log in</ButtonStyled>
         </Form>
       )}
     </Mutation>
