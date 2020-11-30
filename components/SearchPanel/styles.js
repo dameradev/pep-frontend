@@ -3,28 +3,31 @@ import { respondTo } from '../../lib/respondTo';
 
 export const SearchPanelStyles = styled.div`
   margin-top: 2rem;
-  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+
   border-radius: 7px;
-  min-height: 80vh;
+  height: 100vh;
   width: 30rem;
   color: #6b6b6b;
+  /* margin-bottom: 2rem; */
+  position: -webkit-sticky;
+
+  position: sticky;
+  top: 0;
 
   ${respondTo.tabletMini` 
     margin-top: 0;
     min-height: unset;
     width: 100%;
-  `}
+  `} .Header {
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 
-  .Header {
-    position: fixed;
     width: 30rem;
+
     ${respondTo.tabletMini` 
       position: static;
       width: 100%;
-    `}
-
-    h3 {
+    `} h3 {
       text-transform: uppercase;
       border-bottom: 2px solid #95989d;
       font-size: 2.5rem;

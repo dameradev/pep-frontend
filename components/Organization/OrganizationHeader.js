@@ -59,7 +59,7 @@ const OrganizationHeader = (props) => {
             />
           )}
         </div>
-        {!isOwner &&
+        {isOwner &&
           (editValue === 'false' ? (
             <Link
               href={{
