@@ -25,57 +25,55 @@ const Signin = () => {
       refetchQueries={[{ query: CURRENT_USER_QUERY }]}
     >
       {(signin, { error, loading }) => (
-        <Center>
-          <Form
-            method="post"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const { data } = await signin();
-              localStorage.setItem('token', data.signin.token);
+        <Form
+          method="post"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const { data } = await signin();
+            localStorage.setItem('token', data.signin.token);
 
-              Router.push('/');
+            Router.push('/');
 
-              // this.setState({ email: '', password: '' });
-            }}
-          >
-            <h2>Login to an exising account</h2>
-            <fieldset disabled={loading} aria-busy={loading}></fieldset>
-            <ErrorMessage error={error} />
+            // this.setState({ email: '', password: '' });
+          }}
+        >
+          <h2>Login to an exising account</h2>
+          <fieldset disabled={loading} aria-busy={loading}></fieldset>
+          <ErrorMessage error={error} />
 
-            <label htmlFor="email">
-              <input
-                name="email"
-                type="email"
-                id="email"
-                value={email}
-                placeholder="Please enter your email"
-                onChange={updateValue}
-              />
-            </label>
+          <label htmlFor="email">
+            <input
+              name="email"
+              type="email"
+              id="email"
+              value={email}
+              placeholder="Please enter your email"
+              onChange={updateValue}
+            />
+          </label>
 
-            <label htmlFor="password">
-              <input
-                name="password"
-                type="password"
-                id="password"
-                value={password}
-                placeholder="Please enter your password"
-                onChange={updateValue}
-              />
-            </label>
-            <div className="links-container">
-              <Link href={{ pathname: '/auth', query: { path: 'register' } }}>
-                <a>Don't have an account?</a>
-              </Link>
+          <label htmlFor="password">
+            <input
+              name="password"
+              type="password"
+              id="password"
+              value={password}
+              placeholder="Please enter your password"
+              onChange={updateValue}
+            />
+          </label>
+          <div className="links-container">
+            <Link href={{ pathname: '/auth', query: { path: 'register' } }}>
+              <a>Don't have an account?</a>
+            </Link>
 
-              <Link href={{ pathname: '/auth', query: { path: 'reset' } }}>
-                <a>Forgot password?</a>
-              </Link>
-            </div>
+            <Link href={{ pathname: '/auth', query: { path: 'reset' } }}>
+              <a>Forgot password?</a>
+            </Link>
+          </div>
 
-            <button type="submit">Log in</button>
-          </Form>
-        </Center>
+          <button type="submit">Log in</button>
+        </Form>
       )}
     </Mutation>
   );

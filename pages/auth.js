@@ -2,12 +2,16 @@ import styled from 'styled-components';
 
 import Signup from '../components/Signup';
 import Signin from '../components/Signin';
+import { respondTo } from '../lib/respondTo';
 
 const Auth = styled.div`
-  padding: 3rem 0;
+  padding: 2rem 0;
+  ${respondTo.tabletMini`
+    padding: 0;
+  `}
 `;
 
-const Registration = props => {
+const Registration = (props) => {
   return (
     <Auth>
       {props.query.path === 'login' && <Signin />}
