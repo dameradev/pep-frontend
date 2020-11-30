@@ -4,6 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 import { SearchPanelStyles } from './styles';
 import Filters from './Filters';
 import { Button } from '@material-ui/core';
+import ButtonStyled from '../styles/ButtonStyled';
 
 const SearchPanel = ({ values, updateValue, submit }) => {
   return (
@@ -12,9 +13,9 @@ const SearchPanel = ({ values, updateValue, submit }) => {
         <h3> Search filters </h3>
         <div className="filters">
           <Filters values={values} updateValue={updateValue} submit={submit} />
-          <Button variant="outlined" color="primary" onClick={() => submit()} type="submit">
+          <ButtonStyled bgColor="blue" onClick={() => submit()} type="submit">
             Search
-          </Button>
+          </ButtonStyled>
         </div>
       </div>
       <div className="filters"></div>

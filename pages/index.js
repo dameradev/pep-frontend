@@ -302,6 +302,7 @@ const Home = (props) => {
                   <ButtonStyled
                     className="button"
                     bgColor="blue"
+                    padding="1rem 2rem"
                     hover={(props) => props.theme.hoverBlue}
                   >
                     Sign up as an Organization
@@ -318,7 +319,8 @@ const Home = (props) => {
                   <ButtonStyled
                     className="button"
                     bgColor="red"
-                    marginTop="1rem"
+                    padding="1rem 2rem"
+                    margin="1rem 0 0 0"
                     hover={(props) => props.theme.hoverRed}
                   >
                     Sign up as a Participant

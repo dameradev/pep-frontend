@@ -15,7 +15,6 @@ const buttonClick = keyframes`
 const ButtonStyled = styled.button`
   outline: none;
   width: fit-content;
-  padding: 1rem 2.5rem;
   background: ${(props) =>
     props.bgColor === 'blue'
       ? props.theme.blue
@@ -28,8 +27,9 @@ const ButtonStyled = styled.button`
   font-size: 1.6rem;
   text-transform: uppercase;
 
+  margin: ${(props) => props.margin};
+  padding: ${(props) => props.padding || '0.5rem 2rem'};
   align-self: ${(props) => props.align};
-  margin-top: ${(props) => props.marginTop};
 
   transition: all 0.2s;
   cursor: pointer;
