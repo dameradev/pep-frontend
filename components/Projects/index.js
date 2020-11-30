@@ -9,7 +9,9 @@ const Center = styled.div`
   h1 {
     font-weight: 300;
 
+    position: fixed;
     ${respondTo.tabletMini`
+      position: static;
       padding: 2rem 2rem 10rem 2rem;
     `}
   }
