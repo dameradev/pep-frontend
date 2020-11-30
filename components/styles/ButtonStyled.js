@@ -14,17 +14,24 @@ const buttonClick = keyframes`
 
 const ButtonStyled = styled.button`
   outline: none;
-  margin: 1rem auto;
   width: fit-content;
   padding: 1rem 2.5rem;
-  background: ${(props) => (props.bgColor === 'blue' ? props.theme.blue : 'transparent')};
+  background: ${(props) =>
+    props.bgColor === 'blue'
+      ? props.theme.blue
+      : props.bgColor === 'red'
+      ? props.theme.red
+      : 'transparent'};
   border: 3px solid ${(props) => props.border || 'transparent'};
   color: ${(props) => props.color || '#fff'};
   border-radius: 5px;
   font-size: 1.6rem;
   text-transform: uppercase;
 
-  transition: background 0.2s;
+  align-self: ${(props) => props.align};
+  margin-top: ${(props) => props.marginTop};
+
+  transition: all 0.2s;
   cursor: pointer;
 
   &:hover {

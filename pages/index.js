@@ -98,18 +98,6 @@ const Hero = styled.div`
         -webkit-appearance: none; /* Safari and Chrome */
         appearance: none;
       }
-      button {
-        align-self: flex-end;
-        width: max-content;
-        height: max-content;
-        padding: 1.2rem 2rem;
-        /* margin: 1rem auto;x */
-        background: ${(props) => props.theme.red};
-        border: 3px solid ${(props) => props.theme.red};
-        ${respondTo.tabletMini`
-          width: max-content;
-        `}
-      }
     }
     .left-panel {
       display: flex;
@@ -274,12 +262,6 @@ const Testamonials = styled.div`
   }
 `;
 
-const Inner = styled.div`
-  max-width: ${(props) => props.theme.maxWidth};
-  margin: 0 auto;
-  padding: 2rem;
-`;
-
 const Home = (props) => {
   const [what, setWhat] = React.useState(false);
   const [how, setHow] = React.useState(false);
@@ -319,7 +301,7 @@ const Home = (props) => {
                 <a>
                   <ButtonStyled
                     className="button"
-                    btnColor={(props) => props.theme.blue}
+                    bgColor="blue"
                     hover={(props) => props.theme.hoverBlue}
                   >
                     Sign up as an Organization
@@ -335,7 +317,8 @@ const Home = (props) => {
                 <a>
                   <ButtonStyled
                     className="button"
-                    btnColor={(props) => props.theme.red}
+                    bgColor="red"
+                    marginTop="1rem"
                     hover={(props) => props.theme.hoverRed}
                   >
                     Sign up as a Participant

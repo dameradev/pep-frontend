@@ -27,6 +27,8 @@ const SearchBox = () => {
             query: { search: true },
           });
         }}
+        bgColor="red"
+        align="flex-end"
       >
         Search
       </ButtonStyled>
