@@ -23,10 +23,13 @@ const Pagination = ({ pages, currentPage }) => {
   const hasPrev = currentPage !== 1;
   const hasNext = pages.length !== currentPage;
 
-  console.log(pages.length);
   return (
     <PaginationStyles>
-      <MenuLink disabled={!hasPrev} href={{ pathname: 'search', query: { page: currentPage - 1 } }}>
+      <MenuLink
+        scroll={false}
+        disabled={!hasPrev}
+        href={{ pathname: 'search', query: { page: currentPage - 1 } }}
+      >
         Prev
       </MenuLink>
       {/* {pages.map((page) => (
@@ -38,6 +41,7 @@ const Pagination = ({ pages, currentPage }) => {
         Page {currentPage} of <span className="totalPages">{pages.length}</span>
       </p>
       <MenuLink
+        scroll={false}
         prefetch
         disabled={!hasNext}
         href={{ pathname: 'search', query: { page: currentPage + 1 } }}

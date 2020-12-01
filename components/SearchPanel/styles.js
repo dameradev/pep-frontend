@@ -5,19 +5,15 @@ export const SearchPanelStyles = styled.div`
   margin-top: 2rem;
 
   border-radius: 7px;
-  height: 100vh;
+
   width: 30rem;
   color: #6b6b6b;
   /* margin-bottom: 2rem; */
-  position: -webkit-sticky;
 
-  position: sticky;
   top: 0;
 
   ${respondTo.tabletMini` 
     margin-top: 0;
-    min-height: unset;
-    position: static;
     width: 100%;
     height: max-content;
   `} .Header {

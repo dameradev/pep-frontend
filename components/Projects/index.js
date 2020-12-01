@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import SingleProject from './SingleProject';
 
@@ -39,6 +39,7 @@ const Search = (props) => {
             <h1>No results for your parameters</h1>
           )}
         </ProjectList>
+        <Pagination pages={pages} currentPage={currentPage} />
       </>
 
       {/* }}
