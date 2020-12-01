@@ -67,7 +67,7 @@ const Projects = ({ query: { search, page } }) => {
     pages.push(pageNum);
   }
   useEffect(() => {
-    if (!data?.searchProjects.projects.length && parseInt(page) !== 1) {
+    if (!data?.searchProjects.projects?.length && parseInt(page) !== 1) {
       Router.push({
         pathname: `/search`,
         query: { page: 1 },

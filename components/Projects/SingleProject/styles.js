@@ -12,6 +12,10 @@ export const SingleProjectStyles = styled.article`
   font-size: 1.4rem;
   /* min-height: 40vh; */
 
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
   ${respondTo.tabletMini` 
     border-radius: 0;
     box-shadow: 0px 3px 6px 4px #00000029;

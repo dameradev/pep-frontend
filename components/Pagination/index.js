@@ -7,8 +7,15 @@ const PaginationStyles = styled.div`
   gap: 1rem;
   margin: 0 auto;
   width: max-content;
+  align-items: center;
+  color: #5a5a5a;
   a {
+    color: #5a5a5a;
     padding: 1rem;
+    &[disabled] {
+      color: #8a8a8a;
+      pointer-events: none;
+    }
   }
 `;
 
@@ -19,15 +26,24 @@ const Pagination = ({ pages, currentPage }) => {
   console.log(pages.length);
   return (
     <PaginationStyles>
-      {hasPrev && (
-        <MenuLink href={{ pathname: 'search', query: { page: currentPage - 1 } }}>Prev</MenuLink>
-      )}
-      {pages.map((page) => (
-        <MenuLink href={{ pathname: 'search', query: { page } }}>{page}</MenuLink>
-      ))}
-      {hasNext && (
-        <MenuLink href={{ pathname: 'search', query: { page: currentPage + 1 } }}>Next</MenuLink>
-      )}
+      <MenuLink disabled={!hasPrev} href={{ pathname: 'search', query: { page: currentPage - 1 } }}>
+        Prev
+      </MenuLink>
+      {/* {pages.map((page) => (
+        <MenuLink prefetch href={{ pathname: 'search', query: { page } }}>
+          {page}
+        </MenuLink>
+      ))} */}
+      <p>
+        Page {currentPage} of <span className="totalPages">{pages.length}</span>
+      </p>
+      <MenuLink
+        prefetch
+        disabled={!hasNext}
+        href={{ pathname: 'search', query: { page: currentPage + 1 } }}
+      >
+        Next
+      </MenuLink>
     </PaginationStyles>
   );
 };

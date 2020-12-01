@@ -18,7 +18,6 @@ const SearchPanel = ({ values, updateValue, submit }) => {
           </ButtonStyled>
         </div>
       </div>
-      <div className="filters"></div>
     </SearchPanelStyles>
   );
 };

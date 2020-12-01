@@ -17,7 +17,9 @@ export const SearchPanelStyles = styled.div`
   ${respondTo.tabletMini` 
     margin-top: 0;
     min-height: unset;
+    position: static;
     width: 100%;
+    height: max-content;
   `} .Header {
     box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.1);
     background-color: #fff;
