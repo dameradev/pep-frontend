@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SingleProject from './SingleProject';
 
 import { respondTo } from '../../lib/respondTo';
+import Pagination from '../Pagination';
 
 const Center = styled.div`
   margin-top: 2rem;
@@ -22,10 +23,11 @@ const ProjectList = styled.div`
 `;
 
 const Search = (props) => {
-  const { projects, userId, loading } = props;
+  const { projects, userId, loading, pages, currentPage } = props;
   return (
     <Center>
       <>
+        <Pagination pages={pages} currentPage={currentPage} />
         <ProjectList>
           {!projects ? (
             <h1>Please enter search parameters on the search panel to get results</h1>

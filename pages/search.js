@@ -1,18 +1,20 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import ProjectsList from '../components/Projects';
 
-import { useLazyQuery, useMutation, useQuery } from 'react-apollo';
+import { useLazyQuery, useQuery } from 'react-apollo';
 
 import SearchPanel from '../components/SearchPanel';
 import styled from 'styled-components';
 
 import { SEARCH_PROJECTS_QUERY, LOCAL_STATE_QUERY } from '../lib/queries';
-import { SAVE_SEARCH_DATA_MUTAITON } from '../lib/mutations';
 
 import { respondTo } from '../lib/respondTo';
 import useForm from '../lib/useForm';
 import UserContext from '../contexts/userContext';
 import { useEffect } from 'react';
+
+import { perPage } from '../config';
+import Router from 'next/router';
 
 const ProjectsPage = styled.div`
   display: grid;
@@ -28,7 +30,7 @@ const ProjectsPage = styled.div`
   `}
 `;
 
-const Projects = ({ query: { search } }) => {
+const Projects = ({ query: { search, page } }) => {
   const { data: localData } = useQuery(LOCAL_STATE_QUERY);
   const {
     values: { projectType, activity, nationality, destination } = {},
@@ -39,25 +41,51 @@ const Projects = ({ query: { search } }) => {
   });
 
   useEffect(() => {
-    if (search === 'true') {
-      searchProjects();
-    }
+    searchProjects();
   }, {});
 
-  // console.log(query);
   const user = useContext(UserContext);
+
+  // let skip = 0;
+  const skip = page * perPage - perPage;
+
   const [searchProjects, { loading, error, data }] = useLazyQuery(SEARCH_PROJECTS_QUERY, {
     variables: {
       projectType,
       activity,
       nationality,
       destination,
+      take: perPage,
+      skip,
     },
   });
+
+  const totalCount = data?.searchProjects.totalCount;
+  const numOfPages = Math.ceil(totalCount / perPage);
+  const pages = [];
+  for (let pageNum = 1; pageNum <= numOfPages; pageNum++) {
+    pages.push(pageNum);
+  }
+  useEffect(() => {
+    if (!data?.searchProjects.projects.length && parseInt(page) !== 1) {
+      Router.push({
+        pathname: `/search`,
+        query: { page: 1 },
+      });
+    }
+  });
+
   return (
     <ProjectsPage>
       <SearchPanel values={values} updateValue={updateValue} submit={searchProjects} />
-      <ProjectsList projects={data?.searchProjects} userId={user?.id} loading={loading} />
+
+      <ProjectsList
+        projects={data?.searchProjects.projects}
+        userId={user?.id}
+        loading={loading}
+        pages={pages}
+        currentPage={parseInt(page)}
+      />
     </ProjectsPage>
   );
 };

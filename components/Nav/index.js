@@ -36,7 +36,7 @@ const Nav = (props) => {
     <Navigation className={`${props.className}`}>
       {user?.permissions.includes('ADMIN') && <MenuLink href="/dashboard">Dashboard</MenuLink>}
       <MenuLink href="/">Home</MenuLink>
-      <MenuLink href="/search">Search</MenuLink>
+      <MenuLink href={{ pathname: '/search', query: { page: 1 } }}>Search</MenuLink>
       {user && (
         <>
           {user.permissions.includes('ORGANIZATION') && (
