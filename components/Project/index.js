@@ -14,6 +14,7 @@ import { SET_POPUP_MUTAITON, UPDATE_APPLICANT_FORM_MUTATION } from '../../lib/mu
 import OrganizationInfo from './organizationInfo';
 
 import FormConfig from './FormConfig';
+import Head from 'next/head';
 
 const Project = (props) => {
   const {
@@ -69,52 +70,58 @@ const Project = (props) => {
   const configFormRef = useRef(null);
 
   return project ? (
-    <ProjectStyles>
-      <div className="top">
-        <SingleProject
-          className="project__details"
-          project={project}
-          userId={user?.id}
-          handleFormDisplay={handleFormDisplay}
-        />
-        <OrganizationInfo
-          name={name}
-          email={email}
-          userId={user?.id}
-          organizationId={organizationId}
-          organizationProfile={organizationProfile}
-          configFormRef={configFormRef}
-        />
-      </div>
-      {/* {user?.id !== organizationId ? (
+    <>
+      <Head>
+        <title>{project.title}</title>
+        <meta name="description" content={project.description} />
+      </Head>
+      <ProjectStyles>
+        <div className="top">
+          <SingleProject
+            className="project__details"
+            project={project}
+            userId={user?.id}
+            handleFormDisplay={handleFormDisplay}
+          />
+          <OrganizationInfo
+            name={name}
+            email={email}
+            userId={user?.id}
+            organizationId={organizationId}
+            organizationProfile={organizationProfile}
+            configFormRef={configFormRef}
+          />
+        </div>
+        {/* {user?.id !== organizationId ? (
         <ApplyForm projectId={id} formDisplay={formDisplay} formRef={formRef} />
       ) : */}
-      {user?.id === organizationId && applicants.length ? (
-        <Applicants applicants={applicants} projectId={id} questions={applicantForm?.questions} />
-      ) : (
-        user?.id === organizationId && (
-          <h3 className="no-applicants-message">
-            There are currently no applicants for this project
-          </h3>
-        )
-      )}
+        {user?.id === organizationId && applicants.length ? (
+          <Applicants applicants={applicants} projectId={id} questions={applicantForm?.questions} />
+        ) : (
+          user?.id === organizationId && (
+            <h3 className="no-applicants-message">
+              There are currently no applicants for this project
+            </h3>
+          )
+        )}
 
-      {user?.id === organizationId && (
-        <FormConfig
-          formRef={configFormRef}
-          questions={applicantForm?.questions}
-          applicantFormId={applicantForm?.id}
-          handleFormDisplay={handleFormDisplay}
+        {user?.id === organizationId && (
+          <FormConfig
+            formRef={configFormRef}
+            questions={applicantForm?.questions}
+            applicantFormId={applicantForm?.id}
+            handleFormDisplay={handleFormDisplay}
+          />
+        )}
+
+        <ApplyForm
+          projectId={id}
+          formDisplay={formDisplay}
+          formRef={formRef}
+          applicantForm={applicantForm}
         />
-      )}
-
-      <ApplyForm
-        projectId={id}
-        formDisplay={formDisplay}
-        formRef={formRef}
-        applicantForm={applicantForm}
-      />
-    </ProjectStyles>
+      </ProjectStyles>
+    </>
   ) : (
     <ProjectStyles>
       <div className="skeleton">
