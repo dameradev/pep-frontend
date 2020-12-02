@@ -144,7 +144,7 @@ const SelectedApplicant = ({
       <div className="selected-applicant__food">
         <h3>Food preference</h3>
         {foodPreference?.map((foodItem) => (
-          <p>{foodItem}</p>
+          <p key={foodItem}>{foodItem}</p>
         ))}
       </div>
       <div className={`selected-applicant__status ${status?.toLowerCase()}`}>
@@ -181,7 +181,7 @@ const SelectedApplicant = ({
       </div>
       {console.log(questions)}
       {questions?.map((question, index) => (
-        <div className="selected-applicant__question">
+        <div key={`${question}_${index}`} className="selected-applicant__question">
           <h3>{question}</h3>
           <p>{answers?.[index]}</p>
         </div>

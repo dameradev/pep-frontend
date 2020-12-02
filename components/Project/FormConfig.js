@@ -69,7 +69,7 @@ const FormConfig = ({ questions: questionsProps, applicantFormId, handleFormDisp
         <ul>
           {questions?.length &&
             questions?.map((item, index) => (
-              <li>
+              <li key={`${item}-${index}`}>
                 <div className="form__group">
                   <TextField
                     className="form__input"

@@ -130,6 +130,7 @@ const ApplyForm = ({ projectId, formDisplay, formRef, applicantForm: { questions
             </div>
             {questions?.map((question, index) => (
               <TextField
+                key={`${question}-${index}`}
                 className="textarea-input"
                 id="filled-multiline-flexible"
                 label={question}
