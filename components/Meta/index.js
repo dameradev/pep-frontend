@@ -16,13 +16,18 @@ const Meta = (props) => {
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,700;1,300&display=swap"
         rel="stylesheet"
       />
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+      {/* <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" /> */}
       {/* <script
         type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-ufkApsYu5oKF4y4afg5ZCWbaaUyjTYY&libraries=places"
       ></script> */}
       {/* <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>  */}
       <title>Platform for Erasmus Projects</title>
+      <meta
+        name="description"
+        content="Find the perfect erasmus project with our platform, and have the best erasmus+ experience of your life"
+      />
+      <meta name="robots" content="index, follow" />
     </Head>
   );
 };
