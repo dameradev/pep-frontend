@@ -10,7 +10,9 @@ const Meta = (props) => {
 
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" />
       <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+      <link rel="preconnect" href="https://pep-eu.herokuapp.com" />
       <link rel="dns-prefetch" href="https://pep-eu.herokuapp.com" />
       {/* <link rel="manifest" href="/manifest.json" /> */}
       <link
