@@ -4,17 +4,39 @@ import Project from '../../components/Project';
 import { endpoint, productionEndpoint } from '../../config';
 import { ALL_PROJECT_TITLES_QUERY, SINGLE_PROJECT_QUERY } from '../../lib/queries';
 
-import { apolloClient } from '../../lib/withData';
-
 const project = (props) => {
   return <Project project={props.project} query={props.query} />;
 };
 
 export async function getStaticPaths() {
+  const mutation = `
+    mutation {
+      updateProjectsIsStatic { id }
+    }
+  `;
+
+  const updateProjects = await fetch(
+    process.env.NODE_ENV === 'development' ? endpoint : productionEndpoint,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: mutation }),
+    }
+  );
+
+  const query = `
+  query {
+    projects(isStatic: true) {
+      title
+      id
+    }
+  }
+`;
+
   return fetch(process.env.NODE_ENV === 'development' ? endpoint : productionEndpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query: '{ projects { title id } }' }),
+    body: JSON.stringify({ query }),
   })
     .then((res) => res.json())
     .then(({ data }) => {
@@ -48,6 +70,7 @@ export async function getStaticProps({ params }) {
   //   variables: { id: params.id },
   // });
 
+  // console.log('static props');
   const { data } = await apolloClient.query({
     query: SINGLE_PROJECT_QUERY,
     variables: {
@@ -55,6 +78,7 @@ export async function getStaticProps({ params }) {
     },
   });
 
+  // console.log(data);
   // // const post = await res.json()
   // // Pass post data to the page via props
   return { props: { project: data.project } };

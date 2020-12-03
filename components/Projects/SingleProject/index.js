@@ -29,6 +29,7 @@ const SingleProject = (props) => {
     description,
     totalNumberOfParticipants,
     address,
+    isStatic,
   } = props.project;
 
   const [tooltipIsOpen, setTooltipIsOpen] = useState(false);
@@ -58,7 +59,9 @@ const SingleProject = (props) => {
     <Skeleton height={350} style={{ marginTop: '2rem' }} />
   ) : (
     <SingleProjectStyles className={props.className}>
-      <Link href={{ pathname: `/project/${id}` }}>
+      <Link
+        href={{ pathname: isStatic ? `/project/${id}` : `/project`, query: isStatic ? {} : { id } }}
+      >
         <a className="project__title">{title}</a>
       </Link>
 
