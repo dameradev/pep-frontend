@@ -49,7 +49,7 @@ export async function getStaticPaths() {
         };
       });
       // console.log(paths);
-      return { paths, fallback: true };
+      return { paths, fallback: false };
     });
 
   // Call an external API endpoint to get posts
