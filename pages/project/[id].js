@@ -7,7 +7,6 @@ import { ALL_PROJECT_TITLES_QUERY, SINGLE_PROJECT_QUERY } from '../../lib/querie
 import { apolloClient } from '../../lib/withData';
 
 const project = (props) => {
-  console.log(props, 'props');
   return <Project project={props.project} query={props.query} />;
 };
 

@@ -17,7 +17,7 @@ const Hero = styled.div`
   width: 100%;
 
   background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
-    url('https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWptHL?ver=3e39&q=90&m=2&h=768&w=1024&b=%23FFFFFFFF&aim=true');
+    url('https://res.cloudinary.com/dvvbls283/image/upload/v1607011525/hykvzkdzun6mjjjbltoq.webp');
   background-size: cover;
   background-position: bottom;
   .hero-inner {
@@ -434,7 +434,7 @@ const Home = (props) => {
             </p>
           </div>
           <div className="image-container">
-            <img src="https://seeklogo.com/images/O/organization-logo-5FDB60F08E-seeklogo.com.png" />
+            {/* <img src="https://seeklogo.com/images/O/organization-logo-5FDB60F08E-seeklogo.com.png" /> */}
           </div>
         </div>
       </Testamonials>
