@@ -3,6 +3,7 @@ import { useQuery } from 'react-apollo';
 import Project from '../../components/Project';
 import { endpoint, productionEndpoint } from '../../config';
 import { ALL_PROJECT_TITLES_QUERY, SINGLE_PROJECT_QUERY } from '../../lib/queries';
+import { apolloClient } from '../../lib/withData';
 
 const project = (props) => {
   return <Project project={props.project} query={props.query} />;
@@ -48,7 +49,7 @@ export async function getStaticPaths() {
         };
       });
       // console.log(paths);
-      return { paths, fallback: false };
+      return { paths, fallback: false, revalidate: 1 };
     });
 
   // Call an external API endpoint to get posts
