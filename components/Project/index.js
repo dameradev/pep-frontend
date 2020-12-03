@@ -9,7 +9,7 @@ import ApplyForm from './ApplyForm';
 
 import { ProjectStyles } from './styles';
 
-import { SINGLE_PROJECT_QUERY } from '../../lib/queries';
+import { ALL_PROJECT_TITLES_QUERY, SINGLE_PROJECT_QUERY } from '../../lib/queries';
 import { SET_POPUP_MUTAITON, UPDATE_APPLICANT_FORM_MUTATION } from '../../lib/mutations';
 import OrganizationInfo from './organizationInfo';
 
@@ -20,6 +20,13 @@ const Project = (props) => {
   const {
     query: { id, apply, newProject },
   } = props;
+
+  const {
+    user: { id: organizationId, organizationProfile, name, email } = {},
+    applicants,
+    applicantForm,
+  } = props.project || {};
+  const project = props.project;
 
   const [formDisplay, setFormDisplay] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -35,23 +42,12 @@ const Project = (props) => {
     },
   });
 
-  const { loading, data: { project } = {} } = useQuery(SINGLE_PROJECT_QUERY, { variables: { id } });
-  const {
-    user: { id: organizationId, organizationProfile, name, email } = {},
-    applicants,
-    applicantForm,
-  } = project || {};
-
   const handleFormDisplay = () => {
     setFormDisplay(true);
     setTimeout(() => {
       window.scrollTo(0, formRef?.current?.offsetTop - 70);
     }, 100);
   };
-
-  // const handleFormDisplay = () => {
-
-  // }
 
   console.log(newProject);
 
@@ -92,9 +88,6 @@ const Project = (props) => {
             configFormRef={configFormRef}
           />
         </div>
-        {/* {user?.id !== organizationId ? (
-        <ApplyForm projectId={id} formDisplay={formDisplay} formRef={formRef} />
-      ) : */}
         {user?.id === organizationId && applicants.length ? (
           <Applicants applicants={applicants} projectId={id} questions={applicantForm?.questions} />
         ) : (

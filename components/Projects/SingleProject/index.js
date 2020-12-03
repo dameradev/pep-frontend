@@ -6,7 +6,6 @@ import { useMutation, useQuery } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import Icons from '../../../lib/icons';
-import { GET_ALL_COUNTRIES_QUERY } from '../../../lib/queries';
 import { SAVE_PROJECT_MUTATION } from '../../../lib/mutations';
 import UserContext from '../../../contexts/userContext';
 
@@ -59,7 +58,7 @@ const SingleProject = (props) => {
     <Skeleton height={350} style={{ marginTop: '2rem' }} />
   ) : (
     <SingleProjectStyles className={props.className}>
-      <Link href={{ pathname: '/project', query: { id } }}>
+      <Link href={{ pathname: `/project/${id}` }}>
         <a className="project__title">{title}</a>
       </Link>
 
