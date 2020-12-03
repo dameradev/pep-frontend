@@ -27,7 +27,7 @@ export async function getStaticPaths() {
 
   const query = `
   query {
-    projects(isStatic: true) {
+    projects {
       title
       id
     }
@@ -82,7 +82,7 @@ export async function getStaticProps({ params }) {
   // console.log(data);
   // // const post = await res.json()
   // // Pass post data to the page via props
-  return { props: { project: data.project }, revalidate: 1 };
+  return { props: { project: data.project } };
 }
 
 export default project;
