@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
 import Project from '../../components/Project';
+import { endpoint, productionEndpoint } from '../../config';
 import { ALL_PROJECT_TITLES_QUERY, SINGLE_PROJECT_QUERY } from '../../lib/queries';
 
 import { apolloClient } from '../../lib/withData';
@@ -11,7 +12,7 @@ const project = (props) => {
 };
 
 export async function getStaticPaths() {
-  return fetch('http://localhost:4444', {
+  return fetch(process.env.NODE_ENV === 'development' ? endpoint : productionEndpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: '{ projects { title id } }' }),
