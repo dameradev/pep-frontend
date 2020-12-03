@@ -49,7 +49,7 @@ export async function getStaticPaths() {
         };
       });
       // console.log(paths);
-      return { paths, fallback: false, revalidate: 1 };
+      return { paths, fallback: false };
     });
 
   // Call an external API endpoint to get posts
@@ -82,7 +82,7 @@ export async function getStaticProps({ params }) {
   // console.log(data);
   // // const post = await res.json()
   // // Pass post data to the page via props
-  return { props: { project: data.project } };
+  return { props: { project: data.project }, revalidate: 1 };
 }
 
 export default project;
