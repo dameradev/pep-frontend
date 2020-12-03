@@ -147,6 +147,7 @@ const GlobalStyle = createGlobalStyle`
     
     /* font-family: 'Roboto', sans-serif; */
     font-family: 'Poppins', sans-serif;
+    font-display: swap;
   }
 
   html {
