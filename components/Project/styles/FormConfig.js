@@ -60,8 +60,8 @@ const ApplicationFormConfigStyles = styled.div`
     }
   }
 
-  .add-button {
-    margin-top: 3rem;
+  .add-icon {
+    margin-top: 2rem;
   }
 
   .buttons-container {

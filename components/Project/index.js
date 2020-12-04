@@ -21,11 +21,8 @@ const Project = (props) => {
     query: { id, apply, newProject },
   } = props;
 
-  const {
-    user: { id: organizationId, organizationProfile, name, email } = {},
-    applicants,
-    applicantForm,
-  } = props.project || {};
+  const { user: { id: organizationId, organizationProfile, name, email } = {}, applicantForm } =
+    props.project || {};
   const project = props.project;
 
   const [formDisplay, setFormDisplay] = useState(false);
@@ -48,8 +45,6 @@ const Project = (props) => {
       window.scrollTo(0, formRef?.current?.offsetTop - 70);
     }, 100);
   };
-
-  console.log(newProject);
 
   useEffect(() => {
     if (apply === 'true') {
@@ -88,24 +83,29 @@ const Project = (props) => {
             configFormRef={configFormRef}
           />
         </div>
-        {user?.id === organizationId && applicants.length ? (
-          <Applicants applicants={applicants} projectId={id} questions={applicantForm?.questions} />
-        ) : (
+        {user?.id === organizationId && (
+          <Applicants
+            projectId={id}
+            applicantFormId={applicantForm?.id}
+            handleFormDisplay={handleFormDisplay}
+          />
+        )}
+        {/* : (
           user?.id === organizationId && (
             <h3 className="no-applicants-message">
               There are currently no applicants for this project
             </h3>
           )
-        )}
+        ) */}
 
-        {user?.id === organizationId && (
+        {/* {user?.id === organizationId && (
           <FormConfig
             formRef={configFormRef}
             questions={applicantForm?.questions}
             applicantFormId={applicantForm?.id}
             handleFormDisplay={handleFormDisplay}
           />
-        )}
+        )} */}
 
         <ApplyForm
           projectId={id}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useMutation } from 'react-apollo';
+import { useMutation, useQuery } from 'react-apollo';
 
 import { MenuItem, TextField } from '@material-ui/core';
 
@@ -7,25 +7,35 @@ import { ExpandMore as ExpandMoreIcon, ExpandLess as ExpandLessIcon } from '@mat
 import { ApplicantsStyles } from './styles';
 
 import { CHANGE_APPLICANT_STATUS_MUTATION } from '../../lib/mutations';
+import { APPLICANTS_FOR_PROJECT_QUERY, APPLICANT_FORM_FOR_PROJECT } from '../../lib/queries';
+import FormConfig from './FormConfig';
 
 const statuses = ['pending', 'accepted', 'rejected'];
 
-const Applicants = ({ applicants: propsApplicants, projectId, questions }) => {
-  const applicants = propsApplicants.sort((a, b) => a.id - b.id);
+const Applicants = ({ projectId, applicantFormId, handleFormDisplay }) => {
+  const { data: applicantsData, loading } = useQuery(APPLICANTS_FOR_PROJECT_QUERY, {
+    variables: { projectId },
+  });
 
-  const [selectedApplicant, setSelectedApplicant] = useState(applicants[0]?.id);
+  const { data: applicantFormData } = useQuery(APPLICANT_FORM_FOR_PROJECT, {
+    variables: { id: applicantFormId },
+  });
+
+  const questions = applicantFormData?.applicantFormForProject.questions;
+
+  const applicants = applicantsData?.applicantsForProject.sort((a, b) => a.id - b.id);
+
+  const [selectedApplicant, setSelectedApplicant] = useState(applicants?.[0]?.id);
   const [currentStatus, setCurrentStatus] = useState(status);
   const [statusChanged, setStatusChanged] = useState(false);
-
-  console.log(applicants);
 
   const [changeApplicantStatus, { data, loading: statusLoading }] = useMutation(
     CHANGE_APPLICANT_STATUS_MUTATION,
     {
       variables: {
         projectId: projectId,
-        applicantId: applicants.find((item) => item.id === selectedApplicant)?.id,
-        userId: applicants.find((item) => item.id === selectedApplicant)?.applicant.id,
+        applicantId: applicants?.find((item) => item.id === selectedApplicant)?.id,
+        userId: applicants?.find((item) => item.id === selectedApplicant)?.applicant.id,
         status: currentStatus.toUpperCase(),
       },
     }
@@ -45,59 +55,75 @@ const Applicants = ({ applicants: propsApplicants, projectId, questions }) => {
     }, 600);
   };
   return (
-    <ApplicantsStyles>
-      <div className="applicants__header">
-        <h2>Applicants for project</h2>
-        <p>Current applicants {applicants.length}</p>
-      </div>
-      <ul className="applicants__list">
-        {applicants.map(({ id, status, applicant: { name } }) => {
-          // console.log(status,);
-          return (
-            <li key={id} id={`applicant-${id}`}>
-              <div
-                className={`applicants__list-item ${status.toLowerCase()} ${
-                  selectedApplicant === id && 'selected'
-                }`}
-                onClick={() => {
-                  handleClick(id);
-                }}
-              >
-                {window.innerWidth < 849 && (
-                  <>
-                    <ExpandMoreIcon className="expand expand-more" />
-                    <ExpandLessIcon className="expand expand-less" />
-                  </>
-                )}
-                {/* </p> */}
-                <h3>{name}</h3>
-                <p>{status}</p>
-              </div>
+    <>
+      {!applicants?.length ? (
+        <h3 className="no-applicants-message">
+          There are currently no applicants for this project
+        </h3>
+      ) : (
+        <ApplicantsStyles>
+          <div className="applicants__header">
+            <h2>Applicants for project</h2>
+            <p>Current applicants {applicants?.length}</p>
+          </div>
+          <ul className="applicants__list">
+            {applicants?.map(({ id, status, applicant: { name } }) => {
+              // console.log(status,);
+              return (
+                <li key={id} id={`applicant-${id}`}>
+                  <div
+                    className={`applicants__list-item ${status.toLowerCase()} ${
+                      selectedApplicant === id && 'selected'
+                    }`}
+                    onClick={() => {
+                      handleClick(id);
+                    }}
+                  >
+                    {window.innerWidth < 849 && (
+                      <>
+                        <ExpandMoreIcon className="expand expand-more" />
+                        <ExpandLessIcon className="expand expand-less" />
+                      </>
+                    )}
+                    {/* </p> */}
+                    <h3>{name}</h3>
+                    <p>{status}</p>
+                  </div>
 
-              {window.innerWidth < 849 && (
-                <SelectedApplicant
-                  isSelected={selectedApplicant === id && 'selected'}
-                  selectedApplicant={applicants.find((item) => item.id === selectedApplicant)}
-                  setCurrentStatus={setCurrentStatus}
-                  setStatusChanged={setStatusChanged}
-                  statusLoading={statusLoading}
-                  questions={questions}
-                />
-              )}
-            </li>
-          );
-        })}
-      </ul>
-      {window.innerWidth > 849 && (
-        <SelectedApplicant
-          selectedApplicant={applicants.find((item) => item.id === selectedApplicant)}
-          setCurrentStatus={setCurrentStatus}
-          setStatusChanged={setStatusChanged}
-          statusLoading={statusLoading}
+                  {window.innerWidth < 849 && (
+                    <SelectedApplicant
+                      isSelected={selectedApplicant === id && 'selected'}
+                      selectedApplicant={applicants.find((item) => item.id === selectedApplicant)}
+                      setCurrentStatus={setCurrentStatus}
+                      setStatusChanged={setStatusChanged}
+                      statusLoading={statusLoading}
+                      questions={questions}
+                    />
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+          {window.innerWidth > 849 && (
+            <SelectedApplicant
+              selectedApplicant={applicants?.find((item) => item.id === selectedApplicant)}
+              setCurrentStatus={setCurrentStatus}
+              setStatusChanged={setStatusChanged}
+              statusLoading={statusLoading}
+              questions={questions}
+            />
+          )}
+        </ApplicantsStyles>
+      )}
+
+      {questions && (
+        <FormConfig
           questions={questions}
+          applicantFormId={applicantFormId}
+          handleFormDisplay={handleFormDisplay}
         />
       )}
-    </ApplicantsStyles>
+    </>
   );
 };
 

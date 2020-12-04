@@ -79,7 +79,6 @@ export async function getStaticProps({ params }) {
     },
   });
 
-  // console.log(data);
   // // const post = await res.json()
   // // Pass post data to the page via props
   return { props: { project: data.project } };

@@ -3,6 +3,7 @@ import { ApplicationFormConfigStyles } from './styles';
 import { Icon, TextField } from '@material-ui/core';
 import { useMutation } from 'react-apollo';
 import { SET_POPUP_MUTAITON, UPDATE_APPLICANT_FORM_MUTATION } from '../../lib/mutations';
+import { AddCircleRounded as AddIcon, RemoveCircleRounded as RemoveIcon } from '@material-ui/icons';
 
 const FormConfig = ({ questions: questionsProps, applicantFormId, handleFormDisplay, formRef }) => {
   const [questions, setQuestions] = useState(questionsProps);
@@ -81,17 +82,17 @@ const FormConfig = ({ questions: questionsProps, applicantFormId, handleFormDisp
                     variant="standard"
                   />
 
-                  <Icon onClick={() => removeArrayElement(index)} color="primary">
-                    remove_circle
-                  </Icon>
+                  <RemoveIcon onClick={() => removeArrayElement(index)} color="primary" filled />
                 </div>
               </li>
             ))}
         </ul>
-
-        <Icon className="add-button" onClick={() => addArrayElement()} color="primary">
-          add_circle
-        </Icon>
+        <AddIcon
+          className="add-icon"
+          onClick={() => removeArrayElement(index)}
+          color="primary"
+          onClick={() => addArrayElement()}
+        />
       </div>
       <div className="buttons-container">
         <button className="button button-view" onClick={() => handleFormDisplay()}>
