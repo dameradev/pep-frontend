@@ -22,3 +22,6 @@ It also has a search page where students and young people can easily find the ex
 It uses prisma2 as a database, and with a nodeJS express server and a graphql API, dataflow is superfast.
 
 On the frontend I'm using a server(pre)-rendered approach using NextJS, which allows the app to be SEO friendly and highly performant
+
+
+DEMO -> http://pep-seven.vercel.app/
